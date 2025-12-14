@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渥太华自伤行为问卷（OSI）在线评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #8a2be2 0%, #6a0dad 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 350px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #8a2be2;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #8a2be2;
+        }
+        
+        h3 {
+            color: #6a0dad;
+            margin: 20px 0 15px;
+            font-size: 18px;
+        }
+        
+        .question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .high-risk-active {
+            background-color: rgba(254, 202, 202, 0.1);
+            border: 1px solid #fecaca;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 90px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #8a2be2;
+            color: white;
+            border-color: #8a2be2;
+            font-weight: 600;
+        }
+        
+        .rating-option.high-risk-option input[value="3"]:checked + label,
+        .rating-option.high-risk-option input[value="4"]:checked + label {
+            background-color: #ef4444;
+            border-color: #dc2626;
+        }
+        
+        .rating-option label:hover {
+            background-color: #f0e6ff;
+            border-color: #8a2be2;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0e6ff 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #8a2be2;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .dimension-scores {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .dimension-score {
+            flex: 1;
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-score.high-risk {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6a0dad;
+        }
+        
+        .dimension-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #8a2be2;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #8a2be2;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #8a2be2;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #6a0dad;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .high-risk-flash {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 5px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+            
+            .dimension-scores {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .item-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed #e2e8f0;
+        }
+        
+        .dimension-title {
+            color: #6a0dad;
+            font-weight: 600;
+        }
+        
+        .dimension-info {
+            font-size: 13px;
+            color: #64748b;
+            background-color: #f8fafc;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .emergency-contacts {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .emergency-title {
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #bae6fd;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-clipboard-check"></i> 渥太华自伤行为问卷（OSI）在线评估</h1>
+            <p class="subtitle">本问卷用于评估自伤行为的成瘾性特征及相关动机，是青少年及成人自伤行为评估的常用工具。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>本问卷用于了解你自伤行为的相关情况。请仔细阅读每个项目，根据你近1个月内的真实表现（有自伤行为史者）作答；若近1个月无自伤行为，可结合最近一次自伤行为发生期间的表现作答。每个项目均有5个选项，对应"从不=0分、偶尔=1分、有时=2分、经常=3分、总是=4分"，请在符合你情况的选项框内打"√"，无需过度思考，真实作答即可。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> OSI问卷核心项目（共10项）</h2>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title">维度1：成瘾特征（7项，评估自伤行为的失控性、耐受性等成瘾核心特征）</div>
+                        <div class="dimension-info">第1-7项，总分0-28分</div>
+                    </div>
+                    
+                    <div id="questionsContainer">
+                        <!-- 问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 重要提醒：</strong> 本问卷旨在评估自伤行为的风险。若项目2（自伤后果加重）、项目5（无法控制）、项目10（沉迷自伤）评分≥4分，或总分＞30分，或成瘾特征维度分＞20分，提示存在紧急自伤风险，需立即启动安全保障措施。
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 标准化评分细则</h2>
+                    
+                    <p>本量表为5级评分制，各分数对应的操作定义严格遵循量表编制规范，具体如下：</p>
+                    
+                    <p><strong>0分（从不）：</strong>近1个月内完全没有出现该项目描述的情况；若近1个月无自伤，最近一次自伤期间也未出现。</p>
+                    <p><strong>1分（偶尔）：</strong>近1个月内出现1-2次；或最近一次自伤期间仅出现1次，程度轻微，未引起明显困扰。</p>
+                    <p><strong>2分（有时）：</strong>近1个月内出现3-5次；或最近一次自伤期间多次出现，但仍可部分控制，对生活影响较小。</p>
+                    <p><strong>3分（经常）：</strong>近1个月内出现6-10次；或最近一次自伤期间频繁出现，难以部分控制，对生活、学习/工作产生明显干扰。</p>
+                    <p><strong>4分（总是）：</strong>近1个月内出现10次以上，或相关表现持续存在；或最近一次自伤期间完全无法控制，严重干扰日常生活，甚至出现危险后果（如伤口感染、需要医疗干预）。</p>
+                    
+
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">OSI总分</div>
+                        <div id="totalScore" class="score-value">0</div>
+                        <div id="severityText" class="score-label">请完成评估</div>
+                        
+                        <div class="dimension-scores">
+                            <div class="dimension-score" id="addictionScoreContainer">
+                                <div class="dimension-value" id="addictionScore">0</div>
+                                <div class="dimension-name">成瘾特征维度</div>
+                            </div>
+                            <div class="dimension-score" id="motivationScoreContainer">
+                                <div class="dimension-value" id="motivationScore">0</div>
+                                <div class="dimension-name">自伤动机维度</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 风险评估摘要</div>
+                        <div class="risk-item">
+                            <span class="risk-name">高风险项目监测</span>
+                            <span id="highRiskItemsStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">总分风险</span>
+                            <span id="totalScoreRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">成瘾特征维度风险</span>
+                            <span id="addictionRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有10个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>风险等级</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>＜10分</td>
+                                    <td><span class="severity-indicator severity-0">低风险自伤</span></td>
+                                    <td>自伤行为无明显成瘾特征，动机微弱；多为偶发、可控的自伤，对个体功能影响极小</td>
+                                </tr>
+                                <tr>
+                                    <td>10-20分</td>
+                                    <td><span class="severity-indicator severity-1">轻度成瘾倾向</span></td>
+                                    <td>存在轻度自伤成瘾倾向，自伤动机中等；建议开展早期心理干预（如认知行为治疗）</td>
+                                </tr>
+                                <tr>
+                                    <td>21-30分</td>
+                                    <td><span class="severity-indicator severity-3">中高风险自伤</span></td>
+                                    <td>存在中度自伤成瘾倾向，自伤动机强烈；需系统心理治疗</td>
+                                </tr>
+                                <tr>
+                                    <td>＞30分</td>
+                                    <td><span class="severity-indicator severity-4">高风险自伤</span></td>
+                                    <td>存在重度自伤成瘾倾向，自伤动机极强；需紧急医疗干预（如住院治疗、危机干预）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332/18835185216（和小表格讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 适用人群与评估时限：</strong> 适用于12岁及以上有明确自伤行为史的个体；严格限定"近1个月"为评估时限，若近1个月无自伤，则以最近一次自伤行为发生期间的表现作答。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // OSI问题列表
+        const osiQuestions = [
+            {
+                text: "我实施自伤行为的频率，超出了自己原本计划或预期的频率",
+                dimension: "addiction",
+                dimensionName: "成瘾特征"
+            },
+            {
+                text: "随着时间推移，我需要实施更严重的自伤行为（如伤口更深、面积更大、方式更危险）才能达到之前的情绪缓解效果",
+                dimension: "addiction",
+                dimensionName: "成瘾特征",
+                highRisk: true,
+                highRiskIndex: 1 // 项目2
+            },
+            {
+                text: "我需要更频繁地实施自伤行为，才能缓解负面情绪",
+                dimension: "addiction",
+                dimensionName: "成瘾特征"
+            },
+            {
+                text: "自伤相关的想法（如计划自伤、思考自伤方式）或行为（如准备工具、实施自伤、处理伤口）占用了我大量的时间和精力",
+                dimension: "addiction",
+                dimensionName: "成瘾特征"
+            },
+            {
+                text: "尽管我多次尝试控制或减少自伤行为，但都失败了",
+                dimension: "addiction",
+                dimensionName: "成瘾特征",
+                highRisk: true,
+                highRiskIndex: 4 // 项目5
+            },
+            {
+                text: "因为自伤行为，我不得不放弃一些重要的事情（如社交活动、学习任务、工作机会、兴趣爱好）",
+                dimension: "addiction",
+                dimensionName: "成瘾特征"
+            },
+            {
+                text: "当我尝试停止自伤时，会出现烦躁、焦虑、易怒、情绪低落等难以忍受的不适感觉",
+                dimension: "addiction",
+                dimensionName: "成瘾特征"
+            },
+            {
+                text: "我会因为内心的冲动，或者他人的暗示/建议而实施自伤行为",
+                dimension: "motivation",
+                dimensionName: "自伤动机"
+            },
+            {
+                text: "当我感到麻木、没有情绪波动，或者觉得'一切都不真实'时，会通过自伤来让自己感受到'活着'的真实感",
+                dimension: "motivation",
+                dimensionName: "自伤动机"
+            },
+            {
+                text: "我会沉迷于自伤的过程或自伤后的感觉，难以主动停止",
+                dimension: "motivation",
+                dimensionName: "自伤动机",
+                highRisk: true,
+                highRiskIndex: 9 // 项目10
+            }
+        ];
+        
+        // 评分选项
+        const ratingOptions = [
+            { value: 0, label: "从不", description: "0分" },
+            { value: 1, label: "偶尔", description: "1分" },
+            { value: 2, label: "有时", description: "2分" },
+            { value: 3, label: "经常", description: "3分" },
+            { value: 4, label: "总是", description: "4分" }
+        ];
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "低风险自伤": {
+                title: "低风险自伤",
+                description: "根据评估结果，自伤行为无明显成瘾特征，动机微弱；多为偶发、可控的自伤，对个体功能影响极小。",
+                severityClass: "severity-0"
+            },
+            "轻度成瘾倾向": {
+                title: "轻度成瘾倾向",
+                description: "根据评估结果，存在轻度自伤成瘾倾向，自伤动机中等；自伤频率较低但存在失控风险，对生活有轻微干扰，建议开展早期心理干预（如认知行为治疗）。",
+                severityClass: "severity-1"
+            },
+            "中高风险自伤": {
+                title: "中高风险自伤",
+                description: "根据评估结果，存在中度自伤成瘾倾向，自伤动机强烈；自伤频率较高，明显失控，对生活、学习/工作产生显著干扰，属于中高风险自伤，需系统心理治疗。",
+                severityClass: "severity-3"
+            },
+            "高风险自伤": {
+                title: "高风险自伤",
+                description: "根据评估结果，存在重度自伤成瘾倾向，自伤动机极强；自伤行为完全失控，严重影响日常生活，且伴随极高的自伤风险（如可能出现危及生命的自伤方式），需紧急医疗干预（如住院治疗、危机干预）。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const container = document.getElementById('questionsContainer');
+            
+            osiQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${index}`;
+                
+                // 如果是高风险项目，添加数据属性
+                if (question.highRisk) {
+                    questionItem.dataset.highRisk = "true";
+                    questionItem.dataset.highRiskIndex = question.highRiskIndex;
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                // 添加问题编号和文本
+                const questionNumber = index + 1;
+                questionText.textContent = `${questionNumber}. ${question.text}`;
+                
+                // 如果是高风险项目，添加标记
+                if (question.highRisk) {
+                    const highRiskSpan = document.createElement('span');
+                    highRiskSpan.className = 'high-risk-tag';
+                    highRiskSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 高风险项目';
+                    questionText.appendChild(highRiskSpan);
+                }
+                
+                // 如果有维度信息，添加维度标签
+                const dimensionSpan = document.createElement('div');
+                dimensionSpan.className = 'item-note';
+                dimensionSpan.textContent = `维度：${question.dimensionName}`;
+                questionText.appendChild(dimensionSpan);
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建单选按钮
+                ratingOptions.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    // 如果是高风险项目，为3分和4分选项添加特殊类
+                    if (question.highRisk && (option.value === 3 || option.value === 4)) {
+                        optionDiv.classList.add('high-risk-option');
+                    }
+                    
+                    const inputId = `q${index}-score${option.value}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.id = inputId;
+                    input.value = option.value;
+                    
+                    // 默认选择0分
+                    if (option.value === 0) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', function() {
+                        updateTotalScore();
+                        checkHighRiskItems();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = option.label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = option.description;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                });
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                container.appendChild(questionItem);
+            });
+        }
+        
+        // 计算总分和维度分
+        function calculateScores() {
+            let total = 0;
+            let addictionScore = 0;
+            let motivationScore = 0;
+            
+            for (let i = 0; i < osiQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    total += score;
+                    
+                    // 根据维度分配分数
+                    if (osiQuestions[i].dimension === "addiction") {
+                        addictionScore += score;
+                    } else if (osiQuestions[i].dimension === "motivation") {
+                        motivationScore += score;
+                    }
+                }
+            }
+            
+            return { total, addictionScore, motivationScore };
+        }
+        
+        // 检查高风险项目分数
+        function checkHighRiskItems() {
+            const highRiskItems = [1, 4, 9]; // 项目2、5、10的索引（从0开始）
+            let highRiskWarnings = [];
+            let highRiskCount = 0;
+            
+            // 重置所有高风险项目样式
+            document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                item.classList.remove('high-risk-active', 'high-risk-flash');
+            });
+            
+            for (const itemIndex of highRiskItems) {
+                const questionItem = document.getElementById(`question-${itemIndex}`);
+                const selectedOption = document.querySelector(`input[name="question${itemIndex}"]:checked`);
+                
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    if (score >= 4) {
+                        highRiskCount++;
+                        const questionNumber = itemIndex + 1;
+                        highRiskWarnings.push(`项目${questionNumber}评分≥4分`);
+                        
+                        // 为高风险项目添加视觉样式
+                        if (questionItem) {
+                            questionItem.classList.add('high-risk-active');
+                            if (score === 4) {
+                                questionItem.classList.add('high-risk-flash');
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return { highRiskWarnings, highRiskCount };
+        }
+        
+        // 检查其他高风险条件
+        function checkOtherRiskConditions(total, addictionScore) {
+            let additionalWarnings = [];
+            
+            if (total > 30) {
+                additionalWarnings.push("总分＞30分");
+            }
+            if (addictionScore > 20) {
+                additionalWarnings.push("成瘾特征维度分＞20分");
+            }
+            
+            return additionalWarnings;
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(highRiskItems, total, addictionScore) {
+            const highRiskItemsStatus = document.getElementById('highRiskItemsStatus');
+            const totalScoreRiskStatus = document.getElementById('totalScoreRiskStatus');
+            const addictionRiskStatus = document.getElementById('addictionRiskStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 高风险项目状态
+            if (highRiskItems.highRiskCount > 0) {
+                highRiskItemsStatus.textContent = `${highRiskItems.highRiskCount}项高风险`;
+                highRiskItemsStatus.className = 'risk-status danger';
+            } else {
+                highRiskItemsStatus.textContent = '安全';
+                highRiskItemsStatus.className = 'risk-status safe';
+            }
+            
+            // 总分风险状态
+            if (total > 30) {
+                totalScoreRiskStatus.textContent = '高风险';
+                totalScoreRiskStatus.className = 'risk-status danger';
+            } else if (total >= 21) {
+                totalScoreRiskStatus.textContent = '中风险';
+                totalScoreRiskStatus.className = 'risk-status warning';
+            } else {
+                totalScoreRiskStatus.textContent = '安全';
+                totalScoreRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 成瘾特征维度风险状态
+            if (addictionScore > 20) {
+                addictionRiskStatus.textContent = '高风险';
+                addictionRiskStatus.className = 'risk-status danger';
+            } else if (addictionScore >= 15) {
+                addictionRiskStatus.textContent = '中风险';
+                addictionRiskStatus.className = 'risk-status warning';
+            } else {
+                addictionRiskStatus.textContent = '安全';
+                addictionRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 更新风险评估摘要样式
+            if (highRiskItems.highRiskCount > 0 || total > 30 || addictionScore > 20) {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 根据总分获取评估结果
+        function getAssessmentResult(score) {
+            if (score < 10) {
+                return "低风险自伤";
+            } else if (score >= 10 && score <= 20) {
+                return "轻度成瘾倾向";
+            } else if (score >= 21 && score <= 30) {
+                return "中高风险自伤";
+            } else {
+                return "高风险自伤";
+            }
+        }
+        
+        // 更新总分显示
+        function updateTotalScore() {
+            const scores = calculateScores();
+            const { total, addictionScore, motivationScore } = scores;
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 检查其他高风险条件
+            const otherRiskConditions = checkOtherRiskConditions(total, addictionScore);
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskItems, total, addictionScore);
+            
+            // 更新总分
+            document.getElementById('totalScore').textContent = total;
+            
+            // 更新维度分
+            document.getElementById('addictionScore').textContent = addictionScore;
+            document.getElementById('motivationScore').textContent = motivationScore;
+            
+            // 实时更新评估结果
+            if (isAssessmentComplete()) {
+                const result = getAssessmentResult(total);
+                const resultInfo = resultDescriptions[result];
+                
+                document.getElementById('severityText').textContent = resultInfo.title;
+                document.getElementById('resultDescription').textContent = resultInfo.description;
+                
+                // 更新结果框样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                const addictionScoreContainer = document.getElementById('addictionScoreContainer');
+                const addictionScoreElement = document.getElementById('addictionScore');
+                const motivationScoreContainer = document.getElementById('motivationScoreContainer');
+                const motivationScoreElement = document.getElementById('motivationScore');
+                
+                // 重置所有高风险样式
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                totalScoreElement.classList.remove('high-risk');
+                addictionScoreContainer.classList.remove('high-risk');
+                addictionScoreElement.classList.remove('high-risk');
+                motivationScoreContainer.classList.remove('high-risk');
+                motivationScoreElement.classList.remove('high-risk');
+                
+                // 更新颜色
+                resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+                totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+                
+                // 检查是否需要应用高风险样式
+                const allWarnings = [...highRiskItems.highRiskWarnings, ...otherRiskConditions];
+                if (allWarnings.length > 0) {
+                    resultBox.classList.add('high-risk');
+                    resultTitle.classList.add('high-risk');
+                    scoreDisplay.classList.add('high-risk');
+                    totalScoreElement.classList.add('high-risk');
+                    
+                    if (addictionScore > 20) {
+                        addictionScoreContainer.classList.add('high-risk');
+                        addictionScoreElement.classList.add('high-risk');
+                    }
+                    
+                    if (total > 30) {
+                        motivationScoreContainer.classList.add('high-risk');
+                        motivationScoreElement.classList.add('high-risk');
+                    }
+                }
+            }
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#8a2be2';
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < osiQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有10个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const scores = calculateScores();
+            const { total, addictionScore, motivationScore } = scores;
+            const result = getAssessmentResult(total);
+            const resultInfo = resultDescriptions[result];
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 检查其他高风险条件
+            const otherRiskConditions = checkOtherRiskConditions(total, addictionScore);
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskItems, total, addictionScore);
+            
+            // 更新总分显示
+            document.getElementById('totalScore').textContent = total;
+            document.getElementById('severityText').textContent = resultInfo.title;
+            
+            // 更新维度分显示
+            document.getElementById('addictionScore').textContent = addictionScore;
+            document.getElementById('motivationScore').textContent = motivationScore;
+            
+            // 构建结果描述
+            let description = resultInfo.description;
+            
+            // 如果有高风险警告，添加到描述中
+            const allWarnings = [...highRiskItems.highRiskWarnings, ...otherRiskConditions];
+            if (allWarnings.length > 0) {
+                description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高风险警告：</strong> ${allWarnings.join("，")}，提示存在紧急自伤风险，需立即启动安全保障措施（如联系监护人、安排医疗评估）。`;
+                
+                // 显示紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'block';
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const totalScoreElement = document.getElementById('totalScore');
+            const addictionScoreContainer = document.getElementById('addictionScoreContainer');
+            const addictionScoreElement = document.getElementById('addictionScore');
+            const motivationScoreContainer = document.getElementById('motivationScoreContainer');
+            const motivationScoreElement = document.getElementById('motivationScore');
+            
+            // 重置所有高风险样式
+            resultBox.classList.remove('high-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk');
+            totalScoreElement.classList.remove('high-risk');
+            addictionScoreContainer.classList.remove('high-risk');
+            addictionScoreElement.classList.remove('high-risk');
+            motivationScoreContainer.classList.remove('high-risk');
+            motivationScoreElement.classList.remove('high-risk');
+            
+            // 更新颜色
+            resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+            totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+            
+            // 检查是否需要应用高风险样式
+            if (allWarnings.length > 0) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                totalScoreElement.classList.add('high-risk');
+                
+                if (addictionScore > 20) {
+                    addictionScoreContainer.classList.add('high-risk');
+                    addictionScoreElement.classList.add('high-risk');
+                }
+                
+                if (total > 30) {
+                    motivationScoreContainer.classList.add('high-risk');
+                    motivationScoreElement.classList.add('high-risk');
+                }
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为0分
+                for (let i = 0; i < osiQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="0"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置高风险项目样式
+                document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                    item.classList.remove('high-risk-active', 'high-risk-flash');
+                });
+                
+                // 重置结果显示
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('addictionScore').textContent = '0';
+                document.getElementById('motivationScore').textContent = '0';
+                document.getElementById('severityText').textContent = '请完成评估';
+                document.getElementById('resultDescription').innerHTML = '请完成所有10个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('highRiskItemsStatus').textContent = '安全';
+                document.getElementById('highRiskItemsStatus').className = 'risk-status safe';
+                document.getElementById('totalScoreRiskStatus').textContent = '安全';
+                document.getElementById('totalScoreRiskStatus').className = 'risk-status safe';
+                document.getElementById('addictionRiskStatus').textContent = '安全';
+                document.getElementById('addictionRiskStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                const addictionScoreContainer = document.getElementById('addictionScoreContainer');
+                const addictionScoreElement = document.getElementById('addictionScore');
+                const motivationScoreContainer = document.getElementById('motivationScoreContainer');
+                const motivationScoreElement = document.getElementById('motivationScore');
+                
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                totalScoreElement.classList.remove('high-risk');
+                addictionScoreContainer.classList.remove('high-risk');
+                addictionScoreElement.classList.remove('high-risk');
+                motivationScoreContainer.classList.remove('high-risk');
+                motivationScoreElement.classList.remove('high-risk');
+                
+                totalScoreElement.style.color = '#8a2be2';
+                resultBox.style.borderLeftColor = '#8a2be2';
+                resultBox.style.backgroundColor = '#f8fafc';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新总分
+            updateTotalScore();
+        });
+    </script>
+</body>
+</html>

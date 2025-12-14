@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社会功能评定量表（SSPI）在线评估系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .assessment-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 400px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #0d47a1;
+        }
+        
+        h3 {
+            color: #1565c0;
+            margin: 20px 0 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #e3f2fd;
+            border-left: 5px solid #0d47a1;
+        }
+        
+        .dimension-title {
+            color: #0d47a1;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dimension-info {
+            font-size: 13px;
+            color: #1565c0;
+            background-color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 90px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #0d47a1;
+            color: white;
+            border-color: #0d47a1;
+            font-weight: 600;
+        }
+        
+        .rating-option label:hover {
+            background-color: #dbeafe;
+            border-color: #0d47a1;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-description {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 8px;
+            font-style: italic;
+            padding: 8px;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            border-left: 3px solid #cbd5e1;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.impaired {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-display.moderate {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fcd34d;
+        }
+        
+        .score-display.good {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-color: #7dd3fc;
+        }
+        
+        .score-display.excellent {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #86efac;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #0d47a1;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.impaired {
+            color: #dc2626;
+        }
+        
+        .score-value.moderate {
+            color: #d97706;
+        }
+        
+        .score-value.good {
+            color: #0d9488;
+        }
+        
+        .score-value.excellent {
+            color: #059669;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .dimension-scores {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .dimension-score-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-score-item.impaired {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-score-item.moderate {
+            background-color: #fffbeb;
+            border: 1px solid #fde68a;
+        }
+        
+        .dimension-score-item.good {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+        }
+        
+        .dimension-score-item.excellent {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: #334155;
+            flex: 1;
+        }
+        
+        .dimension-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0d47a1;
+            margin-right: 15px;
+        }
+        
+        .dimension-value.impaired {
+            color: #dc2626;
+        }
+        
+        .dimension-value.moderate {
+            color: #d97706;
+        }
+        
+        .dimension-value.good {
+            color: #0d9488;
+        }
+        
+        .dimension-value.excellent {
+            color: #059669;
+        }
+        
+        .dimension-range {
+            font-size: 12px;
+            color: #94a3b8;
+            background-color: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #0d47a1;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.impaired {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-box.moderate {
+            background-color: #fffbeb;
+            border-left: 5px solid #f59e0b;
+        }
+        
+        .result-box.good {
+            background-color: #f0f9ff;
+            border-left: 5px solid #0ea5e9;
+        }
+        
+        .result-box.excellent {
+            background-color: #f0fdf4;
+            border-left: 5px solid #10b981;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
+        
+        .result-title.impaired {
+            color: #dc2626;
+        }
+        
+        .result-title.moderate {
+            color: #d97706;
+        }
+        
+        .result-title.good {
+            color: #0d9488;
+        }
+        
+        .result-title.excellent {
+            color: #059669;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .severity-1 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-4 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #0d47a1;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.impaired {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary.moderate {
+            background-color: #fffbeb;
+            border-color: #fde68a;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .risk-status.impaired {
+            color: #dc2626;
+        }
+        
+        .risk-status.moderate {
+            color: #d97706;
+        }
+        
+        .risk-status.good {
+            color: #0d9488;
+        }
+        
+        .risk-status.excellent {
+            color: #059669;
+        }
+        
+        .scale-background {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0d47a1;
+        }
+        
+        .scale-info {
+            margin-bottom: 10px;
+        }
+        
+        .scale-info p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+        }
+        
+        .score-category {
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .score-category.impaired {
+            color: #dc2626;
+        }
+        
+        .score-category.moderate {
+            color: #d97706;
+        }
+        
+        .score-category.good {
+            color: #0d9488;
+        }
+        
+        .score-category.excellent {
+            color: #059669;
+        }
+        
+        .dimension-interpretation {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .dimension-interpretation.impaired {
+            background-color: #fef2f2;
+            border-left: 3px solid #ef4444;
+        }
+        
+        .dimension-interpretation.moderate {
+            background-color: #fffbeb;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .dimension-interpretation.good {
+            background-color: #f0f9ff;
+            border-left: 3px solid #0ea5e9;
+        }
+        
+        .dimension-interpretation.excellent {
+            background-color: #f0fdf4;
+            border-left: 3px solid #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-clipboard-check"></i> 社会功能评定量表（SSPI）在线评估系统</h1>
+            <p class="subtitle">本量表由张明园教授基于国际社会功能评估框架编制，是国内临床与研究中常用的社会功能他评量表。</p>
+            <div class="instructions">
+                <p><strong>评估人员指导语：</strong>本量表用于评定被评估者近1个月的社会功能水平，由专业评估人员通过"面谈被评估者+观察行为表现+询问知情者（家长/老师/家属）"三方信息综合评分。请根据被评估者在日常生活自理、人际交往、社会参与等方面的实际表现，对以下12个项目分别评分。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="assessment-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> SSPI评估表（他评量表）</h2>
+                    
+                    <div class="scale-background">
+                        <div class="scale-info">
+                            <p><strong>量表背景说明：</strong>本量表聚焦日常生活自理、人际交往、社会参与三大核心维度，信效度优异：总体Cronbach's α系数=0.89，评定者间信度Kappa=0.78-0.85，效标效度与社会适应能力量表相关系数r=0.83。</p>
+                            <p><strong>适用人群：</strong>12岁以上青少年及成人；18岁青春期末期群体可直接使用，评估时需重点关注"成年过渡相关功能"（如独立决策、职业规划、社会责任感）。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title"><i class="fas fa-home"></i> 维度1：日常生活自理能力（1-3项）</div>
+                        <div class="dimension-info">总分范围：0-12分</div>
+                    </div>
+                    
+                    <div id="dailyLivingContainer">
+                        <!-- 日常生活自理能力问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title"><i class="fas fa-users"></i> 维度2：主动性与人际交往能力（4-8项）</div>
+                        <div class="dimension-info">总分范围：0-20分</div>
+                    </div>
+                    
+                    <div id="socialSkillsContainer">
+                        <!-- 主动性与人际交往能力问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title"><i class="fas fa-globe"></i> 维度3：社会参与与功能技能（9-12项）</div>
+                        <div class="dimension-info">总分范围：0-16分</div>
+                    </div>
+                    
+                    <div id="socialParticipationContainer">
+                        <!-- 社会参与与功能技能问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 评估注意事项：</strong> 本量表严格采用"他评"模式，不可自评。评估人员需综合三方信息（被评估者陈述、直接观察、知情者反馈），避免单一信息来源导致偏差。评估时限严格限定"近1个月"，聚焦近期功能表现。
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 标准化评分细则</h2>
+                    
+                    <p>本量表采用5级评分制（0-4分），所有项目均正向计分，分数越高表示社会功能越好。</p>
+                    
+                    <p><strong>1. 通用评分标准（0-4分，各项目通用）</strong></p>
+                    <div class="interpretation-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>评分</th>
+                                    <th>功能水平</th>
+                                    <th>具体定义与示例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>0分</strong></td>
+                                    <td>功能极差</td>
+                                    <td>完全无法自理/参与，需他人全程照料；无任何主动行为，完全依赖他人辅助，功能完全丧失。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1分</strong></td>
+                                    <td>功能极差-需大量督促</td>
+                                    <td>仅在他人反复提醒、协助下才能完成基础功能；被动回应外界，无主动行为，功能严重受损。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2分</strong></td>
+                                    <td>功能中等偏下-主动性不足</td>
+                                    <td>可独立完成基础功能，但质量差、不规律；能进行简单被动互动，社会参与极少，功能部分受损。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3分</strong></td>
+                                    <td>功能良好-自主达标</td>
+                                    <td>规律、自主完成各项功能，质量达标；能主动开展人际交往，参与常规社会活动，功能基本正常。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4分</strong></td>
+                                    <td>功能优秀-主动高质量</td>
+                                    <td>自主、高质量完成功能，注重细节；善于主动社交，积极参与社会活动，功能全面发展。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="ethics-note">
+                        <p><strong><i class="fas fa-user-md"></i> 评估人员资质要求：</strong> 需由经过社会功能评估专项培训的精神科医师、临床心理师、康复治疗师或研究人员实施；评估前需熟悉各项目评分标准，完成一致性培训（Kappa值≥0.75方可独立评估）。</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">SSPI总分</div>
+                        <div id="totalScore" class="score-value">0</div>
+                        <div id="scoreCategory" class="score-label">请完成评估</div>
+                        
+                        <div class="dimension-scores">
+                            <div class="dimension-score-item" id="dailyLivingScoreItem">
+                                <div class="dimension-name">日常生活自理能力</div>
+                                <div class="dimension-value" id="dailyLivingScore">0</div>
+                                <div class="dimension-range">0-12分</div>
+                            </div>
+                            <div class="dimension-score-item" id="socialSkillsScoreItem">
+                                <div class="dimension-name">主动性与人际交往能力</div>
+                                <div class="dimension-value" id="socialSkillsScore">0</div>
+                                <div class="dimension-range">0-20分</div>
+                            </div>
+                            <div class="dimension-score-item" id="socialParticipationScoreItem">
+                                <div class="dimension-name">社会参与与功能技能</div>
+                                <div class="dimension-value" id="socialParticipationScore">0</div>
+                                <div class="dimension-range">0-16分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 社会功能水平评估</div>
+                        <div class="risk-item">
+                            <span class="risk-name">总体功能水平</span>
+                            <span id="overallStatus" class="risk-status">未评估</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">日常生活自理能力</span>
+                            <span id="dailyLivingStatus" class="risk-status">未评估</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">主动性与人际交往能力</span>
+                            <span id="socialSkillsStatus" class="risk-status">未评估</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">社会参与与功能技能</span>
+                            <span id="socialParticipationStatus" class="risk-status">未评估</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有12个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div id="dimensionInterpretation" class="dimension-interpretation" style="display: none;">
+                        <div class="dimension-interpretation-title"><strong>维度分解读</strong></div>
+                        <div id="dimensionInterpretationContent" class="result-description">
+                            <!-- 维度分解读将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>功能水平</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>≥36分</td>
+                                    <td><span class="severity-indicator severity-4">功能良好</span></td>
+                                    <td>社会功能良好，能完全自主适应日常生活、人际交往及社会参与，无需任何辅助；18岁群体表现为能独立规划生活、主动社交、高效完成学业/工作。</td>
+                                </tr>
+                                <tr>
+                                    <td>24-35分</td>
+                                    <td><span class="severity-indicator severity-3">功能中等</span></td>
+                                    <td>社会功能中等，基础生活自理无问题，人际交往与社会参与基本正常，但主动性不足或质量一般；需短期指导调整。</td>
+                                </tr>
+                                <tr>
+                                    <td>12-23分</td>
+                                    <td><span class="severity-indicator severity-2">功能轻度受损</span></td>
+                                    <td>社会功能轻度受损，基础生活自理需少量提醒，人际交往存在回避或沟通不畅，社会参与较少；需针对性功能训练或心理干预。</td>
+                                </tr>
+                                <tr>
+                                    <td>6-11分</td>
+                                    <td><span class="severity-indicator severity-1">功能中度受损</span></td>
+                                    <td>社会功能中度受损，基础生活自理需较多协助，极少主动开展人际交往，基本不参与社会活动；需系统功能康复训练+综合干预。</td>
+                                </tr>
+                                <tr>
+                                    <td>＜6分</td>
+                                    <td><span class="severity-indicator severity-0">功能重度受损</span></td>
+                                    <td>社会功能重度受损，完全依赖他人照料，无社交互动能力，无法参与任何社会活动及学习/工作；需长期全面照护及高强度康复干预。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 18岁群体专项解读：</strong> 18岁青春期末期群体评估时需重点关注"成年过渡相关功能"（如独立决策、职业规划、社会责任感），结合"成年角色准备"调整观察重点。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // SSPI问题列表
+        const sspiQuestions = [
+            // 维度1：日常生活自理能力（3项）
+            {
+                text: "饮食主动性与合理性（如主动规律进食、饮食搭配均衡、不依赖他人督促）",
+                dimension: "dailyLiving",
+                dimensionName: "日常生活自理能力",
+                number: 1,
+                scoringDescriptions: [
+                    "0分：完全无法自理，需他人喂食或完全依赖督促",
+                    "1分：需他人反复提醒、协助才能完成进食，饮食极不规律",
+                    "2分：可独立进食但饮食不规律、搭配不合理，质量一般",
+                    "3分：主动规律进食，饮食搭配基本合理，无需他人督促",
+                    "4分：主动规律进食，注重饮食均衡与营养，能自主管理饮食健康"
+                ]
+            },
+            {
+                text: "衣着整洁度与得体性（如根据场合选择衣物、保持衣着干净整洁、自主整理衣物）",
+                dimension: "dailyLiving",
+                dimensionName: "日常生活自理能力",
+                number: 2,
+                scoringDescriptions: [
+                    "0分：完全无法自理，需他人帮助穿衣，个人形象极差",
+                    "1分：需他人反复提醒才能保持基本整洁，无法自主整理衣物",
+                    "2分：能保持基本整洁但不得体，需他人指导衣物搭配",
+                    "3分：主动保持衣着整洁，能根据不同场合选择得体衣物",
+                    "4分：注重个人形象，衣着整洁得体，能自主管理衣物并保持良好形象"
+                ]
+            },
+            {
+                text: "个人卫生自理情况（如自主洗漱、洗澡、修剪指甲、整理个人物品，无需他人提醒）",
+                dimension: "dailyLiving",
+                dimensionName: "日常生活自理能力",
+                number: 3,
+                scoringDescriptions: [
+                    "0分：完全无法自理，需他人全程协助洗漱、洗澡",
+                    "1分：需他人反复提醒、协助才能完成基本卫生清洁",
+                    "2分：能完成基本卫生清洁但不规律，个人物品混乱",
+                    "3分：主动保持个人卫生，定期洗漱、洗澡，个人物品基本整洁",
+                    "4分：注重个人卫生，有良好卫生习惯，个人物品整洁有序"
+                ]
+            },
+            // 维度2：主动性与人际交往能力（5项）
+            {
+                text: "室内活动主动性（如主动整理房间、参与家庭事务、自主安排居家时间）",
+                dimension: "socialSkills",
+                dimensionName: "主动性与人际交往能力",
+                number: 4,
+                scoringDescriptions: [
+                    "0分：完全无室内活动，需他人全程安排与督促",
+                    "1分：仅在他人反复督促下参与少量室内活动，无主动性",
+                    "2分：能进行简单室内活动但主动性不足，需他人提醒",
+                    "3分：主动参与室内活动，能自主安排部分居家时间",
+                    "4分：积极主动参与室内活动，主动承担家庭事务，能合理自主安排居家时间"
+                ]
+            },
+            {
+                text: "外出活动情况（如独立规划出行、主动参与户外活动、安全遵守公共规则）",
+                dimension: "socialSkills",
+                dimensionName: "主动性与人际交往能力",
+                number: 5,
+                scoringDescriptions: [
+                    "0分：完全不出门，拒绝或无法参与任何外出活动",
+                    "1分：仅在他人陪同、督促下才能进行极少量外出活动",
+                    "2分：能进行简单外出活动但需他人规划，主动性不足",
+                    "3分：能主动参与外出活动，基本能独立规划简单出行",
+                    "4分：积极主动参与外出活动，能独立规划出行，遵守公共规则"
+                ]
+            },
+            {
+                text: "一般人际交往能力（如与同学/同事/邻居主动沟通、有效表达想法、化解简单人际矛盾）",
+                dimension: "socialSkills",
+                dimensionName: "主动性与人际交往能力",
+                number: 6,
+                scoringDescriptions: [
+                    "0分：完全无社交互动，拒绝或无法与人沟通",
+                    "1分：仅能被动回应极少数熟悉人的简单问候，无法主动沟通",
+                    "2分：能与熟悉人进行简单沟通，但无法主动建立社交关系",
+                    "3分：能主动与同学/同事/邻居沟通，基本表达自己的想法",
+                    "4分：善于主动社交，能有效表达想法，能化解简单人际矛盾"
+                ]
+            },
+            {
+                text: "异性交往适切性（如符合年龄的正常异性交往、边界清晰、无回避或过度依赖）",
+                dimension: "socialSkills",
+                dimensionName: "主动性与人际交往能力",
+                number: 7,
+                scoringDescriptions: [
+                    "0分：完全回避或无法进行任何异性交往",
+                    "1分：对异性交往极度恐惧或依赖，边界严重不清",
+                    "2分：能与异性进行极有限交往，但表现紧张或不适当",
+                    "3分：能进行符合年龄的正常异性交往，边界基本清晰",
+                    "4分：能进行健康适切的异性交往，边界清晰，无回避或过度依赖"
+                ]
+            },
+            {
+                text: "对亲人的态度与互动（如主动关心亲人、定期沟通、承担力所能及的家庭责任）",
+                dimension: "socialSkills",
+                dimensionName: "主动性与人际交往能力",
+                number: 8,
+                scoringDescriptions: [
+                    "0分：完全回避或拒绝与亲人互动，无任何情感交流",
+                    "1分：仅在被要求时被动回应亲人，无主动关心",
+                    "2分：能与亲人进行基本互动，但主动性不足，沟通有限",
+                    "3分：能主动关心亲人，定期沟通，承担少量家庭责任",
+                    "4分：积极主动关心亲人，有良好情感交流，主动承担家庭责任"
+                ]
+            },
+            // 维度3：社会参与与功能技能（4项）
+            {
+                text: "对时事与社会信息的关注程度（如主动了解社会新闻、参与公共话题讨论、具备基本公民意识）",
+                dimension: "socialParticipation",
+                dimensionName: "社会参与与功能技能",
+                number: 9,
+                scoringDescriptions: [
+                    "0分：完全不关注时事与社会信息，无任何公民意识",
+                    "1分：仅在他人要求下被动了解极少量信息，无法参与讨论",
+                    "2分：偶尔关注社会信息，但理解有限，参与讨论困难",
+                    "3分：主动了解社会新闻，能参与简单公共话题讨论",
+                    "4分：积极关注时事与社会信息，有良好公民意识，能积极参与公共话题讨论"
+                ]
+            },
+            {
+                text: "学习/工作态度与表现（学生：主动学习、按时完成作业、课堂参与度；成人：工作主动性、任务完成效率、职业素养）",
+                dimension: "socialParticipation",
+                dimensionName: "社会参与与功能技能",
+                number: 10,
+                scoringDescriptions: [
+                    "0分：完全无法参与学习/工作，需他人全程监督或替代完成",
+                    "1分：仅在他人在场监督下完成极少量任务，无主动性",
+                    "2分：能完成部分学习/工作任务但质量差，主动性不足",
+                    "3分：能主动完成学习/工作任务，表现基本达标",
+                    "4分：积极主动，表现突出，学习/工作效率高，有良好职业素养"
+                ]
+            },
+            {
+                text: "劳动技能掌握与应用（如基本家务、职业技能、动手操作能力，能独立完成相关任务）",
+                dimension: "socialParticipation",
+                dimensionName: "社会参与与功能技能",
+                number: 11,
+                scoringDescriptions: [
+                    "0分：完全无劳动技能，无法完成任何动手操作任务",
+                    "1分：仅在他人口头指导、协助下完成极简单劳动任务",
+                    "2分：掌握少量简单劳动技能，但应用困难，需较多指导",
+                    "3分：掌握基本劳动技能，能独立完成相关任务",
+                    "4分：掌握多种劳动技能，能熟练应用，能完成较复杂任务"
+                ]
+            },
+            {
+                text: "组织与协调能力（如参与小组活动、统筹简单事务、合理分配时间与资源）",
+                dimension: "socialParticipation",
+                dimensionName: "社会参与与功能技能",
+                number: 12,
+                scoringDescriptions: [
+                    "0分：完全无法参与组织活动，无任何统筹能力",
+                    "1分：仅在他人安排下参与极简单活动，无自主组织能力",
+                    "2分：能参与小组活动但被动，简单事务需他人协助统筹",
+                    "3分：能参与组织小组活动，能统筹简单事务",
+                    "4分：善于组织协调，能有效统筹事务，合理分配时间与资源"
+                ]
+            }
+        ];
+        
+        // 评分选项
+        const ratingOptions = [
+            { value: 0, label: "0分", description: "功能极差" },
+            { value: 1, label: "1分", description: "需大量督促" },
+            { value: 2, label: "2分", description: "主动性不足" },
+            { value: 3, label: "3分", description: "自主达标" },
+            { value: 4, label: "4分", description: "主动高质量" }
+        ];
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "功能重度受损": {
+                title: "社会功能重度受损",
+                description: "根据评估结果，被评估者社会功能重度受损，完全依赖他人照料，无社交互动能力，无法参与任何社会活动及学习/工作，需长期全面照护及高强度康复干预。",
+                categoryClass: "impaired"
+            },
+            "功能中度受损": {
+                title: "社会功能中度受损",
+                description: "根据评估结果，被评估者社会功能中度受损，基础生活自理需较多协助，极少主动开展人际交往，基本不参与社会活动，需系统功能康复训练+综合干预。",
+                categoryClass: "moderate"
+            },
+            "功能轻度受损": {
+                title: "社会功能轻度受损",
+                description: "根据评估结果，被评估者社会功能轻度受损，基础生活自理需少量提醒，人际交往存在回避或沟通不畅，社会参与较少，需针对性功能训练或心理干预。",
+                categoryClass: "moderate"
+            },
+            "功能中等": {
+                title: "社会功能中等",
+                description: "根据评估结果，被评估者社会功能中等，基础生活自理无问题，人际交往与社会参与基本正常，但主动性不足或质量一般，需短期指导调整。",
+                categoryClass: "good"
+            },
+            "功能良好": {
+                title: "社会功能良好",
+                description: "根据评估结果，被评估者社会功能良好，能完全自主适应日常生活、人际交往及社会参与，无需任何辅助；18岁群体表现为能独立规划生活、主动社交、高效完成学业/工作，具备良好的成年过渡能力。",
+                categoryClass: "excellent"
+            }
+        };
+        
+        // 维度分解读
+        const dimensionInterpretations = {
+            "dailyLiving": {
+                "impaired": "日常生活自理能力严重不足，需大量协助才能完成基本生活照料，严重影响独立生活能力。",
+                "moderate": "日常生活自理能力存在明显不足，需较多提醒或协助，独立生活能力受限。",
+                "good": "日常生活自理能力基本正常，能独立完成基本生活照料，但主动性和规律性有待提高。",
+                "excellent": "日常生活自理能力优秀，能独立、规律、高质量地完成生活照料，具备良好的自我管理能力。"
+            },
+            "socialSkills": {
+                "impaired": "主动性与人际交往能力严重受损，社交回避或沟通困难，严重影响社会适应。",
+                "moderate": "主动性与人际交往能力明显不足，社交被动或沟通不畅，社会适应存在困难。",
+                "good": "主动性与人际交往能力基本正常，能进行常规社交互动，但主动性和适切性有待提高。",
+                "excellent": "主动性与人际交往能力优秀，善于主动社交，沟通适切，具备良好的人际关系建立能力。"
+            },
+            "socialParticipation": {
+                "impaired": "社会参与与功能技能严重不足，无法参与社会活动，缺乏基本劳动和组织能力。",
+                "moderate": "社会参与与功能技能明显不足，社会参与有限，劳动和组织能力较弱。",
+                "good": "社会参与与功能技能基本正常，能参与常规社会活动，具备基本劳动和组织能力。",
+                "excellent": "社会参与与功能技能优秀，积极参与社会活动，具备良好的劳动技能和组织协调能力。"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const dailyLivingContainer = document.getElementById('dailyLivingContainer');
+            const socialSkillsContainer = document.getElementById('socialSkillsContainer');
+            const socialParticipationContainer = document.getElementById('socialParticipationContainer');
+            
+            dailyLivingContainer.innerHTML = '';
+            socialSkillsContainer.innerHTML = '';
+            socialParticipationContainer.innerHTML = '';
+            
+            sspiQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${index}`;
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                const questionNumber = document.createElement('span');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = question.number;
+                questionText.appendChild(questionNumber);
+                
+                const textSpan = document.createElement('span');
+                textSpan.innerHTML = question.text;
+                questionText.appendChild(textSpan);
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建单选按钮
+                ratingOptions.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    const inputId = `q${index}-score${option.value}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.id = inputId;
+                    input.value = option.value;
+                    input.dataset.index = index;
+                    
+                    // 默认选择2分（主动性不足）
+                    if (option.value === 2) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', function() {
+                        updateScores();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = option.label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = option.description;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                });
+                
+                // 评分描述
+                const scoreDescription = document.createElement('div');
+                scoreDescription.className = 'score-description';
+                scoreDescription.id = `score-description-${index}`;
+                scoreDescription.textContent = question.scoringDescriptions[2];
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                questionItem.appendChild(scoreDescription);
+                
+                // 根据维度添加到不同的容器
+                if (question.dimension === "dailyLiving") {
+                    dailyLivingContainer.appendChild(questionItem);
+                } else if (question.dimension === "socialSkills") {
+                    socialSkillsContainer.appendChild(questionItem);
+                } else if (question.dimension === "socialParticipation") {
+                    socialParticipationContainer.appendChild(questionItem);
+                }
+                
+                // 为每个单选按钮添加事件，更新评分描述
+                const radioButtons = questionItem.querySelectorAll('input[type="radio"]');
+                radioButtons.forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        const selectedValue = parseInt(this.value);
+                        const descriptionElement = document.getElementById(`score-description-${index}`);
+                        descriptionElement.textContent = question.scoringDescriptions[selectedValue];
+                    });
+                });
+            });
+        }
+        
+        // 计算总分和维度分
+        function calculateScores() {
+            let totalScore = 0;
+            let dailyLivingScore = 0;
+            let socialSkillsScore = 0;
+            let socialParticipationScore = 0;
+            
+            for (let i = 0; i < sspiQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    totalScore += score;
+                    
+                    // 根据维度分配分数
+                    if (sspiQuestions[i].dimension === "dailyLiving") {
+                        dailyLivingScore += score;
+                    } else if (sspiQuestions[i].dimension === "socialSkills") {
+                        socialSkillsScore += score;
+                    } else if (sspiQuestions[i].dimension === "socialParticipation") {
+                        socialParticipationScore += score;
+                    }
+                }
+            }
+            
+            return { totalScore, dailyLivingScore, socialSkillsScore, socialParticipationScore };
+        }
+        
+        // 根据总分获取评估结果
+        function getAssessmentResult(totalScore) {
+            if (totalScore < 6) {
+                return "功能重度受损";
+            } else if (totalScore >= 6 && totalScore <= 11) {
+                return "功能中度受损";
+            } else if (totalScore >= 12 && totalScore <= 23) {
+                return "功能轻度受损";
+            } else if (totalScore >= 24 && totalScore <= 35) {
+                return "功能中等";
+            } else if (totalScore >= 36) {
+                return "功能良好";
+            } else {
+                return "分数异常";
+            }
+        }
+        
+        // 根据维度分获取维度水平
+        function getDimensionLevel(score, maxScore) {
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage < 50) {
+                return { level: "impaired", label: "严重不足" };
+            } else if (percentage >= 50 && percentage < 65) {
+                return { level: "moderate", label: "明显不足" };
+            } else if (percentage >= 65 && percentage < 85) {
+                return { level: "good", label: "基本正常" };
+            } else {
+                return { level: "excellent", label: "优秀" };
+            }
+        }
+        
+        // 更新分数显示
+        function updateScores() {
+            const scores = calculateScores();
+            const { totalScore, dailyLivingScore, socialSkillsScore, socialParticipationScore } = scores;
+            
+            // 更新总分
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // 更新维度分
+            document.getElementById('dailyLivingScore').textContent = dailyLivingScore;
+            document.getElementById('socialSkillsScore').textContent = socialSkillsScore;
+            document.getElementById('socialParticipationScore').textContent = socialParticipationScore;
+            
+            // 更新分数显示样式
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const totalScoreElement = document.getElementById('totalScore');
+            const dailyLivingScoreItem = document.getElementById('dailyLivingScoreItem');
+            const dailyLivingScoreElement = document.getElementById('dailyLivingScore');
+            const socialSkillsScoreItem = document.getElementById('socialSkillsScoreItem');
+            const socialSkillsScoreElement = document.getElementById('socialSkillsScore');
+            const socialParticipationScoreItem = document.getElementById('socialParticipationScoreItem');
+            const socialParticipationScoreElement = document.getElementById('socialParticipationScore');
+            
+            // 重置所有样式
+            scoreDisplay.className = 'score-display';
+            totalScoreElement.className = 'score-value';
+            dailyLivingScoreItem.className = 'dimension-score-item';
+            dailyLivingScoreElement.className = 'dimension-value';
+            socialSkillsScoreItem.className = 'dimension-score-item';
+            socialSkillsScoreElement.className = 'dimension-value';
+            socialParticipationScoreItem.className = 'dimension-score-item';
+            socialParticipationScoreElement.className = 'dimension-value';
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < sspiQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有12个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const scores = calculateScores();
+            const { totalScore, dailyLivingScore, socialSkillsScore, socialParticipationScore } = scores;
+            const result = getAssessmentResult(totalScore);
+            const resultInfo = resultDescriptions[result];
+            
+            // 维度水平
+            const dailyLivingLevel = getDimensionLevel(dailyLivingScore, 12);
+            const socialSkillsLevel = getDimensionLevel(socialSkillsScore, 20);
+            const socialParticipationLevel = getDimensionLevel(socialParticipationScore, 16);
+            
+            // 构建结果描述
+            let description = resultInfo.description;
+            
+            // 添加详细分数信息
+            description += `<br><br><strong>详细评分：</strong>`;
+            description += `<br>• 总分：${totalScore}/48分`;
+            description += `<br>• 日常生活自理能力：${dailyLivingScore}/12分 (${dailyLivingLevel.label})`;
+            description += `<br>• 主动性与人际交往能力：${socialSkillsScore}/20分 (${socialSkillsLevel.label})`;
+            description += `<br>• 社会参与与功能技能：${socialParticipationScore}/16分 (${socialParticipationLevel.label})`;
+            
+            // 维度分解读
+            let dimensionInterpretationHTML = '';
+            dimensionInterpretationHTML += `<p><strong>日常生活自理能力：</strong> ${dimensionInterpretations.dailyLiving[dailyLivingLevel.level]}</p>`;
+            dimensionInterpretationHTML += `<p><strong>主动性与人际交往能力：</strong> ${dimensionInterpretations.socialSkills[socialSkillsLevel.level]}</p>`;
+            dimensionInterpretationHTML += `<p><strong>社会参与与功能技能：</strong> ${dimensionInterpretations.socialParticipation[socialParticipationLevel.level]}</p>`;
+            
+            // 针对18岁群体的专项解读
+            dimensionInterpretationHTML += `<br><p><strong>18岁群体专项解读：</strong></p>`;
+            
+            if (dailyLivingLevel.level === "impaired" || dailyLivingLevel.level === "moderate") {
+                dimensionInterpretationHTML += `<p>• 日常生活自理能力不足，需关注"独立生活能力不足"，可能影响成年后自主生活，干预重点为培养自主规划与执行能力。</p>`;
+            }
+            
+            if (socialSkillsLevel.level === "impaired" || socialSkillsLevel.level === "moderate") {
+                dimensionInterpretationHTML += `<p>• 社交功能不足，易出现社会隔离，可能面临升学/职场社交适应困难，干预重点为社交技能训练。</p>`;
+            }
+            
+            if (socialParticipationLevel.level === "impaired" || socialParticipationLevel.level === "moderate") {
+                dimensionInterpretationHTML += `<p>• 社会融入与核心技能（如劳动、组织协调）薄弱，可能难以适应成年后的社会角色，干预重点为实践能力培养。</p>`;
+            }
+            
+            document.getElementById('dimensionInterpretationContent').innerHTML = dimensionInterpretationHTML;
+            document.getElementById('dimensionInterpretation').style.display = 'block';
+            document.getElementById('dimensionInterpretation').className = `dimension-interpretation ${resultInfo.categoryClass}`;
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            
+            // 重置所有样式
+            resultBox.className = 'result-box';
+            resultTitle.className = 'result-title';
+            
+            // 应用新样式
+            resultBox.classList.add(resultInfo.categoryClass);
+            resultTitle.classList.add(resultInfo.categoryClass);
+            resultTitle.textContent = resultInfo.title;
+            
+            // 更新风险评估摘要
+            const overallStatus = document.getElementById('overallStatus');
+            const dailyLivingStatus = document.getElementById('dailyLivingStatus');
+            const socialSkillsStatus = document.getElementById('socialSkillsStatus');
+            const socialParticipationStatus = document.getElementById('socialParticipationStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            const scoreCategory = document.getElementById('scoreCategory');
+            
+            // 总体功能水平
+            overallStatus.textContent = result;
+            overallStatus.className = `risk-status ${resultInfo.categoryClass}`;
+            
+            // 维度水平
+            dailyLivingStatus.textContent = dailyLivingLevel.label;
+            dailyLivingStatus.className = `risk-status ${dailyLivingLevel.level}`;
+            
+            socialSkillsStatus.textContent = socialSkillsLevel.label;
+            socialSkillsStatus.className = `risk-status ${socialSkillsLevel.level}`;
+            
+            socialParticipationStatus.textContent = socialParticipationLevel.label;
+            socialParticipationStatus.className = `risk-status ${socialParticipationLevel.level}`;
+            
+            // 更新风险评估摘要样式
+            riskSummary.className = `risk-summary ${resultInfo.categoryClass}`;
+            
+            // 更新分数显示样式
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const totalScoreElement = document.getElementById('totalScore');
+            const dailyLivingScoreItem = document.getElementById('dailyLivingScoreItem');
+            const dailyLivingScoreElement = document.getElementById('dailyLivingScore');
+            const socialSkillsScoreItem = document.getElementById('socialSkillsScoreItem');
+            const socialSkillsScoreElement = document.getElementById('socialSkillsScore');
+            const socialParticipationScoreItem = document.getElementById('socialParticipationScoreItem');
+            const socialParticipationScoreElement = document.getElementById('socialParticipationScore');
+            
+            // 应用新样式
+            scoreDisplay.className = 'score-display';
+            scoreDisplay.classList.add(resultInfo.categoryClass);
+            totalScoreElement.className = 'score-value';
+            totalScoreElement.classList.add(resultInfo.categoryClass);
+            scoreCategory.textContent = result;
+            scoreCategory.className = `score-category ${resultInfo.categoryClass}`;
+            
+            dailyLivingScoreItem.className = 'dimension-score-item';
+            dailyLivingScoreItem.classList.add(dailyLivingLevel.level);
+            dailyLivingScoreElement.className = 'dimension-value';
+            dailyLivingScoreElement.classList.add(dailyLivingLevel.level);
+            
+            socialSkillsScoreItem.className = 'dimension-score-item';
+            socialSkillsScoreItem.classList.add(socialSkillsLevel.level);
+            socialSkillsScoreElement.className = 'dimension-value';
+            socialSkillsScoreElement.classList.add(socialSkillsLevel.level);
+            
+            socialParticipationScoreItem.className = 'dimension-score-item';
+            socialParticipationScoreItem.classList.add(socialParticipationLevel.level);
+            socialParticipationScoreElement.className = 'dimension-value';
+            socialParticipationScoreElement.classList.add(socialParticipationLevel.level);
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为2分（主动性不足）
+                for (let i = 0; i < sspiQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="2"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置评分描述
+                for (let i = 0; i < sspiQuestions.length; i++) {
+                    const descriptionElement = document.getElementById(`score-description-${i}`);
+                    descriptionElement.textContent = sspiQuestions[i].scoringDescriptions[2];
+                }
+                
+                // 重置结果显示
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('dailyLivingScore').textContent = '0';
+                document.getElementById('socialSkillsScore').textContent = '0';
+                document.getElementById('socialParticipationScore').textContent = '0';
+                document.getElementById('scoreCategory').textContent = '请完成评估';
+                document.getElementById('resultDescription').innerHTML = '请完成所有12个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('overallStatus').textContent = '未评估';
+                document.getElementById('overallStatus').className = 'risk-status';
+                document.getElementById('dailyLivingStatus').textContent = '未评估';
+                document.getElementById('dailyLivingStatus').className = 'risk-status';
+                document.getElementById('socialSkillsStatus').textContent = '未评估';
+                document.getElementById('socialSkillsStatus').className = 'risk-status';
+                document.getElementById('socialParticipationStatus').textContent = '未评估';
+                document.getElementById('socialParticipationStatus').className = 'risk-status';
+                
+                document.getElementById('riskSummary').className = 'risk-summary';
+                document.getElementById('dimensionInterpretation').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                const dailyLivingScoreItem = document.getElementById('dailyLivingScoreItem');
+                const dailyLivingScoreElement = document.getElementById('dailyLivingScore');
+                const socialSkillsScoreItem = document.getElementById('socialSkillsScoreItem');
+                const socialSkillsScoreElement = document.getElementById('socialSkillsScore');
+                const socialParticipationScoreItem = document.getElementById('socialParticipationScoreItem');
+                const socialParticipationScoreElement = document.getElementById('socialParticipationScore');
+                
+                resultBox.className = 'result-box';
+                resultTitle.className = 'result-title';
+                scoreDisplay.className = 'score-display';
+                totalScoreElement.className = 'score-value';
+                dailyLivingScoreItem.className = 'dimension-score-item';
+                dailyLivingScoreElement.className = 'dimension-value';
+                socialSkillsScoreItem.className = 'dimension-score-item';
+                socialSkillsScoreElement.className = 'dimension-value';
+                socialParticipationScoreItem.className = 'dimension-score-item';
+                socialParticipationScoreElement.className = 'dimension-value';
+                
+                resultTitle.textContent = '评估结果说明';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新分数
+            updateScores();
+        });
+    </script>
+</body>
+</html>

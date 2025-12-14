@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自伤行为陈述量表（ISAS）在线评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 380px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #1a237e;
+        }
+        
+        h3 {
+            color: #283593;
+            margin: 20px 0 15px;
+            font-size: 18px;
+        }
+        
+        .module-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 15px;
+        }
+        
+        .module-tab {
+            padding: 10px 20px;
+            border-radius: 6px;
+            background-color: #e3f2fd;
+            color: #1a237e;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .module-tab.active {
+            background-color: #1a237e;
+            color: white;
+        }
+        
+        .module-tab.completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .module-tab:hover:not(.active) {
+            background-color: #bbdefb;
+        }
+        
+        .module-content {
+            display: none;
+        }
+        
+        .module-content.active {
+            display: block;
+        }
+        
+        .behavior-question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .behavior-question-item.atypical {
+            background-color: rgba(255, 243, 224, 0.1);
+            border-left: 3px solid #ff9800;
+        }
+        
+        .behavior-question-item.high-risk {
+            background-color: rgba(254, 202, 202, 0.05);
+            border-left: 3px solid #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #1a237e;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .atypical-tag {
+            display: inline-block;
+            background-color: #fff3e0;
+            color: #e65100;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #ffcc80;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .option-item input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .option-label {
+            cursor: pointer;
+        }
+        
+        .behavior-details {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+        
+        .behavior-details.active {
+            display: block;
+        }
+        
+        .detail-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .detail-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .detail-item select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            background-color: white;
+            font-size: 14px;
+        }
+        
+        .rating-question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .rating-question-item.atypical {
+            background-color: rgba(255, 243, 224, 0.1);
+            border-left: 3px solid #ff9800;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 60px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #1a237e;
+            color: white;
+            border-color: #1a237e;
+            font-weight: 600;
+        }
+        
+        .rating-option label:hover {
+            background-color: #e3f2fd;
+            border-color: #1a237e;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 3px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #1a237e;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .dimension-scores {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .dimension-score {
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-score.high-risk {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #283593;
+        }
+        
+        .dimension-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .dimension-name {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #1a237e;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1a237e;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #nextModuleBtn {
+            background-color: #1a237e;
+            color: white;
+        }
+        
+        #nextModuleBtn:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+        
+        #prevModuleBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #prevModuleBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        #calculateBtn {
+            background-color: #1a237e;
+            color: white;
+            display: none;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        .module-complete-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            color: #2e7d32;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .atypical-behavior-summary {
+            background-color: #fff3e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .atypical-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e65100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .open-ended-response {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            margin-top: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .open-ended-label {
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+            color: #4a5568;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .module-navigation {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .module-tab {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+            
+            .dimension-scores {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-item {
+                min-width: 100%;
+            }
+            
+            .rating-option {
+                min-width: 50px;
+            }
+        }
+        
+        .module-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .progress-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            color: #1a237e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+        
+        .progress-circle.active {
+            background-color: #1a237e;
+            color: white;
+        }
+        
+        .progress-circle.completed {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .progress-line {
+            height: 4px;
+            width: 40px;
+            background-color: #e3f2fd;
+        }
+        
+        .progress-line.completed {
+            background-color: #4caf50;
+        }
+        
+        .behavior-count {
+            background-color: #e3f2fd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #1a237e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-description {
+            margin-bottom: 20px;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-clipboard-check"></i> 自伤行为陈述量表（ISAS）在线评估</h1>
+            <p class="subtitle">本量表由Klonsky和Glenn于2009年编制，是目前全球应用最广泛的NSSI（非自杀性自伤）评估工具，涵盖典型与非典型自伤行为的全维度评估。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>本问卷用于了解你过去12个月内（包括现在）的自伤相关想法和行为。请仔细阅读每个问题，根据自己的实际情况作答，所有答案均为匿名，仅用于评估研究，无需隐瞒。</p>
+                <p><strong>重要说明：</strong>"自伤行为"指你故意伤害自己身体或心理，但没有自杀意图（即不希望因此死亡）的行为。请按各部分要求选择答案，不要遗漏任何问题。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> ISAS量表评估</h2>
+                    
+                    <div class="module-progress">
+                        <div class="progress-circle active" id="progress1">1</div>
+                        <div class="progress-line"></div>
+                        <div class="progress-circle" id="progress2">2</div>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <div class="module-tab active" data-module="1">
+                            <i class="fas fa-list-check"></i> 模块1：行为类型与细节
+                        </div>
+                        <div class="module-tab" data-module="2">
+                            <i class="fas fa-brain"></i> 模块2：动机、功能与认知
+                        </div>
+                    </div>
+                    
+                    <div id="module1Content" class="module-content active">
+                        <h3>第一部分：自伤行为类型与细节（共23项）</h3>
+                        <p class="section-description">请判断过去12个月内是否发生过以下行为（无时间顺序要求），若发生过请选"是"，未发生选"否"；标注<span class="atypical-tag" style="margin-left: 5px;">▲非典型</span>为非典型NSSI行为（如精神自戕相关、尝试恶习等）。如果选择"是"，请进一步提供该行为的详细信息。</p>
+                        
+                        <div id="behaviorCount" class="behavior-count" style="display: none;">
+                            <i class="fas fa-chart-bar"></i>
+                            <span id="selectedCount">0</span> 项行为选择"是"
+                        </div>
+                        
+                        <div id="behaviorQuestionsContainer">
+                            <!-- 行为类型问题将通过JavaScript动态生成 -->
+                        </div>
+                        
+                        <div class="warning-box">
+                            <strong><i class="fas fa-exclamation-triangle"></i> 严重程度评分标准：</strong> 1分=仅轻微不适，无明显伤害；2分=轻微伤害，可快速恢复；3分=中度伤害，需休息或简单处理；4分=明显伤害，影响日常生活；5分=严重伤害，需医疗干预或留下后遗症。
+                        </div>
+                        
+                        <div class="module-complete-check" id="module1Complete">
+                            <i class="fas fa-check-circle"></i> 模块1已完成，可以继续下一模块
+                        </div>
+                    </div>
+                    
+                    <div id="module2Content" class="module-content">
+                        <h3>第二部分：自伤动机、功能与认知</h3>
+                        
+                        <div class="section-description">
+                            <p><strong>模块A：自伤动机与功能（共18项）</strong> - 请根据你实施自伤行为（尤其是非典型行为）的真实原因，对以下描述进行评分（0=完全不符合，1=不太符合，2=一般，3=比较符合，4=完全符合）。</p>
+                            <p><strong>模块B：自伤相关认知与情境（共12项）</strong> - 请根据实际情况评分（0=完全不符合，1=不太符合，2=一般，3=比较符合，4=完全符合）。</p>
+                        </div>
+                        
+                        <h3><i class="fas fa-brain"></i> 模块A：自伤动机与功能</h3>
+                        
+                        <div id="motivationQuestionsContainer">
+                            <!-- 动机问题将通过JavaScript动态生成 -->
+                        </div>
+                        
+                        <div class="open-ended-label">18. 实施自伤后，你最强烈的感受是：</div>
+                        <textarea class="open-ended-response" id="postInjuryFeelings" placeholder="请描述实施自伤后你最强烈的感受（可选）"></textarea>
+                        
+                        <h3 style="margin-top: 30px;"><i class="fas fa-cogs"></i> 模块B：自伤相关认知与情境</h3>
+                        
+                        <div id="cognitionQuestionsContainer">
+                            <!-- 认知情境问题将通过JavaScript动态生成 -->
+                        </div>
+                        
+                        <div class="module-complete-check" id="module2Complete">
+                            <i class="fas fa-check-circle"></i> 所有模块已完成，可以查看评估结果
+                        </div>
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="prevModuleBtn">
+                            <i class="fas fa-arrow-left"></i> 上一部分
+                        </button>
+                        <button id="nextModuleBtn">
+                            下一部分 <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 查看评估结果
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 量表背景与使用说明</h2>
+                    
+                    <div class="scale-background" style="background-color: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #1a237e;">
+                        <div class="scale-info">
+                            <p><strong>量表背景说明：</strong>ISAS依据2016年修订版及全球常模数据编制，信效度已通过多国样本验证（行为部分重测信度r=0.86-0.92，功能部分Cronbach's α系数=0.83-0.91），可精准识别非典型NSSI行为（如精神自戕、尝试恶习等隐蔽性自伤）。</p>
+                            <p><strong>适用人群：</strong>12岁以上青少年及成人，尤其适合评估非典型NSSI行为；18岁青春期末期群体可直接使用，内容适配其心理发展特点。</p>
+                            <p><strong>评估时限：</strong>严格限定"过去12个月"，仅统计近12个月的行为。</p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">自伤行为多样性得分</div>
+                        <div id="diversityScore" class="score-value">0</div>
+                        <div id="severityText" class="score-label">请完成评估</div>
+                        
+                        <div class="dimension-scores">
+                            <div class="dimension-score" id="typicalScoreContainer">
+                                <div class="dimension-value" id="typicalBehaviorScore">0</div>
+                                <div class="dimension-name">典型行为数</div>
+                            </div>
+                            <div class="dimension-score" id="atypicalScoreContainer">
+                                <div class="dimension-value" id="atypicalBehaviorScore">0</div>
+                                <div class="dimension-name">非典型行为数</div>
+                            </div>
+                            <div class="dimension-score" id="frequencyScoreContainer">
+                                <div class="dimension-value" id="frequencyScore">0</div>
+                                <div class="dimension-name">频率总分</div>
+                            </div>
+                            <div class="dimension-score" id="severityScoreContainer">
+                                <div class="dimension-value" id="severityScore">0</div>
+                                <div class="dimension-name">严重程度总分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 风险评估摘要</div>
+                        <div class="risk-item">
+                            <span class="risk-name">行为多样性风险</span>
+                            <span id="diversityRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">频率风险</span>
+                            <span id="frequencyRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">严重程度风险</span>
+                            <span id="severityRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">非典型行为风险</span>
+                            <span id="atypicalRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">综合风险等级</span>
+                            <span id="overallRiskStatus" class="risk-status safe">低风险</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有评估部分，然后点击"查看评估结果"按钮查看详细结果。</div>
+                    </div>
+                    
+                    <div id="atypicalSummary" class="atypical-behavior-summary" style="display: none;">
+                        <div class="atypical-title"><i class="fas fa-exclamation-triangle"></i> 非典型NSSI行为专项分析</div>
+                        <div id="atypicalSummaryContent" class="result-description">
+                            <!-- 非典型行为分析将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>行为多样性得分</th>
+                                    <th>风险等级</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0分</td>
+                                    <td><span class="severity-indicator severity-0">无自伤行为</span></td>
+                                    <td>无自伤行为，心理状态相对健康，无需特殊干预。</td>
+                                </tr>
+                                <tr>
+                                    <td>1-3分</td>
+                                    <td><span class="severity-indicator severity-1">轻度自伤</span></td>
+                                    <td>存在轻度自伤行为（多为偶发、单一类型），对生活影响极小，建议定期观察。</td>
+                                </tr>
+                                <tr>
+                                    <td>4-7分</td>
+                                    <td><span class="severity-indicator severity-3">中度自伤</span></td>
+                                    <td>存在中度自伤行为（多种类型，频率较低），可能伴随轻微心理困扰，建议心理疏导。</td>
+                                </tr>
+                                <tr>
+                                    <td>≥8分</td>
+                                    <td><span class="severity-indicator severity-4">重度自伤</span></td>
+                                    <td>存在重度自伤行为（多样类型，可能高频），严重影响生活，属于高风险人群，需系统干预。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332/18835185216（和小表格讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 高危处理流程：</strong> 若判定为高风险，需立即：①保障被评估者安全（如移除危险物品、联系监护人）；②开展危机干预（如情绪稳定技术、安全计划制定）；③转介至专业精神卫生机构。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // ISAS问题数据
+        const isasData = {
+            // 模块1：自伤行为类型（23项）
+            behaviors: [
+                { text: "用刀、玻璃等尖锐物品割伤自己（如手臂、大腿）", atypical: false, highRiskPhysical: false },
+                { text: "用火烧、烫自己（如打火机、烟头）", atypical: false, highRiskPhysical: false },
+                { text: "用拳头或硬物击打自己", atypical: false, highRiskPhysical: false },
+                { text: "故意撞墙、撞硬物等自残行为", atypical: false, highRiskPhysical: false },
+                { text: "拔头发、眉毛等（拔毛症相关）", atypical: false, highRiskPhysical: false },
+                { text: "用指甲或其他工具划伤自己皮肤", atypical: false, highRiskPhysical: false },
+                { text: "故意让伤口感染（如不处理、沾水）", atypical: true, highRiskPhysical: false },
+                { text: "故意过度运动导致身体透支", atypical: true, highRiskPhysical: false },
+                { text: "故意暴饮暴食或绝食（非进食障碍诊断标准内的行为，仅为伤害自己）", atypical: true, highRiskPhysical: false },
+                { text: "故意大量饮酒或滥用药物（如止痛药、镇静剂）以伤害身体", atypical: true, highRiskPhysical: true },
+                { text: "故意参与无保护的危险性行为（如不采取安全措施）", atypical: true, highRiskPhysical: false },
+                { text: "故意接触危险物质（如化学品、有毒物品）但不致死", atypical: true, highRiskPhysical: true },
+                { text: "故意破坏重要人际关系以惩罚自己（社交自毁）", atypical: true, highRiskPhysical: false },
+                { text: "在公共场合做出羞辱自己的行为（如裸奔、当众自贬）", atypical: true, highRiskPhysical: false },
+                { text: "故意忽视身体健康（如不就医、不规律作息导致疾病）", atypical: true, highRiskPhysical: false },
+                { text: "用绳子、皮带等勒自己（不致死）", atypical: false, highRiskPhysical: false },
+                { text: "吞咽非食物物品（如纽扣、纸片，不致死）", atypical: true, highRiskPhysical: true },
+                { text: "故意让自己陷入危险情境（如深夜独自去偏僻地方）", atypical: true, highRiskPhysical: false },
+                { text: "反复用负面语言自我贬低、精神折磨（如持续骂自己'没用'）", atypical: true, highRiskPhysical: false },
+                { text: "故意熬夜、透支精力导致精神崩溃", atypical: true, highRiskPhysical: false },
+                { text: "故意拒绝他人帮助，让自己陷入孤立无援的困境", atypical: true, highRiskPhysical: false },
+                { text: "其他典型自伤行为", atypical: false, highRiskPhysical: false, custom: true },
+                { text: "其他非典型自伤行为", atypical: true, highRiskPhysical: false, custom: true }
+            ],
+            
+            // 模块3：自伤动机与功能（18项）
+            motivations: [
+                { text: "缓解负面情绪（如焦虑、抑郁、愤怒）", atypical: false },
+                { text: "惩罚自己（觉得自己做错了或不值得被爱）", atypical: true },
+                { text: "让自己感觉'活着'（摆脱麻木、非真实感）", atypical: true },
+                { text: "引起他人关注或获得帮助", atypical: false },
+                { text: "表达无法用语言描述的痛苦", atypical: false },
+                { text: "控制他人（如让家人妥协、朋友关心）", atypical: false },
+                { text: "释放压力或紧张感", atypical: false },
+                { text: "体验'堕落感'（故意让自己变得'糟糕'）", atypical: true },
+                { text: "转移对其他痛苦的注意力（如人际关系冲突、学业压力）", atypical: false },
+                { text: "因为好奇或模仿他人", atypical: false },
+                { text: "证明自己的忍耐力或控制力", atypical: false },
+                { text: "摆脱孤独感（通过自伤获得'存在感'）", atypical: true },
+                { text: "回应他人的期望（如觉得自己'应该受惩罚'）", atypical: true },
+                { text: "缓解身体上的不适（如用心理痛苦替代身体痛苦）", atypical: false },
+                { text: "故意破坏自己的未来（如放弃学业、职业机会）", atypical: true },
+                { text: "让自己感觉被'需要'（如通过受伤获得他人照顾）", atypical: false },
+                { text: "其他动机", atypical: false, custom: true }
+            ],
+            
+            // 模块4：自伤相关认知与情境（12项）
+            cognitions: [
+                { text: "自伤前会反复思考自伤的方式和后果", atypical: false },
+                { text: "压力大时（如考试、吵架）会首先想到自伤", atypical: false },
+                { text: "觉得自伤是唯一能解决问题的方式", atypical: true },
+                { text: "自伤通常发生在独处时", atypical: false },
+                { text: "情绪低落时，自伤的冲动会更强烈", atypical: false },
+                { text: "觉得自己'不配拥有快乐'，所以通过自伤惩罚自己", atypical: true },
+                { text: "自伤前会感到强烈的冲动，无法控制", atypical: false },
+                { text: "人际关系冲突（如和朋友、家人吵架）是自伤的主要触发因素", atypical: false },
+                { text: "觉得自伤能让自己'清醒'，认清现实", atypical: true },
+                { text: "自伤后会后悔，但下次仍会实施", atypical: false },
+                { text: "学业/工作失败时，会通过自伤表达不满", atypical: true },
+                { text: "没有自伤时，会感到空虚或焦虑", atypical: false }
+            ]
+        };
+        
+        // 存储用户选择的数据
+        let userData = {
+            module1: [], // 行为类型选择和细节
+            module2: {   // 动机和认知评分
+                motivations: [],
+                cognitions: []
+            }
+        };
+        
+        let currentModule = 1;
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            initModule1();
+            initModule2();
+            initNavigation();
+            updateProgressCircles();
+            updateBehaviorCount();
+        }
+        
+        // 初始化模块1（行为类型与细节）
+        function initModule1() {
+            const container = document.getElementById('behaviorQuestionsContainer');
+            container.innerHTML = '';
+            
+            isasData.behaviors.forEach((behavior, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'behavior-question-item';
+                questionItem.id = `behavior-item-${index}`;
+                
+                if (behavior.atypical) {
+                    questionItem.classList.add('atypical');
+                }
+                
+                if (behavior.highRiskPhysical) {
+                    questionItem.classList.add('high-risk');
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                const questionNumber = document.createElement('span');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = index + 1;
+                questionText.appendChild(questionNumber);
+                
+                const textSpan = document.createElement('span');
+                textSpan.innerHTML = behavior.text;
+                if (behavior.custom) {
+                    textSpan.innerHTML += '（请补充：__________）';
+                }
+                questionText.appendChild(textSpan);
+                
+                if (behavior.atypical) {
+                    const atypicalTag = document.createElement('span');
+                    atypicalTag.className = 'atypical-tag';
+                    atypicalTag.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 非典型';
+                    questionText.appendChild(atypicalTag);
+                }
+                
+                if (behavior.highRiskPhysical) {
+                    const highRiskTag = document.createElement('span');
+                    highRiskTag.className = 'high-risk-tag';
+                    highRiskTag.innerHTML = '<i class="fas fa-skull-crossbones"></i> 高物理风险';
+                    questionText.appendChild(highRiskTag);
+                }
+                
+                // 是/否选项
+                const optionGroup = document.createElement('div');
+                optionGroup.className = 'option-group';
+                
+                // 是选项
+                const yesOption = document.createElement('div');
+                yesOption.className = 'option-item';
+                const yesInput = document.createElement('input');
+                yesInput.type = 'radio';
+                yesInput.name = `behavior-${index}`;
+                yesInput.id = `behavior-${index}-yes`;
+                yesInput.value = 'yes';
+                yesInput.dataset.index = index;
+                yesInput.addEventListener('change', handleBehaviorSelection);
+                
+                const yesLabel = document.createElement('label');
+                yesLabel.className = 'option-label';
+                yesLabel.htmlFor = `behavior-${index}-yes`;
+                yesLabel.textContent = '是';
+                
+                yesOption.appendChild(yesInput);
+                yesOption.appendChild(yesLabel);
+                
+                // 否选项
+                const noOption = document.createElement('div');
+                noOption.className = 'option-item';
+                const noInput = document.createElement('input');
+                noInput.type = 'radio';
+                noInput.name = `behavior-${index}`;
+                noInput.id = `behavior-${index}-no`;
+                noInput.value = 'no';
+                noInput.dataset.index = index;
+                noInput.checked = true; // 默认选择"否"
+                noInput.addEventListener('change', handleBehaviorSelection);
+                
+                const noLabel = document.createElement('label');
+                noLabel.className = 'option-label';
+                noLabel.htmlFor = `behavior-${index}-no`;
+                noLabel.textContent = '否';
+                
+                noOption.appendChild(noInput);
+                noOption.appendChild(noLabel);
+                
+                optionGroup.appendChild(yesOption);
+                optionGroup.appendChild(noOption);
+                
+                // 行为细节部分
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'behavior-details';
+                detailsDiv.id = `behavior-details-${index}`;
+                
+                detailsDiv.innerHTML = `
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <label for="frequency-${index}">过去12个月内发生频率</label>
+                            <select id="frequency-${index}" class="behavior-detail" data-index="${index}" data-field="frequency">
+                                <option value="0">请选择</option>
+                                <option value="1">1次</option>
+                                <option value="2">2-5次</option>
+                                <option value="3">6-10次</option>
+                                <option value="4">11-20次</option>
+                                <option value="5">20次以上</option>
+                            </select>
+                        </div>
+                        <div class="detail-item">
+                            <label for="severity-${index}">行为严重程度（1-5分）</label>
+                            <select id="severity-${index}" class="behavior-detail" data-index="${index}" data-field="severity">
+                                <option value="0">请选择</option>
+                                <option value="1">1分（轻微）</option>
+                                <option value="2">2分</option>
+                                <option value="3">3分（中等）</option>
+                                <option value="4">4分</option>
+                                <option value="5">5分（严重）</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <label for="medical-${index}">是否需要医疗处理</label>
+                            <select id="medical-${index}" class="behavior-detail" data-index="${index}" data-field="medical">
+                                <option value="no">否</option>
+                                <option value="yes">是</option>
+                            </select>
+                        </div>
+                        <div class="detail-item">
+                            <label for="presence-${index}">行为发生时是否有他人在场</label>
+                            <select id="presence-${index}" class="behavior-detail" data-index="${index}" data-field="presence">
+                                <option value="never">从不</option>
+                                <option value="occasionally">偶尔</option>
+                                <option value="often">经常</option>
+                                <option value="always">总是</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                
+                // 为细节选择框添加事件监听
+                const detailSelects = detailsDiv.querySelectorAll('.behavior-detail');
+                detailSelects.forEach(select => {
+                    select.addEventListener('change', updateBehaviorDetails);
+                });
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(optionGroup);
+                questionItem.appendChild(detailsDiv);
+                container.appendChild(questionItem);
+                
+                // 初始化用户数据
+                userData.module1[index] = {
+                    selected: 'no',
+                    behavior: behavior,
+                    frequency: 0,
+                    severity: 0,
+                    medical: 'no',
+                    presence: 'never'
+                };
+            });
+        }
+        
+        // 处理行为类型选择
+        function handleBehaviorSelection(event) {
+            const index = parseInt(event.target.dataset.index);
+            const value = event.target.value;
+            
+            userData.module1[index].selected = value;
+            
+            // 显示或隐藏行为细节
+            const detailsDiv = document.getElementById(`behavior-details-${index}`);
+            if (value === 'yes') {
+                detailsDiv.classList.add('active');
+            } else {
+                detailsDiv.classList.remove('active');
+                // 重置细节数据
+                userData.module1[index].frequency = 0;
+                userData.module1[index].severity = 0;
+                userData.module1[index].medical = 'no';
+                userData.module1[index].presence = 'never';
+                
+                // 重置选择框
+                const detailSelects = detailsDiv.querySelectorAll('.behavior-detail');
+                detailSelects.forEach(select => {
+                    if (select.dataset.field === 'frequency' || select.dataset.field === 'severity') {
+                        select.value = '0';
+                    } else if (select.dataset.field === 'medical') {
+                        select.value = 'no';
+                    } else if (select.dataset.field === 'presence') {
+                        select.value = 'never';
+                    }
+                });
+            }
+            
+            // 更新行为计数
+            updateBehaviorCount();
+            
+            // 检查模块1是否完成
+            checkModuleCompletion(1);
+        }
+        
+        // 更新行为细节
+        function updateBehaviorDetails(event) {
+            const index = parseInt(event.target.dataset.index);
+            const field = event.target.dataset.field;
+            const value = event.target.value;
+            
+            if (field === 'frequency' || field === 'severity') {
+                userData.module1[index][field] = parseInt(value);
+            } else {
+                userData.module1[index][field] = value;
+            }
+            
+            // 检查模块1是否完成
+            checkModuleCompletion(1);
+        }
+        
+        // 更新行为计数
+        function updateBehaviorCount() {
+            const selectedBehaviors = userData.module1.filter(item => item.selected === 'yes');
+            const count = selectedBehaviors.length;
+            
+            const countElement = document.getElementById('behaviorCount');
+            const countText = document.getElementById('selectedCount');
+            
+            if (count > 0) {
+                countElement.style.display = 'flex';
+                countText.textContent = count;
+            } else {
+                countElement.style.display = 'none';
+            }
+        }
+        
+        // 初始化模块2（动机、功能与认知）
+        function initModule2() {
+            initMotivationQuestions();
+            initCognitionQuestions();
+        }
+        
+        // 初始化动机问题
+        function initMotivationQuestions() {
+            const container = document.getElementById('motivationQuestionsContainer');
+            container.innerHTML = '';
+            
+            isasData.motivations.forEach((motivation, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'rating-question-item';
+                
+                if (motivation.atypical) {
+                    questionItem.classList.add('atypical');
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                const questionNumber = document.createElement('span');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = index + 1;
+                questionText.appendChild(questionNumber);
+                
+                const textSpan = document.createElement('span');
+                textSpan.innerHTML = motivation.text;
+                if (motivation.custom) {
+                    textSpan.innerHTML += '（请补充：__________）';
+                }
+                questionText.appendChild(textSpan);
+                
+                if (motivation.atypical) {
+                    const atypicalTag = document.createElement('span');
+                    atypicalTag.className = 'atypical-tag';
+                    atypicalTag.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 非典型动机';
+                    questionText.appendChild(atypicalTag);
+                }
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建0-4评分选项
+                for (let i = 0; i <= 4; i++) {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    const inputId = `motivation-${index}-${i}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `motivation-${index}`;
+                    input.id = inputId;
+                    input.value = i;
+                    input.dataset.index = index;
+                    input.dataset.type = 'motivation';
+                    
+                    if (i === 0) {
+                        input.checked = true; // 默认选择0分
+                    }
+                    
+                    input.addEventListener('change', updateModule2Data);
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = i;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    if (i === 0) {
+                        valueSpan.textContent = '完全不符合';
+                    } else if (i === 1) {
+                        valueSpan.textContent = '不太符合';
+                    } else if (i === 2) {
+                        valueSpan.textContent = '一般';
+                    } else if (i === 3) {
+                        valueSpan.textContent = '比较符合';
+                    } else if (i === 4) {
+                        valueSpan.textContent = '完全符合';
+                    }
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                }
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                container.appendChild(questionItem);
+                
+                // 初始化用户数据
+                userData.module2.motivations[index] = {
+                    score: 0,
+                    motivation: motivation
+                };
+            });
+        }
+        
+        // 初始化认知问题
+        function initCognitionQuestions() {
+            const container = document.getElementById('cognitionQuestionsContainer');
+            container.innerHTML = '';
+            
+            isasData.cognitions.forEach((cognition, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'rating-question-item';
+                
+                if (cognition.atypical) {
+                    questionItem.classList.add('atypical');
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                const questionNumber = document.createElement('span');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = index + 1;
+                questionText.appendChild(questionNumber);
+                
+                const textSpan = document.createElement('span');
+                textSpan.innerHTML = cognition.text;
+                questionText.appendChild(textSpan);
+                
+                if (cognition.atypical) {
+                    const atypicalTag = document.createElement('span');
+                    atypicalTag.className = 'atypical-tag';
+                    atypicalTag.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 非典型认知';
+                    questionText.appendChild(atypicalTag);
+                }
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建0-4评分选项
+                for (let i = 0; i <= 4; i++) {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    const inputId = `cognition-${index}-${i}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `cognition-${index}`;
+                    input.id = inputId;
+                    input.value = i;
+                    input.dataset.index = index;
+                    input.dataset.type = 'cognition';
+                    
+                    if (i === 0) {
+                        input.checked = true; // 默认选择0分
+                    }
+                    
+                    input.addEventListener('change', updateModule2Data);
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = i;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    if (i === 0) {
+                        valueSpan.textContent = '完全不符合';
+                    } else if (i === 1) {
+                        valueSpan.textContent = '不太符合';
+                    } else if (i === 2) {
+                        valueSpan.textContent = '一般';
+                    } else if (i === 3) {
+                        valueSpan.textContent = '比较符合';
+                    } else if (i === 4) {
+                        valueSpan.textContent = '完全符合';
+                    }
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                }
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                container.appendChild(questionItem);
+                
+                // 初始化用户数据
+                userData.module2.cognitions[index] = {
+                    score: 0,
+                    cognition: cognition
+                };
+            });
+        }
+        
+        // 更新模块2数据
+        function updateModule2Data(event) {
+            const index = parseInt(event.target.dataset.index);
+            const type = event.target.dataset.type;
+            const value = parseInt(event.target.value);
+            
+            if (type === 'motivation') {
+                userData.module2.motivations[index].score = value;
+            } else if (type === 'cognition') {
+                userData.module2.cognitions[index].score = value;
+            }
+            
+            // 检查模块2是否完成
+            checkModuleCompletion(2);
+        }
+        
+        // 初始化导航
+        function initNavigation() {
+            const moduleTabs = document.querySelectorAll('.module-tab');
+            moduleTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const moduleNum = parseInt(this.dataset.module);
+                    if (moduleNum <= currentModule) {
+                        switchModule(moduleNum);
+                    }
+                });
+            });
+            
+            // 上一模块按钮
+            document.getElementById('prevModuleBtn').addEventListener('click', function() {
+                if (currentModule > 1) {
+                    switchModule(currentModule - 1);
+                }
+            });
+            
+            // 下一模块按钮
+            document.getElementById('nextModuleBtn').addEventListener('click', function() {
+                if (currentModule < 2) {
+                    switchModule(currentModule + 1);
+                }
+            });
+            
+            // 计算按钮
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            
+            // 重置按钮
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+        }
+        
+        // 切换模块
+        function switchModule(moduleNum) {
+            // 隐藏当前模块
+            document.querySelector(`#module${currentModule}Content`).classList.remove('active');
+            document.querySelector(`.module-tab[data-module="${currentModule}"]`).classList.remove('active');
+            
+            // 显示新模块
+            document.querySelector(`#module${moduleNum}Content`).classList.add('active');
+            document.querySelector(`.module-tab[data-module="${moduleNum}"]`).classList.add('active');
+            
+            // 更新当前模块
+            currentModule = moduleNum;
+            
+            // 更新按钮状态
+            updateButtonVisibility();
+            
+            // 更新进度圈
+            updateProgressCircles();
+        }
+        
+        // 更新按钮可见性
+        function updateButtonVisibility() {
+            const prevBtn = document.getElementById('prevModuleBtn');
+            const nextBtn = document.getElementById('nextModuleBtn');
+            const calculateBtn = document.getElementById('calculateBtn');
+            
+            if (currentModule === 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'flex';
+                calculateBtn.style.display = 'none';
+            } else if (currentModule === 2) {
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'none';
+                calculateBtn.style.display = 'flex';
+            }
+        }
+        
+        // 更新进度圈
+        function updateProgressCircles() {
+            // 重置所有进度圈
+            for (let i = 1; i <= 2; i++) {
+                const circle = document.getElementById(`progress${i}`);
+                const line = document.querySelectorAll('.progress-line')[i-1];
+                
+                circle.classList.remove('active', 'completed');
+                if (line) line.classList.remove('completed');
+                
+                if (i < currentModule) {
+                    circle.classList.add('completed');
+                    if (line) line.classList.add('completed');
+                } else if (i === currentModule) {
+                    circle.classList.add('active');
+                }
+            }
+        }
+        
+        // 检查模块是否完成
+        function checkModuleCompletion(moduleNum) {
+            let isComplete = false;
+            
+            if (moduleNum === 1) {
+                // 模块1：所有问题都需要有选择，如果选择"是"则需要完成细节
+                isComplete = userData.module1.every(item => {
+                    if (item.selected === undefined) return false;
+                    if (item.selected === 'yes') {
+                        return item.frequency > 0 && item.severity > 0;
+                    }
+                    return true;
+                });
+            } else if (moduleNum === 2) {
+                // 模块2：所有问题都需要有选择
+                const motivationsComplete = userData.module2.motivations.every(item => item.score !== undefined);
+                const cognitionsComplete = userData.module2.cognitions.every(item => item.score !== undefined);
+                isComplete = motivationsComplete && cognitionsComplete;
+            }
+            
+            // 显示/隐藏完成提示
+            const completeCheck = document.getElementById(`module${moduleNum}Complete`);
+            if (completeCheck) {
+                completeCheck.style.display = isComplete ? 'flex' : 'none';
+            }
+            
+            // 如果模块已完成，更新对应的导航标签
+            if (isComplete) {
+                const tab = document.querySelector(`.module-tab[data-module="${moduleNum}"]`);
+                if (tab) {
+                    tab.classList.add('completed');
+                }
+            }
+            
+            return isComplete;
+        }
+        
+        // 计算分数
+        function calculateScores() {
+            // 模块1：行为多样性得分
+            const selectedBehaviors = userData.module1.filter(item => item.selected === 'yes');
+            const diversityScore = selectedBehaviors.length;
+            
+            // 典型和非典型行为数
+            let typicalCount = 0;
+            let atypicalCount = 0;
+            
+            selectedBehaviors.forEach(item => {
+                if (item.behavior.atypical) {
+                    atypicalCount++;
+                } else {
+                    typicalCount++;
+                }
+            });
+            
+            // 模块1：频率总分和严重程度总分
+            let frequencyScore = 0;
+            let severityScore = 0;
+            let medicalNeedCount = 0;
+            
+            selectedBehaviors.forEach(item => {
+                frequencyScore += item.frequency || 0;
+                severityScore += item.severity || 0;
+                
+                if (item.medical === 'yes') {
+                    medicalNeedCount++;
+                }
+            });
+            
+            // 模块2：动机总分和非典型动机得分
+            let motivationScore = 0;
+            let atypicalMotivationScore = 0;
+            
+            userData.module2.motivations.forEach(item => {
+                motivationScore += item.score || 0;
+                if (item.motivation.atypical) {
+                    atypicalMotivationScore += item.score || 0;
+                }
+            });
+            
+            // 模块2：认知-情境总分和非典型认知得分
+            let cognitionScore = 0;
+            let atypicalCognitionScore = 0;
+            
+            userData.module2.cognitions.forEach(item => {
+                cognitionScore += item.score || 0;
+                if (item.cognition.atypical) {
+                    atypicalCognitionScore += item.score || 0;
+                }
+            });
+            
+            return {
+                diversityScore,
+                typicalCount,
+                atypicalCount,
+                frequencyScore,
+                severityScore,
+                medicalNeedCount,
+                motivationScore,
+                atypicalMotivationScore,
+                cognitionScore,
+                atypicalCognitionScore
+            };
+        }
+        
+        // 检查高风险条件
+        function checkHighRiskConditions(scores) {
+            const highRiskConditions = [];
+            
+            // 行为多样性得分≥8分
+            if (scores.diversityScore >= 8) {
+                highRiskConditions.push("行为多样性得分≥8分（自伤类型超过8种）");
+            }
+            
+            // 频率总分≥30分
+            if (scores.frequencyScore >= 30) {
+                highRiskConditions.push("频率总分≥30分（存在高频自伤行为）");
+            }
+            
+            // 严重程度总分≥25分
+            if (scores.severityScore >= 25) {
+                highRiskConditions.push("严重程度总分≥25分（存在严重伤害自身的行为）");
+            }
+            
+            // 非典型动机得分≥15分
+            if (scores.atypicalMotivationScore >= 15) {
+                highRiskConditions.push("非典型动机得分≥15分（强烈的自我惩罚、存在性痛苦等非典型动机）");
+            }
+            
+            // 高物理风险行为
+            const highRiskPhysicalBehaviors = [];
+            userData.module1.forEach((item, index) => {
+                if (item.selected === 'yes' && item.behavior.highRiskPhysical) {
+                    highRiskPhysicalBehaviors.push(index + 1);
+                }
+            });
+            
+            if (highRiskPhysicalBehaviors.length > 0) {
+                highRiskConditions.push(`高物理风险行为（第${highRiskPhysicalBehaviors.join('、')}项）`);
+            }
+            
+            return highRiskConditions;
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(scores, highRiskConditions) {
+            const diversityRiskStatus = document.getElementById('diversityRiskStatus');
+            const frequencyRiskStatus = document.getElementById('frequencyRiskStatus');
+            const severityRiskStatus = document.getElementById('severityRiskStatus');
+            const atypicalRiskStatus = document.getElementById('atypicalRiskStatus');
+            const overallRiskStatus = document.getElementById('overallRiskStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 行为多样性风险
+            if (scores.diversityScore >= 8) {
+                diversityRiskStatus.textContent = '高风险';
+                diversityRiskStatus.className = 'risk-status danger';
+            } else if (scores.diversityScore >= 4) {
+                diversityRiskStatus.textContent = '中风险';
+                diversityRiskStatus.className = 'risk-status warning';
+            } else if (scores.diversityScore > 0) {
+                diversityRiskStatus.textContent = '低风险';
+                diversityRiskStatus.className = 'risk-status safe';
+            } else {
+                diversityRiskStatus.textContent = '无';
+                diversityRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 频率风险
+            if (scores.frequencyScore >= 30) {
+                frequencyRiskStatus.textContent = '高风险';
+                frequencyRiskStatus.className = 'risk-status danger';
+            } else if (scores.frequencyScore >= 11) {
+                frequencyRiskStatus.textContent = '中风险';
+                frequencyRiskStatus.className = 'risk-status warning';
+            } else if (scores.frequencyScore > 0) {
+                frequencyRiskStatus.textContent = '低风险';
+                frequencyRiskStatus.className = 'risk-status safe';
+            } else {
+                frequencyRiskStatus.textContent = '无';
+                frequencyRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 严重程度风险
+            if (scores.severityScore >= 25) {
+                severityRiskStatus.textContent = '高风险';
+                severityRiskStatus.className = 'risk-status danger';
+            } else if (scores.severityScore >= 10) {
+                severityRiskStatus.textContent = '中风险';
+                severityRiskStatus.className = 'risk-status warning';
+            } else if (scores.severityScore > 0) {
+                severityRiskStatus.textContent = '低风险';
+                severityRiskStatus.className = 'risk-status safe';
+            } else {
+                severityRiskStatus.textContent = '无';
+                severityRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 非典型行为风险
+            if (scores.atypicalCount >= 5) {
+                atypicalRiskStatus.textContent = '高风险';
+                atypicalRiskStatus.className = 'risk-status danger';
+            } else if (scores.atypicalCount >= 2) {
+                atypicalRiskStatus.textContent = '中风险';
+                atypicalRiskStatus.className = 'risk-status warning';
+            } else if (scores.atypicalCount > 0) {
+                atypicalRiskStatus.textContent = '低风险';
+                atypicalRiskStatus.className = 'risk-status safe';
+            } else {
+                atypicalRiskStatus.textContent = '无';
+                atypicalRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 综合风险等级
+            let overallRisk = '低风险';
+            let overallRiskClass = 'safe';
+            
+            if (highRiskConditions.length > 0 || scores.diversityScore >= 8 || scores.frequencyScore >= 30 || scores.motivationScore >= 36) {
+                overallRisk = '高风险';
+                overallRiskClass = 'danger';
+            } else if (scores.diversityScore >= 4 || scores.frequencyScore >= 11 || scores.motivationScore >= 16) {
+                overallRisk = '中风险';
+                overallRiskClass = 'warning';
+            }
+            
+            overallRiskStatus.textContent = overallRisk;
+            overallRiskStatus.className = `risk-status ${overallRiskClass}`;
+            
+            // 更新风险评估摘要样式
+            if (overallRisk === '高风险') {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 获取评估结果
+        function getAssessmentResult(diversityScore) {
+            if (diversityScore === 0) {
+                return {
+                    title: "无自伤行为",
+                    description: "根据评估结果，您在过去12个月内没有自伤行为，心理状态相对健康，无需特殊干预。",
+                    severityClass: "severity-0"
+                };
+            } else if (diversityScore >= 1 && diversityScore <= 3) {
+                return {
+                    title: "轻度自伤行为",
+                    description: "根据评估结果，您存在轻度自伤行为（多为偶发、单一类型），对生活影响极小，建议定期观察。",
+                    severityClass: "severity-1"
+                };
+            } else if (diversityScore >= 4 && diversityScore <= 7) {
+                return {
+                    title: "中度自伤行为",
+                    description: "根据评估结果，您存在中度自伤行为（多种类型，频率较低），可能伴随轻微心理困扰，建议心理疏导。",
+                    severityClass: "severity-3"
+                };
+            } else {
+                return {
+                    title: "重度自伤行为",
+                    description: "根据评估结果，您存在重度自伤行为（多样类型，可能高频），严重影响生活，属于高风险人群，需系统干预。",
+                    severityClass: "severity-4"
+                };
+            }
+        }
+        
+        // 获取非典型行为专项解读
+        function getAtypicalInterpretation(atypicalCount) {
+            if (atypicalCount === 0) {
+                return "无明显非典型自伤倾向，若存在自伤多为典型行为（如割伤），干预重点为情绪调节。";
+            } else if (atypicalCount >= 1 && atypicalCount <= 4) {
+                return "存在轻度非典型自伤倾向，动机多为自我惩罚或缓解麻木感，需关注自我认知模式。";
+            } else {
+                return "存在重度非典型自伤倾向，认知扭曲明显（如自我贬低），行为隐蔽性强，干预重点为认知重构+风险控制。";
+            }
+        }
+        
+        // 显示评估结果
+        function showAssessmentResult() {
+            // 检查所有模块是否完成
+            for (let i = 1; i <= 2; i++) {
+                if (!checkModuleCompletion(i)) {
+                    alert(`请先完成模块${i}的所有问题。`);
+                    switchModule(i);
+                    return;
+                }
+            }
+            
+            const scores = calculateScores();
+            const highRiskConditions = checkHighRiskConditions(scores);
+            const result = getAssessmentResult(scores.diversityScore);
+            const atypicalInterpretation = getAtypicalInterpretation(scores.atypicalCount);
+            
+            // 更新风险评估摘要
+            updateRiskSummary(scores, highRiskConditions);
+            
+            // 更新分数显示
+            document.getElementById('diversityScore').textContent = scores.diversityScore;
+            document.getElementById('typicalBehaviorScore').textContent = scores.typicalCount;
+            document.getElementById('atypicalBehaviorScore').textContent = scores.atypicalCount;
+            document.getElementById('frequencyScore').textContent = scores.frequencyScore;
+            document.getElementById('severityScore').textContent = scores.severityScore;
+            document.getElementById('severityText').textContent = result.title;
+            
+            // 构建结果描述
+            let description = result.description;
+            
+            // 添加非典型行为分析
+            if (scores.atypicalCount > 0) {
+                description += `<br><br><strong>非典型NSSI行为专项分析：</strong> ${atypicalInterpretation}`;
+                document.getElementById('atypicalSummary').style.display = 'block';
+                
+                // 更新非典型行为摘要
+                let atypicalSummary = `<p>非典型行为数：${scores.atypicalCount}项</p>`;
+                atypicalSummary += `<p>非典型动机得分：${scores.atypicalMotivationScore}/24分</p>`;
+                atypicalSummary += `<p>非典型认知得分：${scores.atypicalCognitionScore}/16分</p>`;
+                atypicalSummary += `<p>解读：${atypicalInterpretation}</p>`;
+                
+                document.getElementById('atypicalSummaryContent').innerHTML = atypicalSummary;
+            } else {
+                document.getElementById('atypicalSummary').style.display = 'none';
+            }
+            
+            // 添加详细分数信息
+            description += `<br><br><strong>详细评分：</strong>`;
+            description += `<br>• 自伤行为多样性：${scores.diversityScore}/23分`;
+            description += `<br>• 典型自伤行为数：${scores.typicalCount}项`;
+            description += `<br>• 非典型自伤行为数：${scores.atypicalCount}项`;
+            description += `<br>• 频率总分：${scores.frequencyScore}/115分`;
+            description += `<br>• 严重程度总分：${scores.severityScore}/115分`;
+            description += `<br>• 需要医疗处理的行为数：${scores.medicalNeedCount}项`;
+            description += `<br>• 自伤动机总分：${scores.motivationScore}/68分`;
+            description += `<br>• 认知-情境总分：${scores.cognitionScore}/44分`;
+            
+            // 如果有高风险警告
+            if (highRiskConditions.length > 0) {
+                description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高风险警告：</strong> ${highRiskConditions.join("；")}，提示自伤风险极高，需立即：①保障被评估者安全（如移除危险物品、联系监护人）；②开展危机干预（如情绪稳定技术、安全计划制定）；③转介至专业精神卫生机构。`;
+                
+                // 显示紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'block';
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            // 如果有开放作答内容
+            const postInjuryFeelings = document.getElementById('postInjuryFeelings').value;
+            if (postInjuryFeelings.trim() !== '') {
+                description += `<br><br><strong>自伤后最强烈的感受：</strong> "${postInjuryFeelings}"`;
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const diversityScoreElement = document.getElementById('diversityScore');
+            const typicalScoreContainer = document.getElementById('typicalScoreContainer');
+            const typicalScoreElement = document.getElementById('typicalBehaviorScore');
+            const atypicalScoreContainer = document.getElementById('atypicalScoreContainer');
+            const atypicalScoreElement = document.getElementById('atypicalBehaviorScore');
+            const frequencyScoreContainer = document.getElementById('frequencyScoreContainer');
+            const frequencyScoreElement = document.getElementById('frequencyScore');
+            const severityScoreContainer = document.getElementById('severityScoreContainer');
+            const severityScoreElement = document.getElementById('severityScore');
+            
+            // 重置所有高风险样式
+            resultBox.classList.remove('high-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk');
+            diversityScoreElement.classList.remove('high-risk');
+            typicalScoreContainer.classList.remove('high-risk');
+            typicalScoreElement.classList.remove('high-risk');
+            atypicalScoreContainer.classList.remove('high-risk');
+            atypicalScoreElement.classList.remove('high-risk');
+            frequencyScoreContainer.classList.remove('high-risk');
+            frequencyScoreElement.classList.remove('high-risk');
+            severityScoreContainer.classList.remove('high-risk');
+            severityScoreElement.classList.remove('high-risk');
+            
+            // 根据风险级别设置样式
+            if (result.title === "重度自伤行为" || highRiskConditions.length > 0) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                diversityScoreElement.classList.add('high-risk');
+                
+                if (scores.typicalCount >= 3) {
+                    typicalScoreContainer.classList.add('high-risk');
+                    typicalScoreElement.classList.add('high-risk');
+                }
+                
+                if (scores.atypicalCount >= 5) {
+                    atypicalScoreContainer.classList.add('high-risk');
+                    atypicalScoreElement.classList.add('high-risk');
+                }
+                
+                if (scores.frequencyScore >= 30) {
+                    frequencyScoreContainer.classList.add('high-risk');
+                    frequencyScoreElement.classList.add('high-risk');
+                }
+                
+                if (scores.severityScore >= 25) {
+                    severityScoreContainer.classList.add('high-risk');
+                    severityScoreElement.classList.add('high-risk');
+                }
+            } else {
+                resultTitle.textContent = result.title;
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评估数据吗？这将清除所有已填写的答案。")) {
+                // 重置用户数据
+                userData = {
+                    module1: [],
+                    module2: {
+                        motivations: [],
+                        cognitions: []
+                    }
+                };
+                
+                // 重置UI
+                initModule1();
+                initModule2();
+                document.getElementById('postInjuryFeelings').value = '';
+                
+                // 重置模块完成提示
+                for (let i = 1; i <= 2; i++) {
+                    document.getElementById(`module${i}Complete`).style.display = 'none';
+                }
+                
+                // 重置导航标签
+                document.querySelectorAll('.module-tab').forEach(tab => {
+                    tab.classList.remove('completed');
+                });
+                
+                // 切换到模块1
+                switchModule(1);
+                
+                // 重置结果显示
+                document.getElementById('diversityScore').textContent = '0';
+                document.getElementById('typicalBehaviorScore').textContent = '0';
+                document.getElementById('atypicalBehaviorScore').textContent = '0';
+                document.getElementById('frequencyScore').textContent = '0';
+                document.getElementById('severityScore').textContent = '0';
+                document.getElementById('severityText').textContent = '请完成评估';
+                document.getElementById('resultDescription').innerHTML = '请完成所有评估部分，然后点击"查看评估结果"按钮查看详细结果。';
+                document.getElementById('atypicalSummary').style.display = 'none';
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置风险评估摘要
+                document.getElementById('diversityRiskStatus').textContent = '安全';
+                document.getElementById('diversityRiskStatus').className = 'risk-status safe';
+                document.getElementById('frequencyRiskStatus').textContent = '安全';
+                document.getElementById('frequencyRiskStatus').className = 'risk-status safe';
+                document.getElementById('severityRiskStatus').textContent = '安全';
+                document.getElementById('severityRiskStatus').className = 'risk-status safe';
+                document.getElementById('atypicalRiskStatus').textContent = '安全';
+                document.getElementById('atypicalRiskStatus').className = 'risk-status safe';
+                document.getElementById('overallRiskStatus').textContent = '低风险';
+                document.getElementById('overallRiskStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const diversityScoreElement = document.getElementById('diversityScore');
+                
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                diversityScoreElement.classList.remove('high-risk');
+                
+                resultBox.style.borderLeftColor = '#1a237e';
+                resultBox.style.backgroundColor = '#f8fafc';
+                resultTitle.textContent = '评估结果说明';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            updateButtonVisibility();
+        });
+    </script>
+</body>
+</html>

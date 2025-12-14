@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>积极和消极反刍思维量表（PANRS）在线评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 380px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #4a148c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #4a148c;
+        }
+        
+        h3 {
+            color: #6a1b9a;
+            margin: 20px 0 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f4f8;
+        }
+        
+        .dimension-title {
+            color: #6a1b9a;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dimension-info {
+            font-size: 13px;
+            color: #64748b;
+            background-color: #f8fafc;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-item.high-risk-active {
+            background-color: rgba(254, 202, 202, 0.05);
+            border: 1px solid #fecaca;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: #f3e5f5;
+            color: #4a148c;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 90px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #4a148c;
+            color: white;
+            border-color: #4a148c;
+            font-weight: 600;
+        }
+        
+        .rating-option.high-risk-option input[value="4"]:checked + label,
+        .rating-option.high-risk-option input[value="5"]:checked + label {
+            background-color: #ef4444;
+            border-color: #dc2626;
+        }
+        
+        .rating-option label:hover {
+            background-color: #f3e5f5;
+            border-color: #4a148c;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f3e5f5 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .dimension-scores {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .dimension-score {
+            flex: 1;
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-score.high-risk {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-score.positive {
+            background-color: #f0f9ff;
+        }
+        
+        .dimension-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4a148c;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .dimension-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .dimension-value.positive {
+            color: #0369a1;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        
+        .dimension-range {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        .score-comparison {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .comparison-item {
+            text-align: center;
+        }
+        
+        .comparison-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        
+        .comparison-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4a148c;
+        }
+        
+        .comparison-value.positive {
+            color: #0369a1;
+        }
+        
+        .comparison-value.negative {
+            color: #dc2626;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #4a148c;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4a148c;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #4a148c;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #6a1b9a;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        .combination-interpretation {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #6a1b9a;
+        }
+        
+        .combination-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #6a1b9a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .combination-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .combination-item.active {
+            background-color: #f3e5f5;
+            border-color: #4a148c;
+        }
+        
+        .combination-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #4a148c;
+        }
+        
+        .combination-description {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .emergency-contacts {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .emergency-title {
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #bae6fd;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .scale-background {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4a148c;
+        }
+        
+        .scale-info {
+            margin-bottom: 10px;
+        }
+        
+        .scale-info p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .dimension-scores {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .dimension-score {
+                margin: 0;
+            }
+            
+            .score-comparison {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .item-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .dimension-score-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: all 0.5s ease;
+        }
+        
+        .progress-fill.negative {
+            background-color: #4a148c;
+        }
+        
+        .progress-fill.positive {
+            background-color: #0369a1;
+        }
+        
+        .progress-fill.high-risk {
+            background-color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> 积极和消极反刍思维量表（PANRS）在线评估</h1>
+            <p class="subtitle">本量表由Treynor、Gonzalez和Nolen-Hoeksema于2003年编制，是评估反刍思维双向维度（积极/消极）的权威工具。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>本问卷用于了解你面对情绪事件时的思维模式。请仔细阅读每个陈述，根据过去2周内的实际感受和思维习惯，选择最符合的选项。答案无对错之分，仅需真实反映你的情况，所有信息将严格保密。</p>
+                <p><strong>评分说明：</strong>采用5级评分制：1=几乎没有，2=很少，3=有时，4=经常，5=总是。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> PANRS核心问卷项目（共22项）</h2>
+                    
+                    <div class="scale-background">
+                        <div class="scale-info">
+                            <p><strong>量表背景说明：</strong>本量表核心区分"消极反刍（被动沉浸于负面情绪）"与"积极反刍（主动反思解决问题）"，信效度优异：总体Cronbach's α系数=0.88，消极反刍维度α=0.85，积极反刍维度α=0.82。</p>
+                            <p><strong>适用人群：</strong>16岁以上青少年及成人；18岁青春期末期群体可直接使用，评估时需重点关注"成年过渡相关压力"（如升学、就业、独立生活）引发的反刍思维。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title"><i class="fas fa-cloud-rain"></i> 维度1：消极反刍思维（1-12项）</div>
+                        <div class="dimension-info">评估被动沉浸于负面情绪的思维模式</div>
+                    </div>
+                    
+                    <div id="negativeQuestionsContainer">
+                        <!-- 消极反刍问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title"><i class="fas fa-sun"></i> 维度2：积极反刍思维（13-22项）</div>
+                        <div class="dimension-info">评估主动反思、解决问题的思维模式</div>
+                    </div>
+                    
+                    <div id="positiveQuestionsContainer">
+                        <!-- 积极反刍问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 高危项目监测：</strong> 第2、7、9、10、11项为情绪危机高风险关联项。若任一项目评分≥4分（经常/总是），提示存在明显情绪内耗；若同时有≥5个项目评分≥4分，需立即关注并干预。
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 标准化评分细则</h2>
+                    
+                    <p>本量表采用5级正向计分，所有项目均为正向表述，无反向计分项目。</p>
+                    
+                    <p><strong>1. 通用评分标准</strong></p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px;">
+                        <li><strong>1分（几乎没有）：</strong>过去2周内几乎没有出现该思维模式</li>
+                        <li><strong>2分（很少）：</strong>过去2周内很少出现该思维模式</li>
+                        <li><strong>3分（有时）：</strong>过去2周内有时出现该思维模式</li>
+                        <li><strong>4分（经常）：</strong>过去2周内经常出现该思维模式</li>
+                        <li><strong>5分（总是）：</strong>过去2周内总是出现该思维模式</li>
+                    </ul>
+                    
+                    <p><strong>2. 高危选项判定与说明</strong></p>
+                    <p>以下消极反刍项目为情绪危机高风险关联项，若任一项目评分≥4分（经常/总是），提示存在明显情绪内耗，易引发抑郁、焦虑或非典型NSSI行为：</p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px;">
+                        <li>第7项：觉得自己无法摆脱负面想法的困扰</li>
+                        <li>第11项：觉得自己的问题无法解决，陷入绝望</li>
+                        <li>第9项：反复自责，觉得自己应该做得更好</li>
+                        <li>第2项：觉得自己的负面情绪永远不会消失</li>
+                        <li>第10项：沉浸于"如果当时不那样做就好了"的遗憾中</li>
+                    </ul>
+                    <p>若同时有≥5个项目评分≥4分，需立即关注并干预。</p>
+                    
+
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="dimension-scores">
+                            <div class="dimension-score" id="negativeScoreContainer">
+                                <div class="dimension-score-container">
+                                    <div class="dimension-name">消极反刍总分</div>
+                                    <div class="dimension-value" id="negativeScore">0</div>
+                                    <div class="dimension-range">范围：12-60分</div>
+                                    <div class="progress-bar">
+                                        <div id="negativeProgress" class="progress-fill negative" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dimension-score positive" id="positiveScoreContainer">
+                                <div class="dimension-score-container">
+                                    <div class="dimension-name">积极反刍总分</div>
+                                    <div class="dimension-value positive" id="positiveScore">0</div>
+                                    <div class="dimension-range">范围：10-50分</div>
+                                    <div class="progress-bar">
+                                        <div id="positiveProgress" class="progress-fill positive" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="score-comparison">
+                            <div class="comparison-item">
+                                <div class="comparison-label">思维模式倾向</div>
+                                <div id="thinkingTendency" class="comparison-value">--</div>
+                            </div>
+                            <div class="comparison-item">
+                                <div class="comparison-label">情绪调节能力</div>
+                                <div id="emotionRegulation" class="comparison-value">--</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 风险评估摘要</div>
+                        <div class="risk-item">
+                            <span class="risk-name">消极反刍风险</span>
+                            <span id="negativeRiskStatus" class="risk-status safe">低风险</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">积极反刍水平</span>
+                            <span id="positiveRiskStatus" class="risk-status safe">低水平</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">高危项目监测</span>
+                            <span id="highRiskItemsStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">综合风险等级</span>
+                            <span id="overallRiskStatus" class="risk-status safe">低风险</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有22个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div id="combinationInterpretation" class="combination-interpretation" style="display: none;">
+                        <div class="combination-title"><i class="fas fa-balance-scale"></i> 双维度组合解读（针对18岁群体）</div>
+                        <div id="combinationContent">
+                            <!-- 双维度组合解读将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        
+                        <h4><i class="fas fa-cloud-rain"></i> 消极反刍思维维度解读</h4>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>风险等级</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12-24分</td>
+                                    <td><span class="severity-indicator severity-0">低水平消极反刍</span></td>
+                                    <td>能较好地调节负面想法，不易陷入情绪内耗，属于健康水平。</td>
+                                </tr>
+                                <tr>
+                                    <td>25-36分</td>
+                                    <td><span class="severity-indicator severity-1">中等水平消极反刍</span></td>
+                                    <td>偶尔会陷入负面想法的困扰，但持续时间较短，对生活影响较小，属于中低风险；建议学习简单的情绪调节技巧。</td>
+                                </tr>
+                                <tr>
+                                    <td>37-48分</td>
+                                    <td><span class="severity-indicator severity-3">高水平消极反刍</span></td>
+                                    <td>频繁陷入负面思维循环，情绪内耗明显，易出现焦虑、抑郁等情绪问题，属于高风险；需针对性心理干预（如认知重构）。</td>
+                                </tr>
+                                <tr>
+                                    <td>49-60分</td>
+                                    <td><span class="severity-indicator severity-4">极高水平消极反刍</span></td>
+                                    <td>完全被负面想法控制，无法自主摆脱，情绪状态极差，易引发自伤、自杀等危机行为，属于极高危；需立即寻求精神科评估与危机干预。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h4 style="margin-top: 20px;"><i class="fas fa-sun"></i> 积极反刍思维维度解读</h4>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>能力等级</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10-20分</td>
+                                    <td><span class="severity-indicator severity-2">低水平积极反刍</span></td>
+                                    <td>缺乏主动解决问题的思维习惯，面对困难易退缩，情绪调节能力较弱；建议培养问题解决导向的思维模式。</td>
+                                </tr>
+                                <tr>
+                                    <td>21-35分</td>
+                                    <td><span class="severity-indicator severity-1">中等水平积极反刍</span></td>
+                                    <td>具备一定的积极思维能力，面对问题时能尝试寻找解决方案，但主动性不足；需强化积极思维训练。</td>
+                                </tr>
+                                <tr>
+                                    <td>36-50分</td>
+                                    <td><span class="severity-indicator severity-0">高水平积极反刍</span></td>
+                                    <td>积极思维能力突出，善于从困难中学习、主动解决问题，情绪调节能力强；属于健康水平，无需干预。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332/18835185216（和小表格讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 高危处理流程：</strong> 若消极反刍总分≥49分，或同时有≥5个高危项目评分≥4分，需立即：①联系被评估者监护人（青少年群体）；②开展情绪稳定干预（如正念训练、认知解离技术）；③转介至精神卫生医疗机构。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // PANRS问题列表
+        const panrsQuestions = [
+            // 维度1：消极反刍思维（12项）
+            {
+                text: "反复回想自己的失败或过错",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 1
+            },
+            {
+                text: "觉得自己的负面情绪永远不会消失",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 2,
+                highRisk: true,
+                highRiskIndex: 1 // 项目2
+            },
+            {
+                text: "反复思考自己为什么会感到低落/焦虑",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 3
+            },
+            {
+                text: "对比自己现在和过去的状态，觉得自己越来越差",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 4
+            },
+            {
+                text: "过度关注自己的缺点和不足",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 5
+            },
+            {
+                text: "反复回想让自己感到痛苦的事件细节",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 6
+            },
+            {
+                text: "觉得自己无法摆脱负面想法的困扰",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 7,
+                highRisk: true,
+                highRiskIndex: 6 // 项目7
+            },
+            {
+                text: "担心自己的负面情绪会影响生活和工作/学习",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 8
+            },
+            {
+                text: "反复自责，觉得自己应该做得更好",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 9,
+                highRisk: true,
+                highRiskIndex: 8 // 项目9
+            },
+            {
+                text: "沉浸于'如果当时不那样做就好了'的遗憾中",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 10,
+                highRisk: true,
+                highRiskIndex: 9 // 项目10
+            },
+            {
+                text: "觉得自己的问题无法解决，陷入绝望",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 11,
+                highRisk: true,
+                highRiskIndex: 10 // 项目11
+            },
+            {
+                text: "过度关注他人对自己的负面评价",
+                dimension: "negative",
+                dimensionName: "消极反刍",
+                number: 12
+            },
+            // 维度2：积极反刍思维（10项）
+            {
+                text: "遇到困难时，思考如何从中学习经验",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 13
+            },
+            {
+                text: "积极寻找解决问题的方法，而不是只关注问题本身",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 14
+            },
+            {
+                text: "回想自己过去克服困难的经历，鼓励自己",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 15
+            },
+            {
+                text: "思考如何调整自己的行为，避免未来再遇到类似问题",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 16
+            },
+            {
+                text: "关注自己的优点和优势，相信自己有能力应对挑战",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 17
+            },
+            {
+                text: "把负面事件当作成长的机会，积极调整心态",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 18
+            },
+            {
+                text: "主动向他人寻求建议，共同探讨解决问题的方案",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 19
+            },
+            {
+                text: "思考自己的目标和方向，明确下一步的行动计划",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 20
+            },
+            {
+                text: "即使遇到挫折，也能看到事情的积极一面",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 21
+            },
+            {
+                text: "相信时间会解决问题，保持耐心和乐观",
+                dimension: "positive",
+                dimensionName: "积极反刍",
+                number: 22
+            }
+        ];
+        
+        // 评分选项
+        const ratingOptions = [
+            { value: 1, label: "几乎没有", description: "1分" },
+            { value: 2, label: "很少", description: "2分" },
+            { value: 3, label: "有时", description: "3分" },
+            { value: 4, label: "经常", description: "4分" },
+            { value: 5, label: "总是", description: "5分" }
+        ];
+        
+        // 评估结果说明
+        const negativeResultDescriptions = {
+            "低水平消极反刍": {
+                title: "低水平消极反刍",
+                description: "能较好地调节负面想法，不易陷入情绪内耗，属于健康水平。",
+                severityClass: "severity-0"
+            },
+            "中等水平消极反刍": {
+                title: "中等水平消极反刍",
+                description: "偶尔会陷入负面想法的困扰，但持续时间较短，对生活影响较小，属于中低风险。建议学习简单的情绪调节技巧。",
+                severityClass: "severity-1"
+            },
+            "高水平消极反刍": {
+                title: "高水平消极反刍",
+                description: "频繁陷入负面思维循环，情绪内耗明显，易出现焦虑、抑郁等情绪问题，属于高风险。需针对性心理干预（如认知重构）。",
+                severityClass: "severity-3"
+            },
+            "极高水平消极反刍": {
+                title: "极高水平消极反刍",
+                description: "完全被负面想法控制，无法自主摆脱，情绪状态极差，易引发自伤、自杀等危机行为，属于极高危。需立即寻求精神科评估与危机干预。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        const positiveResultDescriptions = {
+            "低水平积极反刍": {
+                title: "低水平积极反刍",
+                description: "缺乏主动解决问题的思维习惯，面对困难易退缩，情绪调节能力较弱。建议培养问题解决导向的思维模式。",
+                severityClass: "severity-2"
+            },
+            "中等水平积极反刍": {
+                title: "中等水平积极反刍",
+                description: "具备一定的积极思维能力，面对问题时能尝试寻找解决方案，但主动性不足。需强化积极思维训练。",
+                severityClass: "severity-1"
+            },
+            "高水平积极反刍": {
+                title: "高水平积极反刍",
+                description: "积极思维能力突出，善于从困难中学习、主动解决问题，情绪调节能力强。属于健康水平，无需干预。",
+                severityClass: "severity-0"
+            }
+        };
+        
+        // 双维度组合解读
+        const combinationInterpretations = [
+            {
+                label: "高消极+低积极",
+                description: "情绪危机高风险，18岁群体易因学业/职业压力、人际关系问题陷入持续内耗，需紧急干预。",
+                condition: (negativeScore, positiveScore) => negativeScore >= 37 && positiveScore <= 20
+            },
+            {
+                label: "高消极+高积极",
+                description: "情绪调节存在矛盾，有较强的问题解决意愿但被负面想法困扰，干预重点为减少消极反刍、强化积极思维的执行。",
+                condition: (negativeScore, positiveScore) => negativeScore >= 37 && positiveScore >= 36
+            },
+            {
+                label: "低消极+低积极",
+                description: "思维活跃度低，面对困难易逃避，18岁群体可能表现为'躺平''无动力'，干预重点为激发主动思维。",
+                condition: (negativeScore, positiveScore) => negativeScore <= 24 && positiveScore <= 20
+            },
+            {
+                label: "低消极+高积极",
+                description: "思维模式健康，情绪调节能力强，18岁群体能较好应对成年过渡中的各类挑战。",
+                condition: (negativeScore, positiveScore) => negativeScore <= 24 && positiveScore >= 36
+            }
+        ];
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const negativeContainer = document.getElementById('negativeQuestionsContainer');
+            const positiveContainer = document.getElementById('positiveQuestionsContainer');
+            
+            negativeContainer.innerHTML = '';
+            positiveContainer.innerHTML = '';
+            
+            panrsQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${index}`;
+                
+                // 如果是高风险项目，添加数据属性
+                if (question.highRisk) {
+                    questionItem.dataset.highRisk = "true";
+                    questionItem.dataset.highRiskIndex = question.highRiskIndex;
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                // 添加问题编号和文本
+                questionText.textContent = `${question.number}. ${question.text}`;
+                
+                // 如果是高风险项目，添加标记
+                if (question.highRisk) {
+                    const highRiskSpan = document.createElement('span');
+                    highRiskSpan.className = 'high-risk-tag';
+                    highRiskSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 高风险项目';
+                    questionText.appendChild(highRiskSpan);
+                }
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建单选按钮
+                ratingOptions.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    // 如果是高风险项目，为4分和5分选项添加特殊类
+                    if (question.highRisk && (option.value === 4 || option.value === 5)) {
+                        optionDiv.classList.add('high-risk-option');
+                    }
+                    
+                    const inputId = `q${index}-score${option.value}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.id = inputId;
+                    input.value = option.value;
+                    
+                    // 默认选择3分（有时）
+                    if (option.value === 3) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', function() {
+                        updateScores();
+                        checkHighRiskItems();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = option.label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = option.description;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                });
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                
+                // 根据维度添加到不同的容器
+                if (question.dimension === "negative") {
+                    negativeContainer.appendChild(questionItem);
+                } else {
+                    positiveContainer.appendChild(questionItem);
+                }
+            });
+        }
+        
+        // 计算总分和维度分
+        function calculateScores() {
+            let negativeScore = 0;
+            let positiveScore = 0;
+            
+            for (let i = 0; i < panrsQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    
+                    // 根据维度分配分数
+                    if (panrsQuestions[i].dimension === "negative") {
+                        negativeScore += score;
+                    } else if (panrsQuestions[i].dimension === "positive") {
+                        positiveScore += score;
+                    }
+                }
+            }
+            
+            return { negativeScore, positiveScore };
+        }
+        
+        // 检查高风险项目分数
+        function checkHighRiskItems() {
+            const highRiskItems = [1, 6, 8, 9, 10]; // 项目2、7、9、10、11的索引（从0开始）
+            let highRiskWarnings = [];
+            let highRiskCount = 0;
+            
+            // 重置所有高风险项目样式
+            document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                item.classList.remove('high-risk-active');
+            });
+            
+            for (const itemIndex of highRiskItems) {
+                const questionItem = document.getElementById(`question-${itemIndex}`);
+                const selectedOption = document.querySelector(`input[name="question${itemIndex}"]:checked`);
+                
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    if (score >= 4) {
+                        highRiskCount++;
+                        const questionNumber = itemIndex + 1;
+                        highRiskWarnings.push(`第${panrsQuestions[itemIndex].number}项评分≥4分`);
+                        
+                        // 为高风险项目添加视觉样式
+                        if (questionItem) {
+                            questionItem.classList.add('high-risk-active');
+                        }
+                    }
+                }
+            }
+            
+            return { highRiskWarnings, highRiskCount };
+        }
+        
+        // 根据消极反刍总分获取评估结果
+        function getNegativeAssessmentResult(score) {
+            if (score >= 12 && score <= 24) {
+                return "低水平消极反刍";
+            } else if (score >= 25 && score <= 36) {
+                return "中等水平消极反刍";
+            } else if (score >= 37 && score <= 48) {
+                return "高水平消极反刍";
+            } else if (score >= 49 && score <= 60) {
+                return "极高水平消极反刍";
+            } else {
+                return "分数异常";
+            }
+        }
+        
+        // 根据积极反刍总分获取评估结果
+        function getPositiveAssessmentResult(score) {
+            if (score >= 10 && score <= 20) {
+                return "低水平积极反刍";
+            } else if (score >= 21 && score <= 35) {
+                return "中等水平积极反刍";
+            } else if (score >= 36 && score <= 50) {
+                return "高水平积极反刍";
+            } else {
+                return "分数异常";
+            }
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(negativeScore, positiveScore, highRiskItems) {
+            const negativeRiskStatus = document.getElementById('negativeRiskStatus');
+            const positiveRiskStatus = document.getElementById('positiveRiskStatus');
+            const highRiskItemsStatus = document.getElementById('highRiskItemsStatus');
+            const overallRiskStatus = document.getElementById('overallRiskStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 消极反刍风险状态
+            const negativeResult = getNegativeAssessmentResult(negativeScore);
+            if (negativeResult === "极高水平消极反刍") {
+                negativeRiskStatus.textContent = '极高危';
+                negativeRiskStatus.className = 'risk-status danger';
+            } else if (negativeResult === "高水平消极反刍") {
+                negativeRiskStatus.textContent = '高风险';
+                negativeRiskStatus.className = 'risk-status danger';
+            } else if (negativeResult === "中等水平消极反刍") {
+                negativeRiskStatus.textContent = '中风险';
+                negativeRiskStatus.className = 'risk-status warning';
+            } else {
+                negativeRiskStatus.textContent = '低风险';
+                negativeRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 积极反刍水平状态
+            const positiveResult = getPositiveAssessmentResult(positiveScore);
+            if (positiveResult === "高水平积极反刍") {
+                positiveRiskStatus.textContent = '高水平';
+                positiveRiskStatus.className = 'risk-status safe';
+            } else if (positiveResult === "中等水平积极反刍") {
+                positiveRiskStatus.textContent = '中等水平';
+                positiveRiskStatus.className = 'risk-status warning';
+            } else {
+                positiveRiskStatus.textContent = '低水平';
+                positiveRiskStatus.className = 'risk-status warning';
+            }
+            
+            // 高风险项目状态
+            if (highRiskItems.highRiskCount >= 5) {
+                highRiskItemsStatus.textContent = `${highRiskItems.highRiskCount}项高风险`;
+                highRiskItemsStatus.className = 'risk-status danger';
+            } else if (highRiskItems.highRiskCount > 0) {
+                highRiskItemsStatus.textContent = `${highRiskItems.highRiskCount}项高风险`;
+                highRiskItemsStatus.className = 'risk-status warning';
+            } else {
+                highRiskItemsStatus.textContent = '安全';
+                highRiskItemsStatus.className = 'risk-status safe';
+            }
+            
+            // 综合风险等级
+            let overallRisk = '低风险';
+            let overallRiskClass = 'safe';
+            
+            if (negativeResult === "极高水平消极反刍" || highRiskItems.highRiskCount >= 5) {
+                overallRisk = '极高危';
+                overallRiskClass = 'danger';
+            } else if (negativeResult === "高水平消极反刍") {
+                overallRisk = '高风险';
+                overallRiskClass = 'danger';
+            } else if (negativeResult === "中等水平消极反刍" || highRiskItems.highRiskCount > 0) {
+                overallRisk = '中风险';
+                overallRiskClass = 'warning';
+            }
+            
+            overallRiskStatus.textContent = overallRisk;
+            overallRiskStatus.className = `risk-status ${overallRiskClass}`;
+            
+            // 更新风险评估摘要样式
+            if (overallRisk === '极高危' || overallRisk === '高风险') {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 更新分数显示
+        function updateScores() {
+            const scores = calculateScores();
+            const { negativeScore, positiveScore } = scores;
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(negativeScore, positiveScore, highRiskItems);
+            
+            // 更新分数
+            document.getElementById('negativeScore').textContent = negativeScore;
+            document.getElementById('positiveScore').textContent = positiveScore;
+            
+            // 更新进度条
+            const negativeProgress = document.getElementById('negativeProgress');
+            const positiveProgress = document.getElementById('positiveProgress');
+            
+            // 计算百分比（12-60分转换为0-100%，10-50分转换为0-100%）
+            const negativePercentage = ((negativeScore - 12) / (60 - 12)) * 100;
+            const positivePercentage = ((positiveScore - 10) / (50 - 10)) * 100;
+            
+            negativeProgress.style.width = Math.min(Math.max(negativePercentage, 0), 100) + '%';
+            positiveProgress.style.width = Math.min(Math.max(positivePercentage, 0), 100) + '%';
+            
+            // 更新思维模式倾向
+            const thinkingTendency = document.getElementById('thinkingTendency');
+            if (negativeScore > positiveScore + 10) {
+                thinkingTendency.textContent = "消极倾向";
+                thinkingTendency.className = "comparison-value negative";
+            } else if (positiveScore > negativeScore + 10) {
+                thinkingTendency.textContent = "积极倾向";
+                thinkingTendency.className = "comparison-value positive";
+            } else {
+                thinkingTendency.textContent = "平衡状态";
+                thinkingTendency.className = "comparison-value";
+            }
+            
+            // 更新情绪调节能力
+            const emotionRegulation = document.getElementById('emotionRegulation');
+            const positiveResult = getPositiveAssessmentResult(positiveScore);
+            const negativeResult = getNegativeAssessmentResult(negativeScore);
+            
+            if (positiveResult === "高水平积极反刍" && negativeResult === "低水平消极反刍") {
+                emotionRegulation.textContent = "优秀";
+                emotionRegulation.className = "comparison-value positive";
+            } else if (positiveResult === "低水平积极反刍" && negativeResult === "高水平消极反刍") {
+                emotionRegulation.textContent = "较差";
+                emotionRegulation.className = "comparison-value negative";
+            } else {
+                emotionRegulation.textContent = "一般";
+                emotionRegulation.className = "comparison-value";
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < panrsQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有22个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const scores = calculateScores();
+            const { negativeScore, positiveScore } = scores;
+            const negativeResult = getNegativeAssessmentResult(negativeScore);
+            const positiveResult = getPositiveAssessmentResult(positiveScore);
+            const negativeResultInfo = negativeResultDescriptions[negativeResult];
+            const positiveResultInfo = positiveResultDescriptions[positiveResult];
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(negativeScore, positiveScore, highRiskItems);
+            
+            // 构建结果描述
+            let description = `<strong>消极反刍思维：</strong> ${negativeResultInfo.description}<br><br>`;
+            description += `<strong>积极反刍思维：</strong> ${positiveResultInfo.description}`;
+            
+            // 双维度组合解读
+            let combinationHTML = '';
+            let activeCombination = null;
+            
+            for (const combination of combinationInterpretations) {
+                const isActive = combination.condition(negativeScore, positiveScore);
+                combinationHTML += `
+                    <div class="combination-item ${isActive ? 'active' : ''}">
+                        <div class="combination-label">${combination.label}</div>
+                        <div class="combination-description">${combination.description}</div>
+                    </div>
+                `;
+                
+                if (isActive) {
+                    activeCombination = combination;
+                }
+            }
+            
+            document.getElementById('combinationContent').innerHTML = combinationHTML;
+            
+            // 如果有活跃的组合解读，显示组合解读部分
+            if (activeCombination) {
+                description += `<br><br><strong>双维度组合解读：</strong> 根据您的得分，属于"${activeCombination.label}"类型。${activeCombination.description}`;
+                document.getElementById('combinationInterpretation').style.display = 'block';
+            } else {
+                document.getElementById('combinationInterpretation').style.display = 'none';
+            }
+            
+            // 添加详细分数信息
+            description += `<br><br><strong>详细评分：</strong>`;
+            description += `<br>• 消极反刍总分：${negativeScore}/60分`;
+            description += `<br>• 积极反刍总分：${positiveScore}/50分`;
+            
+            // 如果有高风险警告
+            if (highRiskItems.highRiskCount > 0) {
+                description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高风险项目监测：</strong> ${highRiskItems.highRiskWarnings.join("，")}`;
+                
+                if (highRiskItems.highRiskCount >= 5 || negativeScore >= 49) {
+                    description += `<br><br><strong style="color:#dc2626;">紧急干预提示：</strong> 消极反刍总分≥49分，或同时有≥5个高危项目评分≥4分，提示情绪危机高风险，需立即：①联系被评估者监护人（青少年群体）；②开展情绪稳定干预（如正念训练、认知解离技术）；③转介至精神卫生医疗机构。`;
+                    
+                    // 显示紧急求助资源
+                    document.getElementById('emergencyContacts').style.display = 'block';
+                } else {
+                    // 隐藏紧急求助资源
+                    document.getElementById('emergencyContacts').style.display = 'none';
+                }
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const negativeScoreContainer = document.getElementById('negativeScoreContainer');
+            const negativeScoreElement = document.getElementById('negativeScore');
+            const positiveScoreContainer = document.getElementById('positiveScoreContainer');
+            const positiveScoreElement = document.getElementById('positiveScore');
+            const negativeProgress = document.getElementById('negativeProgress');
+            const positiveProgress = document.getElementById('positiveProgress');
+            
+            // 重置所有高风险样式
+            resultBox.classList.remove('high-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk');
+            negativeScoreContainer.classList.remove('high-risk');
+            negativeScoreElement.classList.remove('high-risk');
+            positiveScoreContainer.classList.remove('high-risk');
+            positiveScoreElement.classList.remove('high-risk');
+            negativeProgress.classList.remove('high-risk');
+            positiveProgress.classList.remove('high-risk');
+            
+            // 根据风险级别设置样式
+            if (negativeResult === "极高水平消极反刍" || highRiskItems.highRiskCount >= 5) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                negativeScoreContainer.classList.add('high-risk');
+                negativeScoreElement.classList.add('high-risk');
+                negativeProgress.classList.add('high-risk');
+                resultTitle.textContent = "极高危：极高水平消极反刍";
+            } 
+            else if (negativeResult === "高水平消极反刍") {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                negativeScoreContainer.classList.add('high-risk');
+                negativeScoreElement.classList.add('high-risk');
+                negativeProgress.classList.add('high-risk');
+                resultTitle.textContent = "高风险：高水平消极反刍";
+            } 
+            else if (negativeResult === "中等水平消极反刍" || highRiskItems.highRiskCount > 0) {
+                resultTitle.textContent = "中风险：中等水平消极反刍";
+                resultBox.style.borderLeftColor = getSeverityColor(negativeResultInfo.severityClass);
+            } else {
+                resultTitle.textContent = "低风险：低水平消极反刍";
+                resultBox.style.borderLeftColor = getSeverityColor(negativeResultInfo.severityClass);
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#4a148c';
+            }
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为3分（有时）
+                for (let i = 0; i < panrsQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="3"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置高风险项目样式
+                document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                    item.classList.remove('high-risk-active');
+                });
+                
+                // 重置结果显示
+                document.getElementById('negativeScore').textContent = '0';
+                document.getElementById('positiveScore').textContent = '0';
+                document.getElementById('negativeProgress').style.width = '0%';
+                document.getElementById('positiveProgress').style.width = '0%';
+                document.getElementById('thinkingTendency').textContent = '--';
+                document.getElementById('emotionRegulation').textContent = '--';
+                document.getElementById('resultDescription').innerHTML = '请完成所有22个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('negativeRiskStatus').textContent = '低风险';
+                document.getElementById('negativeRiskStatus').className = 'risk-status safe';
+                document.getElementById('positiveRiskStatus').textContent = '低水平';
+                document.getElementById('positiveRiskStatus').className = 'risk-status warning';
+                document.getElementById('highRiskItemsStatus').textContent = '安全';
+                document.getElementById('highRiskItemsStatus').className = 'risk-status safe';
+                document.getElementById('overallRiskStatus').textContent = '低风险';
+                document.getElementById('overallRiskStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                document.getElementById('combinationInterpretation').style.display = 'none';
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const negativeScoreContainer = document.getElementById('negativeScoreContainer');
+                const negativeScoreElement = document.getElementById('negativeScore');
+                const positiveScoreContainer = document.getElementById('positiveScoreContainer');
+                const positiveScoreElement = document.getElementById('positiveScore');
+                const negativeProgress = document.getElementById('negativeProgress');
+                const positiveProgress = document.getElementById('positiveProgress');
+                
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                negativeScoreContainer.classList.remove('high-risk');
+                negativeScoreElement.classList.remove('high-risk');
+                positiveScoreContainer.classList.remove('high-risk');
+                positiveScoreElement.classList.remove('high-risk');
+                negativeProgress.classList.remove('high-risk');
+                positiveProgress.classList.remove('high-risk');
+                
+                negativeProgress.className = 'progress-fill negative';
+                positiveProgress.className = 'progress-fill positive';
+                
+                resultBox.style.borderLeftColor = '#4a148c';
+                resultBox.style.backgroundColor = '#f8fafc';
+                resultTitle.textContent = '评估结果说明';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新分数
+            updateScores();
+        });
+    </script>
+</body>
+</html>

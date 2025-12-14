@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>谢谢你，认真对待自己的感受 | 写在最后</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "思源宋体", "PingFang SC", sans-serif;
+        }
+        /* 全局柔和暖调 */
+        body {
+            background-color: #FFFAF5;
+            color: #5A4B44;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        /* 顶部轻量导航 - 极简治愈 */
+        .header {
+            padding: 20px 0;
+            text-align: center;
+            background: #917164;
+            color: #FFFAF5;
+            box-shadow: 0 2px 12px rgba(145, 113, 100, 0.1);
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+                padding: 0 15px;
+            }
+        }
+        /* 主内容区 - 留白充足，呼吸感强 */
+        .main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px 80px;
+        }
+        /* 欢迎模块 - 柔和开场 */
+        .welcome {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #E8D6CF;
+        }
+        .welcome .icon {
+            font-size: 48px;
+            color: #D2691E;
+            margin-bottom: 20px;
+        }
+        .welcome h2 {
+            font-size: 28px;
+            color: #805D50;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .welcome p {
+            font-size: 18px;
+            color: #6B564F;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* 核心寄语模块 - 分块递进，温柔治愈 */
+        .message-block {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(145, 113, 100, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .message-block:hover {
+            transform: translateY(-5px);
+        }
+        .message-block h3 {
+            font-size: 22px;
+            color: #917164;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message-block h3::before {
+            content: "✨";
+            font-size: 20px;
+        }
+        .message-block p {
+            font-size: 17px;
+            margin-bottom: 12px;
+            color: #5A4B44;
+        }
+        /* 小行动建议 - 轻量实用 */
+        .tips {
+            background: #FFEEF2;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+        .tips h3 {
+            font-size: 20px;
+            color: #805D50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .tips ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .tips li {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            color: #6B564F;
+            box-shadow: 0 2px 8px rgba(145, 113, 100, 0.08);
+        }
+        /* 收尾寄语 - 温暖有力 */
+        .final {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+        }
+        .final h3 {
+            font-size: 24px;
+            color: #805D50;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .final p {
+            font-size: 19px;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            color: #5A4B44;
+            line-height: 2.2;
+        }
+        /* 底部轻量提示 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #8C786E;
+            border-top: 1px solid #E8D6CF;
+            margin-top: 40px;
+        }
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .main {
+                padding: 40px 15px 60px;
+            }
+            .welcome h2 {
+                font-size: 24px;
+            }
+            .welcome p {
+                font-size: 16px;
+            }
+            .message-block {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+            .message-block h3 {
+                font-size: 20px;
+            }
+            .message-block p {
+                font-size: 16px;
+            }
+            .tips ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tips li {
+                width: 80%;
+                text-align: center;
+            }
+            .final h3 {
+                font-size: 22px;
+            }
+            .final p {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部极简导航 -->
+    <header class="header">
+        <h1>写在最后 · 谢谢你认真对待自己</h1>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main">
+        <!-- 开场欢迎模块 -->
+        <section class="welcome">
+            <div class="icon">❤️</div>
+            <h2>你已经完成了所有问卷，辛苦了</h2>
+            <p>每一道题的选择，都是你对自己感受的诚实回应——这本身，就是一件特别勇敢的事。</p>
+        </section>
+
+        <!-- 核心寄语模块1：肯定付出 -->
+        <section class="message-block">
+            <h3>这些问卷，从不是为了给你贴标签</h3>
+            <p>你填写的每一个答案，都不是“对”或“错”的判定，也不是“好”或“不好”的评价。</p>
+            <p>它们只是一面镜子，帮你把心里那些模糊的、说不清的感受，轻轻梳理成能被看见的样子——让你知道“我此刻的不舒服，是有原因的；我的感受，是真实且值得被重视的”。</p>
+            <p>能愿意花时间面对这些感受，本身就说明你心里有着想要“好好对待自己”的愿望，这已经很棒了。</p>
+        </section>
+
+        <!-- 核心寄语模块2：接纳当下 -->
+        <section class="message-block">
+            <h3>不必急着“变好”，允许自己慢慢来</h3>
+            <p>如果看完解读后，你觉得“原来我有这么多不舒服的地方”，请不要责怪自己。</p>
+            <p>就像天气会有晴有雨，情绪也会有高低起伏；就像身体会累，心里也会有需要休息的时候。没有谁能一直保持“积极乐观”，也没有谁必须“永远坚强”。</p>
+            <p>允许自己此刻就是这样的状态，允许自己有难过、有焦虑、有不知所措——接纳当下的自己，才是温柔对待自己的第一步。</p>
+        </section>
+
+        <!-- 小行动建议 -->
+        <section class="tips">
+            <h3>如果此刻觉得有点重，试试做一件小事</h3>
+            <ul>
+                <li>喝一杯热乎的饮品（奶茶/温水/热可可）</li>
+                <li>晒5分钟太阳，感受阳光落在身上的温度</li>
+                <li>和信任的人说一句“我现在有点难受”</li>
+                <li>躺下来，什么都不想，只是闭眼歇一会儿</li>
+                <li>或者找小表哥聊聊天</li>
+            </ul>
+        </section>
+
+        <!-- 核心寄语模块3：传递陪伴 -->
+        <section class="message-block">
+            <h3>你从来都不是一个人</h3>
+            <p>这些感受或许让你觉得孤独，觉得“只有我是这样”，但其实不是的。</p>
+            <p>每个人的心里，都有过迷茫、难过、不知所措的时刻；每个人都需要被理解，需要被温柔对待。</p>
+            <p>如果这些感受超出了你能承受的范围，不必硬扛——找信任的人聊聊，或是寻求专业的陪伴，都不是“软弱”，而是对自己负责的、勇敢的选择。</p>
+        </section>
+
+        <!-- 收尾终极寄语 -->
+        <section class="final">
+            <h3>最后，想对你说</h3>
+            <p>你的感受值得被认真对待，你的存在本身就有意义。</p>
+            <p>不必因为暂时的状态否定自己，不必强迫自己立刻走出情绪的低谷。</p>
+            <p>慢慢来，真的没关系。我会陪着你，一点点靠近那个更舒服、更舒展的自己。</p>
+        </section>
+    </main>
+
+    <!-- 底部轻量提示 -->
+    <footer class="footer">
+        <p>愿你永远温柔对待自己</p>
+    </footer>
+
+    <!-- 轻量交互：滚动时的柔和效果 -->
+    <script>
+        // 页面滚动时，元素渐入
+        document.addEventListener('DOMContentLoaded', () => {
+            const blocks = document.querySelectorAll('.message-block, .welcome, .tips, .final');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            blocks.forEach(block => {
+                block.style.opacity = '0';
+                block.style.transform = 'translateY(20px)';
+                block.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(block);
+            });
+        });
+    </script>
+</body>
+</html>

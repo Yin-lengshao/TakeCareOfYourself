@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小周同学天天开心！</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a18;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        /* 开场欢迎屏样式 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            overflow: hidden;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .welcome-screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: gridMove 15s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gridMove { 
+            from { background-position: 0 0; }
+            to { background-position: 30px 30px; }
+        }
+
+        .welcome-content {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .big-characters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .char {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            animation: charAppear 0.6s forwards;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 255, 255, 0.5);
+            color: white;
+            position: relative;
+        }
+
+        .char::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            animation: charUnderline 0.6s forwards 0.3s;
+        }
+
+        @keyframes charAppear { 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+
+        @keyframes charUnderline { 
+            to { transform: scaleX(1); } 
+        }
+
+        .welcome-message {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 3.5s;
+            color: white;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+    <!-- 开场欢迎屏 -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <div class="big-characters">
+                <span class="char" style="animation-delay: 0.1s">小</span>
+                <span class="char" style="animation-delay: 0.3s">周</span>
+                <span class="char" style="animation-delay: 0.5s">同</span>
+                <span class="char" style="animation-delay: 0.7s">学</span>
+                <span class="char" style="animation-delay: 0.9s">天</span>
+                <span class="char" style="animation-delay: 1.1s">天</span>
+                <span class="char" style="animation-delay: 1.3s">开</span>
+                <span class="char" style="animation-delay: 1.5s">心</span>
+                <span class="char" style="animation-delay: 1.7s">!</span>
+            </div>
+            <div class="welcome-message">
+                不要多想，你真的已经很好啦！！！<br>点击屏幕或按任意键继续...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            let isTriggered = false; // 防止重复触发
+
+            // 触发跳转逻辑
+            function triggerEnter() {
+                if (isTriggered) return;
+                isTriggered = true;
+
+                // 淡出动画后跳转菜单页
+                requestAnimationFrame(() => {
+                    welcomeScreen.style.opacity = '0';
+                });
+
+                setTimeout(() => {
+                    window.location.href = 'questionnaire.html'; // 跳转到菜单页
+                }, 1000);
+            }
+
+            // 绑定点击/按键事件
+            welcomeScreen.addEventListener('click', triggerEnter, { passive: true });
+            document.addEventListener('keydown', (e) => {
+                // 排除功能键，避免误触
+                if (!e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+                    triggerEnter();
+                }
+            }, { passive: true });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青少年自我报告量表（YSR）评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4c6ef5 0%, #3b5bdb 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 400px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #4c6ef5;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #4c6ef5;
+        }
+        
+        h3 {
+            color: #3b5bdb;
+            margin: 20px 0 15px;
+            font-size: 18px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .module-header {
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 25px 0 15px;
+            border-left: 4px solid #4c6ef5;
+        }
+        
+        .module-title {
+            font-weight: 700;
+            color: #3b5bdb;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .module-description {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .question-item {
+            margin-bottom: 20px;
+            padding: 18px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .high-risk-active {
+            background-color: rgba(254, 202, 202, 0.1);
+            border: 1px solid #fecaca;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        .rating-options {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .rating-option {
+            flex: 1;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 12px 8px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #4c6ef5;
+            color: white;
+            border-color: #4c6ef5;
+            font-weight: 600;
+        }
+        
+        .rating-option.high-risk-option input[value="1"]:checked + label,
+        .rating-option.high-risk-option input[value="2"]:checked + label {
+            background-color: #ef4444;
+            border-color: #dc2626;
+        }
+        
+        .rating-option label:hover {
+            background-color: #e8f0fe;
+            border-color: #4c6ef5;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #4c6ef5;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .dimension-scores {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .dimension-score {
+            flex: 1;
+            min-width: 90px;
+            padding: 10px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .dimension-score.high-risk {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3b5bdb;
+        }
+        
+        .dimension-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .dimension-name {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #4c6ef5;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4c6ef5;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #4c6ef5;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #3b5bdb;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            border: 1px solid #fecaca;
+        }
+        
+        .high-risk-flash {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 5px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+            
+            .dimension-scores {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+        
+        .item-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .emergency-contacts {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .emergency-title {
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #bae6fd;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .module-divider {
+            height: 2px;
+            background-color: #e2e8f0;
+            margin: 30px 0;
+        }
+        
+        .subscale-header {
+            background-color: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin: 20px 0 10px;
+            border-left: 3px solid #4c6ef5;
+        }
+        
+        .subscale-title {
+            font-weight: 600;
+            color: #3b5bdb;
+            font-size: 16px;
+        }
+        
+        .subscale-description {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #4c6ef5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .scroll-top-btn:hover {
+            background-color: #3b5bdb;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-user-graduate"></i> 青少年自我报告量表（YSR）在线评估</h1>
+            <p class="subtitle">本量表用于11-18岁青少年的心理社会功能、行为问题及社会适应能力评估，是全球公认的青少年心理健康评估"金标准"。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>这份问卷用于了解你过去6个月（包括现在）的情况。请仔细阅读每个问题，根据自己的实际情况选择答案：0=不属实（这个描述完全不符合你），1=有点属实或部分属实（这个描述在一定程度上符合你），2=非常属实或完全属实（这个描述完全符合你）。请在每个问题对应的选项框内打"√"，不要遗漏任何问题，也不要过度思考，真实作答即可。所有答案都会严格保密，仅用于评估你的健康状况。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> YSR评估项目（共113项，2大模块）</h2>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 重要提醒：</strong> 本量表标注"★"的项目为高危选项，若评分≥1分，提示存在紧急风险，需立即干预。高危项目包括：自杀想法、自杀尝试、暴力行为、参与打架斗殴/帮派活动、吸烟饮酒、接触/使用毒品、自伤行为。
+                    </div>
+                    
+                    <div id="questionsContainer">
+                        <!-- 问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 标准化评分细则</h2>
+                    
+                    <p><strong>通用评分标准（所有项目适用）：</strong></p>
+                    
+                    <p><strong>0分（不属实）：</strong>过去6个月内完全没有出现该项目描述的情况，或仅出现1次且程度极轻微，无任何困扰。</p>
+                    <p><strong>1分（有点属实/部分属实）：</strong>过去6个月内出现2-3次，或程度较轻，对学习、生活、社交有轻微影响，但可自行调节。</p>
+                    <p><strong>2分（非常属实/完全属实）：</strong>过去6个月内频繁出现（4次及以上），或程度严重，明显干扰学习、生活、社交功能，无法自行调节，需要他人帮助。</p>
+                    
+
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">社会能力总分</div>
+                        <div id="socialScore" class="score-value">0</div>
+                        <div class="score-label">临床问题总分</div>
+                        <div id="clinicalScore" class="score-value">0</div>
+                        
+                        <div class="dimension-scores">
+                            <div class="dimension-score" id="internalizingScoreContainer">
+                                <div class="dimension-value" id="internalizingScore">0</div>
+                                <div class="dimension-name">内化问题</div>
+                            </div>
+                            <div class="dimension-score" id="externalizingScoreContainer">
+                                <div class="dimension-value" id="externalizingScore">0</div>
+                                <div class="dimension-name">外化问题</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 高风险项目监测</div>
+                        <div class="risk-item">
+                            <span class="risk-name">自杀相关风险</span>
+                            <span id="suicideRiskStatus" class="risk-status safe">无风险</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">暴力与伤害风险</span>
+                            <span id="violenceRiskStatus" class="risk-status safe">无风险</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">物质滥用风险</span>
+                            <span id="substanceRiskStatus" class="risk-status safe">无风险</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">临床问题总分风险</span>
+                            <span id="clinicalRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有113个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 社会能力量表解读</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>适应功能</th>
+                                    <th>建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>≥25分</td>
+                                    <td><span class="severity-indicator severity-0">良好</span></td>
+                                    <td>社会适应功能良好，能较好应对各类问题</td>
+                                </tr>
+                                <tr>
+                                    <td>15-24分</td>
+                                    <td><span class="severity-indicator severity-1">中等</span></td>
+                                    <td>社会适应功能中等，基本能应对日常需求</td>
+                                </tr>
+                                <tr>
+                                    <td>＜15分</td>
+                                    <td><span class="severity-indicator severity-3">较弱</span></td>
+                                    <td>社会适应功能较弱，需针对性干预</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="margin-top: 20px;">临床问题量表解读</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>问题严重程度</th>
+                                    <th>建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>＜60分</td>
+                                    <td><span class="severity-indicator severity-0">无明显问题</span></td>
+                                    <td>仅有轻微、偶发的困扰，无需特殊干预</td>
+                                </tr>
+                                <tr>
+                                    <td>60-89分</td>
+                                    <td><span class="severity-indicator severity-1">轻度问题</span></td>
+                                    <td>困扰偶尔影响生活，建议心理疏导</td>
+                                </tr>
+                                <tr>
+                                    <td>90-119分</td>
+                                    <td><span class="severity-indicator severity-3">中度问题</span></td>
+                                    <td>明显影响学习、社交，需系统心理干预</td>
+                                </tr>
+                                <tr>
+                                    <td>≥120分</td>
+                                    <td><span class="severity-indicator severity-4">重度问题</span></td>
+                                    <td>严重干扰日常生活，需紧急综合干预</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>青少年心理热线：</strong> 12355（全国青少年服务台）/18835185216（和小表格讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 高危处理流程：</strong> 若出现任何高危选项评分≥1分，或临床问题总分≥120分，需立即：①停止评估，保障青少年人身安全；②联系其监护人，告知风险；③转介至精神卫生医疗机构或专业危机干预机构。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        
+        <button class="scroll-top-btn" id="scrollTopBtn">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+
+    <script>
+        // YSR问题列表（113个项目）
+        const ysrQuestions = [
+            // 模块1：社会能力量表（1-17项）
+            {
+                text: "与同伴相处融洽",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "有亲密的朋友（能相互信任、倾诉）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "主动参与集体活动（如班级、社团活动）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "能与异性正常交往（符合年龄的适当互动）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "与父母/监护人沟通顺畅",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "能体谅父母/监护人的辛苦",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "主动承担家庭责任（如家务、照顾家人）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "对学习/工作有兴趣",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "学习/工作态度认真，能主动完成任务",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "学习/工作成绩/表现良好",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "有明确的学习/职业目标",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "有持续坚持的兴趣爱好（如运动、艺术、阅读）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "能合理安排自己的时间（如学习、娱乐、休息）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "遇到困难时能主动寻求帮助",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "能独立完成日常事务（如整理物品、规划出行）",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "能控制自己的情绪，不轻易发脾气",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            {
+                text: "对自己有信心，能接纳自己的优缺点",
+                module: "social",
+                subscale: "社会能力",
+                dimension: "social"
+            },
+            // 模块2：临床问题量表 - 亚量表1：焦虑/抑郁（18-32项）
+            {
+                text: "经常感到悲伤、情绪低落",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "对以前感兴趣的事情失去兴趣",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "容易哭泣",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常感到紧张、焦虑",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "担心很多事情（如学习、未来、人际关系）",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "感到孤独，觉得没人理解自己",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "觉得自己没用、没有价值",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常自责、内疚",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "感到绝望，对未来没有希望",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "★有自杀的想法或念头",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing",
+                highRisk: true,
+                riskCategory: "suicide",
+                highRiskThreshold: 1
+            },
+            {
+                text: "★尝试过自杀",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing",
+                highRisk: true,
+                riskCategory: "suicide",
+                highRiskThreshold: 1
+            },
+            {
+                text: "入睡困难、睡眠浅或易醒",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "早醒（比平时提前1小时以上，无法再入睡）",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常做噩梦",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            {
+                text: "感到疲惫、没有力气",
+                module: "clinical",
+                subscale: "焦虑/抑郁",
+                dimension: "internalizing"
+            },
+            // 亚量表2：退缩/社交问题（33-44项）
+            {
+                text: "喜欢独处，不愿意和别人交往",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "回避陌生人或不熟悉的环境",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "在社交场合感到紧张、不自在",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "不善于表达自己的想法和感受",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "害怕被别人拒绝",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "容易被同伴欺负或孤立",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "对他人的批评或评价非常敏感",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "不愿意参加集体活动",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "和同伴发生冲突后不知道如何解决",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "很难交到朋友",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "对他人缺乏信任",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "感到自己和别人不一样，难以融入群体",
+                module: "clinical",
+                subscale: "退缩/社交问题",
+                dimension: "internalizing"
+            },
+            // 亚量表3：躯体化症状（45-54项）
+            {
+                text: "经常头痛",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常头晕、恶心或呕吐",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常肚子痛、胃痛",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "感到胸闷、呼吸困难",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "肌肉酸痛或无力",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常感到疲劳、精力不足",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "食欲明显减退或暴饮暴食",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "体重明显增减（无刻意控制）",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "皮肤瘙痒、起皮疹（无明确病因）",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常感到身体不适，但去医院检查不出问题",
+                module: "clinical",
+                subscale: "躯体化症状",
+                dimension: "internalizing"
+            },
+            // 亚量表4：攻击行为（55-69项）
+            {
+                text: "容易发脾气、情绪暴躁",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "经常和别人争吵",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "对他人说脏话、辱骂别人",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "推、打、踢别人或和别人打架",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "故意破坏别人的东西",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "欺负弱小的同伴",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "不遵守规则（如学校纪律、交通规则）",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "对权威（如老师、家长）有敌意，不服从管理",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "容易冲动，做事不考虑后果",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "威胁或恐吓别人",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "★有暴力行为（如使用工具伤人）",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing",
+                highRisk: true,
+                riskCategory: "violence",
+                highRiskThreshold: 1
+            },
+            {
+                text: "故意打扰别人",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "嫉妒别人，容易和别人产生矛盾",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "拒绝承担自己的错误，喜欢找借口",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "情绪波动大，容易从平静变得愤怒",
+                module: "clinical",
+                subscale: "攻击行为",
+                dimension: "externalizing"
+            },
+            // 亚量表5：违纪行为（70-80项）
+            {
+                text: "逃学、旷课或旷工",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "离家出走（过夜或更长时间）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "撒谎、欺骗别人（如家长、老师、同伴）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "偷东西",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "擅自使用别人的东西（未经过允许）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "★参与打架斗殴、帮派活动",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing",
+                highRisk: true,
+                riskCategory: "violence",
+                highRiskThreshold: 1
+            },
+            {
+                text: "故意损坏公共设施",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "夜不归宿（未告知家长）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "赌博（如玩牌、买彩票赌钱）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing"
+            },
+            {
+                text: "★吸烟、饮酒",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing",
+                highRisk: true,
+                riskCategory: "substance",
+                highRiskThreshold: 1
+            },
+            {
+                text: "★接触或使用毒品（如大麻、兴奋剂）",
+                module: "clinical",
+                subscale: "违纪行为",
+                dimension: "externalizing",
+                highRisk: true,
+                riskCategory: "substance",
+                highRiskThreshold: 1
+            },
+            // 亚量表6：注意力问题（81-90项）
+            {
+                text: "注意力不集中，容易分心",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "很难专注于一件事（如学习、看书）",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "做事粗心大意，容易出错",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "不能按时完成学习/工作任务",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "坐不住，喜欢来回走动",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "活动过多，精力过于旺盛",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "容易被外界刺激吸引（如声音、动静）",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "记忆力不好，容易忘记事情",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "组织能力差，无法合理安排任务",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            {
+                text: "做事拖拉，拖延时间",
+                module: "clinical",
+                subscale: "注意力问题",
+                dimension: "externalizing"
+            },
+            // 亚量表7：思维问题（91-98项）
+            {
+                text: "经常感到困惑，思维混乱",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "有奇怪的想法或信念（如觉得自己被跟踪、被控制）",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "听到别人听不到的声音（如说话声、命令声）",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "看到别人看不到的东西",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "觉得自己的想法被别人知道了",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "很难做出决定",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "反复思考同一个问题，无法停止",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "觉得周围的环境不真实",
+                module: "clinical",
+                subscale: "思维问题",
+                dimension: "internalizing"
+            },
+            // 亚量表8：适应问题（99-103项）
+            {
+                text: "对自己的未来感到迷茫",
+                module: "clinical",
+                subscale: "适应问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "难以适应新的环境（如升学、转学、换工作）",
+                module: "clinical",
+                subscale: "适应问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "不知道如何规划自己的人生",
+                module: "clinical",
+                subscale: "适应问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "对成年后的责任感到压力大",
+                module: "clinical",
+                subscale: "适应问题",
+                dimension: "internalizing"
+            },
+            {
+                text: "难以平衡个人需求和他人期望",
+                module: "clinical",
+                subscale: "适应问题",
+                dimension: "internalizing"
+            },
+            // 补充项目（104-113项）
+            {
+                text: "★有自伤行为（如割腕、划伤自己）",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing",
+                highRisk: true,
+                riskCategory: "violence",
+                highRiskThreshold: 1
+            },
+            {
+                text: "过度使用电子产品（如手机、电脑），影响学习/生活",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "沉迷网络游戏或其他娱乐活动，无法自控",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "有危险性行为（如无保护措施的性行为）",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常感到压力过大，无法承受",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "对自己的外貌、身材过度关注或自卑",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "经常比较自己和别人，感到自卑",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "不愿意接受批评，容易生气",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "遇到挫折后容易放弃，缺乏坚持的勇气",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            },
+            {
+                text: "有其他未提及的困扰（可在横线处补充：__________）",
+                module: "clinical",
+                subscale: "补充项目",
+                dimension: "internalizing"
+            }
+        ];
+        
+        // 评分选项（0-2分）
+        const ratingOptions = [
+            { value: 0, label: "0分", description: "不属实" },
+            { value: 1, label: "1分", description: "有点属实" },
+            { value: 2, label: "2分", description: "非常属实" }
+        ];
+        
+        // 高风险项目索引（根据问题列表）
+        const highRiskIndices = [27, 28, 65, 71, 76, 77, 80]; // 对应27、28、65、75、79、80、104项
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "社会能力良好": {
+                title: "社会适应功能良好",
+                description: "根据评估结果，社会适应功能良好，能较好应对学习、社交及家庭中的各类问题，具备良好的独立能力和情绪调节能力。",
+                severityClass: "severity-0"
+            },
+            "社会能力中等": {
+                title: "社会适应功能中等",
+                description: "根据评估结果，社会适应功能中等，基本能应对日常需求，但在主动性、社交能力或责任意识方面存在轻微不足，需适当引导。",
+                severityClass: "severity-1"
+            },
+            "社会能力较弱": {
+                title: "社会适应功能较弱",
+                description: "根据评估结果，社会适应功能较弱，在社交、学习或家庭互动中存在明显困难，缺乏独立能力和情绪调节能力，需针对性干预。",
+                severityClass: "severity-3"
+            }
+        };
+        
+        const clinicalResultDescriptions = {
+            "无明显问题": {
+                title: "无明显心理行为问题",
+                description: "根据评估结果，无明显心理行为问题，或仅有轻微、偶发的困扰，对生活无影响，无需特殊干预。",
+                severityClass: "severity-0"
+            },
+            "轻度问题": {
+                title: "存在轻度心理行为问题",
+                description: "根据评估结果，存在轻度心理行为问题，困扰偶尔影响学习、生活，建议开展心理疏导或定期观察。",
+                severityClass: "severity-1"
+            },
+            "中度问题": {
+                title: "存在中度心理行为问题",
+                description: "根据评估结果，存在中度心理行为问题，困扰明显影响学习、社交及家庭生活，属于中风险人群，需系统心理干预。",
+                severityClass: "severity-3"
+            },
+            "重度问题": {
+                title: "存在重度心理行为问题",
+                description: "根据评估结果，存在重度心理行为问题，困扰严重干扰日常生活，甚至存在自伤、自杀或伤人风险，属于高风险人群，需紧急综合干预（如住院治疗、危机干预）。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const container = document.getElementById('questionsContainer');
+            
+            // 添加模块1：社会能力量表
+            const module1Header = document.createElement('div');
+            module1Header.className = 'module-header';
+            module1Header.innerHTML = `
+                <div class="module-title">模块1：社会能力量表（共17项）</div>
+                <div class="module-description">评估社交、学习/工作、兴趣爱好等方面的能力，高分提示社会适应功能良好。</div>
+            `;
+            container.appendChild(module1Header);
+            
+            // 添加社会能力量表问题
+            for (let i = 0; i < 17; i++) {
+                createQuestionItem(i, container);
+            }
+            
+            // 添加模块2：临床问题量表
+            const module2Header = document.createElement('div');
+            module2Header.className = 'module-header';
+            module2Header.style.marginTop = '30px';
+            module2Header.innerHTML = `
+                <div class="module-title">模块2：临床问题量表（共96项，分8个临床亚量表）</div>
+                <div class="module-description">评估各类心理、情绪及行为问题，高分提示问题越严重；其中标注"★"的为高危选项，需重点关注。</div>
+            `;
+            container.appendChild(module2Header);
+            
+            // 定义亚量表信息
+            const subscales = [
+                { name: "焦虑/抑郁", start: 17, end: 31, description: "评估情绪低落、焦虑相关症状" },
+                { name: "退缩/社交问题", start: 32, end: 43, description: "评估社交回避、孤立相关行为" },
+                { name: "躯体化症状", start: 44, end: 53, description: "评估无明确病因的躯体不适" },
+                { name: "攻击行为", start: 54, end: 68, description: "评估冲动、攻击相关行为" },
+                { name: "违纪行为", start: 69, end: 79, description: "评估违反社会规范的行为" },
+                { name: "注意力问题", start: 80, end: 89, description: "评估注意力不集中、多动相关症状" },
+                { name: "思维问题", start: 90, end: 97, description: "评估认知、思维相关异常表现" },
+                { name: "适应问题", start: 98, end: 102, description: "评估青少年向成年过渡的适应困难" },
+                { name: "补充项目", start: 103, end: 112, description: "评估特殊风险行为与适应状态" }
+            ];
+            
+            // 添加亚量表问题
+            let currentIndex = 17;
+            subscales.forEach(subscale => {
+                // 添加亚量表标题
+                const subscaleHeader = document.createElement('div');
+                subscaleHeader.className = 'subscale-header';
+                subscaleHeader.innerHTML = `
+                    <div class="subscale-title">亚量表：${subscale.name}</div>
+                    <div class="subscale-description">${subscale.description}</div>
+                `;
+                container.appendChild(subscaleHeader);
+                
+                // 添加该亚量表的问题
+                for (let i = currentIndex; i <= subscale.end; i++) {
+                    createQuestionItem(i, container);
+                }
+                
+                currentIndex = subscale.end + 1;
+            });
+        }
+        
+        // 创建单个问题项
+        function createQuestionItem(index, container) {
+            const question = ysrQuestions[index];
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.id = `question-${index}`;
+            
+            // 如果是高风险项目，添加数据属性
+            if (question.highRisk) {
+                questionItem.dataset.highRisk = "true";
+                questionItem.dataset.riskCategory = question.riskCategory;
+                questionItem.dataset.highRiskThreshold = question.highRiskThreshold;
+            }
+            
+            // 问题文本
+            const questionText = document.createElement('div');
+            questionText.className = 'question-text';
+            
+            // 添加问题编号和文本
+            const questionNumber = index + 1;
+            questionText.textContent = `${questionNumber}. ${question.text}`;
+            
+            // 如果是高风险项目，添加标记
+            if (question.highRisk) {
+                const highRiskSpan = document.createElement('span');
+                highRiskSpan.className = 'high-risk-tag';
+                highRiskSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 高危选项';
+                questionText.appendChild(highRiskSpan);
+            }
+            
+            // 评分选项
+            const ratingContainer = document.createElement('div');
+            ratingContainer.className = 'rating-options';
+            
+            // 创建单选按钮
+            ratingOptions.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'rating-option';
+                
+                // 如果是高风险项目，为高风险阈值及以上选项添加特殊类
+                if (question.highRisk && option.value >= question.highRiskThreshold) {
+                    optionDiv.classList.add('high-risk-option');
+                }
+                
+                const inputId = `q${index}-score${option.value}`;
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `question${index}`;
+                input.id = inputId;
+                input.value = option.value;
+                
+                // 默认选择0分
+                if (option.value === 0) {
+                    input.checked = true;
+                }
+                
+                input.addEventListener('change', function() {
+                    updateTotalScore();
+                    checkHighRiskItems();
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = inputId;
+                label.textContent = option.label;
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'rating-value';
+                valueSpan.textContent = option.description;
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionDiv.appendChild(valueSpan);
+                ratingContainer.appendChild(optionDiv);
+            });
+            
+            questionItem.appendChild(questionText);
+            questionItem.appendChild(ratingContainer);
+            container.appendChild(questionItem);
+        }
+        
+        // 计算总分和维度分
+        function calculateScores() {
+            let socialScore = 0;
+            let clinicalScore = 0;
+            let internalizingScore = 0;
+            let externalizingScore = 0;
+            
+            for (let i = 0; i < ysrQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    
+                    // 根据模块分配分数
+                    if (ysrQuestions[i].module === "social") {
+                        socialScore += score;
+                    } else if (ysrQuestions[i].module === "clinical") {
+                        clinicalScore += score;
+                        
+                        // 根据维度分配分数
+                        if (ysrQuestions[i].dimension === "internalizing") {
+                            internalizingScore += score;
+                        } else if (ysrQuestions[i].dimension === "externalizing") {
+                            externalizingScore += score;
+                        }
+                    }
+                }
+            }
+            
+            return { socialScore, clinicalScore, internalizingScore, externalizingScore };
+        }
+        
+        // 检查高风险项目分数
+        function checkHighRiskItems() {
+            let suicideRiskCount = 0;
+            let violenceRiskCount = 0;
+            let substanceRiskCount = 0;
+            let totalHighRiskCount = 0;
+            
+            // 重置所有高风险项目样式
+            document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                item.classList.remove('high-risk-active', 'high-risk-flash');
+            });
+            
+            // 检查所有高风险项目
+            for (let i = 0; i < ysrQuestions.length; i++) {
+                if (ysrQuestions[i].highRisk) {
+                    const questionItem = document.getElementById(`question-${i}`);
+                    const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                    
+                    if (selectedOption) {
+                        const score = parseInt(selectedOption.value);
+                        const threshold = questionItem ? parseInt(questionItem.dataset.highRiskThreshold) : 1;
+                        
+                        if (score >= threshold) {
+                            totalHighRiskCount++;
+                            
+                            // 根据风险类别计数
+                            if (ysrQuestions[i].riskCategory === "suicide") {
+                                suicideRiskCount++;
+                            } else if (ysrQuestions[i].riskCategory === "violence") {
+                                violenceRiskCount++;
+                            } else if (ysrQuestions[i].riskCategory === "substance") {
+                                substanceRiskCount++;
+                            }
+                            
+                            // 为高风险项目添加视觉样式
+                            if (questionItem) {
+                                questionItem.classList.add('high-risk-active');
+                                if (score >= 2) {
+                                    questionItem.classList.add('high-risk-flash');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return { suicideRiskCount, violenceRiskCount, substanceRiskCount, totalHighRiskCount };
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(highRiskResults, clinicalScore) {
+            const suicideRiskStatus = document.getElementById('suicideRiskStatus');
+            const violenceRiskStatus = document.getElementById('violenceRiskStatus');
+            const substanceRiskStatus = document.getElementById('substanceRiskStatus');
+            const clinicalRiskStatus = document.getElementById('clinicalRiskStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 自杀相关风险评估状态
+            if (highRiskResults.suicideRiskCount > 0) {
+                suicideRiskStatus.textContent = `${highRiskResults.suicideRiskCount}项高风险`;
+                suicideRiskStatus.className = 'risk-status danger';
+            } else {
+                suicideRiskStatus.textContent = '无风险';
+                suicideRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 暴力与伤害风险评估状态
+            if (highRiskResults.violenceRiskCount > 0) {
+                violenceRiskStatus.textContent = `${highRiskResults.violenceRiskCount}项高风险`;
+                violenceRiskStatus.className = 'risk-status danger';
+            } else {
+                violenceRiskStatus.textContent = '无风险';
+                violenceRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 物质滥用风险评估状态
+            if (highRiskResults.substanceRiskCount > 0) {
+                substanceRiskStatus.textContent = `${highRiskResults.substanceRiskCount}项高风险`;
+                substanceRiskStatus.className = 'risk-status danger';
+            } else {
+                substanceRiskStatus.textContent = '无风险';
+                substanceRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 临床问题总分风险评估状态
+            if (clinicalScore >= 120) {
+                clinicalRiskStatus.textContent = '高风险';
+                clinicalRiskStatus.className = 'risk-status danger';
+            } else if (clinicalScore >= 90) {
+                clinicalRiskStatus.textContent = '中风险';
+                clinicalRiskStatus.className = 'risk-status warning';
+            } else if (clinicalScore >= 60) {
+                clinicalRiskStatus.textContent = '低风险';
+                clinicalRiskStatus.className = 'risk-status safe';
+            } else {
+                clinicalRiskStatus.textContent = '安全';
+                clinicalRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 更新风险评估摘要样式
+            if (highRiskResults.totalHighRiskCount > 0 || clinicalScore >= 120) {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 根据社会能力总分获取评估结果
+        function getSocialAssessmentResult(score) {
+            if (score >= 25) {
+                return "社会能力良好";
+            } else if (score >= 15) {
+                return "社会能力中等";
+            } else {
+                return "社会能力较弱";
+            }
+        }
+        
+        // 根据临床问题总分获取评估结果
+        function getClinicalAssessmentResult(score) {
+            if (score < 60) {
+                return "无明显问题";
+            } else if (score < 90) {
+                return "轻度问题";
+            } else if (score < 120) {
+                return "中度问题";
+            } else {
+                return "重度问题";
+            }
+        }
+        
+        // 更新总分显示
+        function updateTotalScore() {
+            const scores = calculateScores();
+            const { socialScore, clinicalScore, internalizingScore, externalizingScore } = scores;
+            
+            // 检查高风险项目
+            const highRiskResults = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskResults, clinicalScore);
+            
+            // 更新总分显示
+            document.getElementById('socialScore').textContent = socialScore;
+            document.getElementById('clinicalScore').textContent = clinicalScore;
+            document.getElementById('internalizingScore').textContent = internalizingScore;
+            document.getElementById('externalizingScore').textContent = externalizingScore;
+            
+            // 实时更新评估结果
+            if (isAssessmentComplete()) {
+                const socialResult = getSocialAssessmentResult(socialScore);
+                const clinicalResult = getClinicalAssessmentResult(clinicalScore);
+                const socialResultInfo = resultDescriptions[socialResult];
+                const clinicalResultInfo = clinicalResultDescriptions[clinicalResult];
+                
+                // 更新结果描述
+                let description = `<strong>社会能力：</strong>${socialResultInfo.description}<br><br><strong>临床问题：</strong>${clinicalResultInfo.description}`;
+                
+                // 如果有高风险项目，添加特别警告
+                if (highRiskResults.totalHighRiskCount > 0) {
+                    description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高危警告：</strong> ${highRiskResults.totalHighRiskCount}项高危选项评分≥1分，提示存在紧急风险，需立即干预！`;
+                }
+                
+                document.getElementById('resultDescription').innerHTML = description;
+                
+                // 更新结果框样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const socialScoreElement = document.getElementById('socialScore');
+                const clinicalScoreElement = document.getElementById('clinicalScore');
+                const internalizingScoreContainer = document.getElementById('internalizingScoreContainer');
+                const internalizingScoreElement = document.getElementById('internalizingScore');
+                const externalizingScoreContainer = document.getElementById('externalizingScoreContainer');
+                const externalizingScoreElement = document.getElementById('externalizingScore');
+                
+                // 重置所有高风险样式
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                socialScoreElement.classList.remove('high-risk');
+                clinicalScoreElement.classList.remove('high-risk');
+                internalizingScoreContainer.classList.remove('high-risk');
+                internalizingScoreElement.classList.remove('high-risk');
+                externalizingScoreContainer.classList.remove('high-risk');
+                externalizingScoreElement.classList.remove('high-risk');
+                
+                // 更新社会能力总分颜色
+                if (socialScore < 15) {
+                    socialScoreElement.style.color = getSeverityColor('severity-3');
+                } else if (socialScore < 25) {
+                    socialScoreElement.style.color = getSeverityColor('severity-1');
+                } else {
+                    socialScoreElement.style.color = getSeverityColor('severity-0');
+                }
+                
+                // 更新临床问题总分颜色
+                if (clinicalScore >= 120) {
+                    clinicalScoreElement.style.color = getSeverityColor('severity-4');
+                } else if (clinicalScore >= 90) {
+                    clinicalScoreElement.style.color = getSeverityColor('severity-3');
+                } else if (clinicalScore >= 60) {
+                    clinicalScoreElement.style.color = getSeverityColor('severity-1');
+                } else {
+                    clinicalScoreElement.style.color = getSeverityColor('severity-0');
+                }
+                
+                // 检查是否需要应用高风险样式
+                if (highRiskResults.totalHighRiskCount > 0 || clinicalScore >= 120) {
+                    resultBox.classList.add('high-risk');
+                    resultTitle.classList.add('high-risk');
+                    scoreDisplay.classList.add('high-risk');
+                    clinicalScoreElement.classList.add('high-risk');
+                    
+                    // 检查内化问题分数
+                    if (internalizingScore >= 60) {
+                        internalizingScoreContainer.classList.add('high-risk');
+                        internalizingScoreElement.classList.add('high-risk');
+                    }
+                    
+                    // 检查外化问题分数
+                    if (externalizingScore >= 40) {
+                        externalizingScoreContainer.classList.add('high-risk');
+                        externalizingScoreElement.classList.add('high-risk');
+                    }
+                }
+            }
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#4c6ef5';
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < ysrQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有113个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const scores = calculateScores();
+            const { socialScore, clinicalScore, internalizingScore, externalizingScore } = scores;
+            
+            // 检查高风险项目
+            const highRiskResults = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskResults, clinicalScore);
+            
+            // 更新总分显示
+            document.getElementById('socialScore').textContent = socialScore;
+            document.getElementById('clinicalScore').textContent = clinicalScore;
+            document.getElementById('internalizingScore').textContent = internalizingScore;
+            document.getElementById('externalizingScore').textContent = externalizingScore;
+            
+            // 获取评估结果
+            const socialResult = getSocialAssessmentResult(socialScore);
+            const clinicalResult = getClinicalAssessmentResult(clinicalScore);
+            const socialResultInfo = resultDescriptions[socialResult];
+            const clinicalResultInfo = clinicalResultDescriptions[clinicalResult];
+            
+            // 构建结果描述
+            let description = `<strong>社会能力：</strong>${socialResultInfo.description}<br><br><strong>临床问题：</strong>${clinicalResultInfo.description}`;
+            
+            // 如果有高风险项目，添加特别警告
+            if (highRiskResults.totalHighRiskCount > 0) {
+                description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高危警告：</strong> ${highRiskResults.totalHighRiskCount}项高危选项评分≥1分，提示存在紧急风险，需立即干预！`;
+                
+                // 显示紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'block';
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            // 添加内化/外化问题警告
+            if (internalizingScore >= 60) {
+                description += `<br><br><strong>注意：</strong> 内化问题总分≥60分，存在明显的情绪、认知困扰，需重点关注情绪调节能力。`;
+            }
+            
+            if (externalizingScore >= 40) {
+                description += `<br><br><strong>注意：</strong> 外化问题总分≥40分，存在明显的行为问题，需重点开展行为矫正和规则意识培养。`;
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const socialScoreElement = document.getElementById('socialScore');
+            const clinicalScoreElement = document.getElementById('clinicalScore');
+            const internalizingScoreContainer = document.getElementById('internalizingScoreContainer');
+            const internalizingScoreElement = document.getElementById('internalizingScore');
+            const externalizingScoreContainer = document.getElementById('externalizingScoreContainer');
+            const externalizingScoreElement = document.getElementById('externalizingScore');
+            
+            // 重置所有高风险样式
+            resultBox.classList.remove('high-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk');
+            socialScoreElement.classList.remove('high-risk');
+            clinicalScoreElement.classList.remove('high-risk');
+            internalizingScoreContainer.classList.remove('high-risk');
+            internalizingScoreElement.classList.remove('high-risk');
+            externalizingScoreContainer.classList.remove('high-risk');
+            externalizingScoreElement.classList.remove('high-risk');
+            
+            // 更新社会能力总分颜色
+            if (socialScore < 15) {
+                socialScoreElement.style.color = getSeverityColor('severity-3');
+            } else if (socialScore < 25) {
+                socialScoreElement.style.color = getSeverityColor('severity-1');
+            } else {
+                socialScoreElement.style.color = getSeverityColor('severity-0');
+            }
+            
+            // 更新临床问题总分颜色
+            if (clinicalScore >= 120) {
+                clinicalScoreElement.style.color = getSeverityColor('severity-4');
+            } else if (clinicalScore >= 90) {
+                clinicalScoreElement.style.color = getSeverityColor('severity-3');
+            } else if (clinicalScore >= 60) {
+                clinicalScoreElement.style.color = getSeverityColor('severity-1');
+            } else {
+                clinicalScoreElement.style.color = getSeverityColor('severity-0');
+            }
+            
+            // 检查是否需要应用高风险样式
+            if (highRiskResults.totalHighRiskCount > 0 || clinicalScore >= 120) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                clinicalScoreElement.classList.add('high-risk');
+                
+                // 检查内化问题分数
+                if (internalizingScore >= 60) {
+                    internalizingScoreContainer.classList.add('high-risk');
+                    internalizingScoreElement.classList.add('high-risk');
+                }
+                
+                // 检查外化问题分数
+                if (externalizingScore >= 40) {
+                    externalizingScoreContainer.classList.add('high-risk');
+                    externalizingScoreElement.classList.add('high-risk');
+                }
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为0分
+                for (let i = 0; i < ysrQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="0"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置高风险项目样式
+                document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                    item.classList.remove('high-risk-active', 'high-risk-flash');
+                });
+                
+                // 重置结果显示
+                document.getElementById('socialScore').textContent = '0';
+                document.getElementById('clinicalScore').textContent = '0';
+                document.getElementById('internalizingScore').textContent = '0';
+                document.getElementById('externalizingScore').textContent = '0';
+                document.getElementById('resultDescription').innerHTML = '请完成所有113个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('suicideRiskStatus').textContent = '无风险';
+                document.getElementById('suicideRiskStatus').className = 'risk-status safe';
+                document.getElementById('violenceRiskStatus').textContent = '无风险';
+                document.getElementById('violenceRiskStatus').className = 'risk-status safe';
+                document.getElementById('substanceRiskStatus').textContent = '无风险';
+                document.getElementById('substanceRiskStatus').className = 'risk-status safe';
+                document.getElementById('clinicalRiskStatus').textContent = '安全';
+                document.getElementById('clinicalRiskStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const socialScoreElement = document.getElementById('socialScore');
+                const clinicalScoreElement = document.getElementById('clinicalScore');
+                const internalizingScoreContainer = document.getElementById('internalizingScoreContainer');
+                const internalizingScoreElement = document.getElementById('internalizingScore');
+                const externalizingScoreContainer = document.getElementById('externalizingScoreContainer');
+                const externalizingScoreElement = document.getElementById('externalizingScore');
+                
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                socialScoreElement.classList.remove('high-risk');
+                clinicalScoreElement.classList.remove('high-risk');
+                internalizingScoreContainer.classList.remove('high-risk');
+                internalizingScoreElement.classList.remove('high-risk');
+                externalizingScoreContainer.classList.remove('high-risk');
+                externalizingScoreElement.classList.remove('high-risk');
+                
+                socialScoreElement.style.color = '#4c6ef5';
+                clinicalScoreElement.style.color = '#4c6ef5';
+                resultBox.style.borderLeftColor = '#4c6ef5';
+                resultBox.style.backgroundColor = '#f8fafc';
+            }
+        }
+        
+        // 滚动到顶部功能
+        function setupScrollTopButton() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.style.display = 'flex';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 设置滚动到顶部按钮
+            setupScrollTopButton();
+            
+            // 初始更新总分
+            updateTotalScore();
+        });
+    </script>
+</body>
+</html>

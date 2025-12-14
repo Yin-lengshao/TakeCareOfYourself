@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自我批判认知量表（SCCS）在线评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 380px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #2e7d32;
+        }
+        
+        h3 {
+            color: #1b5e20;
+            margin: 20px 0 15px;
+            font-size: 18px;
+        }
+        
+        .question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .high-risk-active {
+            background-color: rgba(254, 202, 202, 0.1);
+            border: 1px solid #fecaca;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 90px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        .rating-option.high-risk-option input[value="4"]:checked + label,
+        .rating-option.high-risk-option input[value="5"]:checked + label {
+            background-color: #ef4444;
+            border-color: #dc2626;
+        }
+        
+        .rating-option label:hover {
+            background-color: #e8f5e9;
+            border-color: #2e7d32;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f5e9 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-display.extreme-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #ef4444;
+            animation: pulse 2s infinite;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #2e7d32;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .dimension-scores {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .dimension-score {
+            flex: 1;
+            padding: 12px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-score.high-risk {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        
+        .dimension-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #2e7d32;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-box.extreme-risk {
+            background-color: #fee2e2;
+            border-left: 5px solid #dc2626;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #2e7d32;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed #e2e8f0;
+        }
+        
+        .dimension-title {
+            color: #1b5e20;
+            font-weight: 600;
+        }
+        
+        .dimension-info {
+            font-size: 13px;
+            color: #64748b;
+            background-color: #f8fafc;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .emergency-contacts {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .emergency-title {
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #bae6fd;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        .item-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .scale-background {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2e7d32;
+        }
+        
+        .scale-info {
+            margin-bottom: 10px;
+        }
+        
+        .scale-info p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+            
+            .dimension-scores {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-clipboard-check"></i> 自我批判认知量表（SCCS）在线评估</h1>
+            <p class="subtitle">本量表由Carver和Ganellen于1983年编制，后经Hewitt和Flett（1993年）修订完善，是评估个体自我批判认知模式的权威工具。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>本问卷用于了解你过去6个月内的自我认知状态。请仔细阅读每个陈述，根据自己的实际感受选择最符合的选项，答案没有对错之分，仅需真实作答。所有信息将严格保密，仅用于评估研究。</p>
+                <p><strong>评分说明：</strong>采用5级评分制：1=完全不同意，2=不同意，3=不确定，4=同意，5=完全同意。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> SCCS核心问卷项目（共13项）</h2>
+                    
+                    <div class="scale-background">
+                        <div class="scale-info">
+                            <p><strong>量表背景说明：</strong>本量表聚焦负性自我评价与严苛自我标准两大核心维度，专为识别精神自戕相关的认知基础设计，对非典型NSSI行为具有良好的预测性。</p>
+                            <p><strong>信效度信息：</strong>总体Cronbach's α系数=0.89，6.5周重测信度r=0.83，两因素模型拟合度良好。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title">维度1：负性自我评价（6项，评估对自身价值的否定倾向）</div>
+                        <div class="dimension-info">第1、3、4、8、10、13项</div>
+                    </div>
+                    
+                    <div id="questionsContainer">
+                        <!-- 问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="dimension-header">
+                        <div class="dimension-title">维度2：严苛自我标准（7项，评估不切实际的自我要求）</div>
+                        <div class="dimension-info">第2、5、6、7、9、11、12项</div>
+                    </div>
+                    
+                    <div id="questionsContainer2">
+                        <!-- 维度2问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 高危项目监测：</strong> 第4、8、10、13项为精神自戕高风险关联项。若任一项目评分≥4分（同意/完全同意），提示存在明显的自我伤害性认知；若同时有≥3个项目评分≥4分，需立即关注并干预。
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 标准化评分细则</h2>
+                    
+                    <p>本量表采用5级正向计分，所有项目均为正向表述，无反向计分项目。</p>
+                    
+                    <p><strong>1. 通用评分标准</strong></p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px;">
+                        <li><strong>1分（完全不同意）：</strong>该陈述完全不符合我的情况</li>
+                        <li><strong>2分（不同意）：</strong>该陈述基本不符合我的情况</li>
+                        <li><strong>3分（不确定）：</strong>我无法确定该陈述是否符合我的情况</li>
+                        <li><strong>4分（同意）：</strong>该陈述基本符合我的情况</li>
+                        <li><strong>5分（完全同意）：</strong>该陈述完全符合我的情况</li>
+                    </ul>
+                    
+                    <p><strong>2. 高危选项判定与说明</strong></p>
+                    <p>以下项目为精神自戕高风险关联项，若任一项目评分≥4分（同意/完全同意），即提示存在明显的自我伤害性认知：</p>
+                    <ul style="padding-left: 20px; margin-bottom: 15px;">
+                        <li>第4项：我认为自己不值得被尊重或被爱</li>
+                        <li>第8项：我对自己说一些贬低、批评的话（如"你真没用"）</li>
+                        <li>第10项：我经常感到自己是个失败者</li>
+                        <li>第13项：我觉得自己不配拥有成功和幸福</li>
+                    </ul>
+                    <p>若同时有≥3个项目评分≥4分，需立即关注并干预。</p>
+                    
+
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">SCCS总分</div>
+                        <div id="totalScore" class="score-value">0</div>
+                        <div id="severityText" class="score-label">请完成评估</div>
+                        
+                        <div class="dimension-scores">
+                            <div class="dimension-score" id="negativeScoreContainer">
+                                <div class="dimension-value" id="negativeScore">0</div>
+                                <div class="dimension-name">负性自我评价</div>
+                            </div>
+                            <div class="dimension-score" id="strictScoreContainer">
+                                <div class="dimension-value" id="strictScore">0</div>
+                                <div class="dimension-name">严苛自我标准</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 风险评估摘要</div>
+                        <div class="risk-item">
+                            <span class="risk-name">高风险项目监测</span>
+                            <span id="highRiskItemsStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">总体风险等级</span>
+                            <span id="totalScoreRiskStatus" class="risk-status safe">低风险</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">负性自我评价风险</span>
+                            <span id="negativeRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">严苛自我标准风险</span>
+                            <span id="strictRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有13个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>风险等级</th>
+                                    <th>临床建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>13-25分</td>
+                                    <td><span class="severity-indicator severity-0">低水平自我批判</span></td>
+                                    <td>自我认知健康，对自身评价客观，无精神自戕风险，无需干预。</td>
+                                </tr>
+                                <tr>
+                                    <td>26-39分</td>
+                                    <td><span class="severity-indicator severity-1">中等水平自我批判</span></td>
+                                    <td>存在轻微的负性自我认知，但对生活影响极小，属于中低风险；建议关注自我认知调节。</td>
+                                </tr>
+                                <tr>
+                                    <td>40-52分</td>
+                                    <td><span class="severity-indicator severity-3">高水平自我批判</span></td>
+                                    <td>负性自我认知明显，频繁出现自我贬低、自责等思维，易引发精神自戕行为，属于高风险；需专业心理干预。</td>
+                                </tr>
+                                <tr>
+                                    <td>53-65分</td>
+                                    <td><span class="severity-indicator severity-4">极高水平自我批判</span></td>
+                                    <td>自我认知严重扭曲，完全陷入自我否定状态，精神自戕风险极高，属于极高危；需立即寻求精神科评估与综合干预。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="margin-top: 15px;">
+                            <p><strong>维度分解读：</strong></p>
+                            <ul style="padding-left: 20px; font-size: 14px;">
+                                <li><strong>负性自我评价维度分≥20分：</strong>对自身价值的否定倾向强烈，核心信念为"自己无用、不配被爱"，是精神自戕的核心驱动因素。</li>
+                                <li><strong>严苛自我标准维度分≥25分：</strong>对自己设定不切实际的完美标准，过度关注自身不足，容错率极低，易因微小失误引发强烈自责。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332/18835185216（和小表格聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 适用人群与评估时限：</strong> 适用于12岁及以上青少年及成人；严格限定"过去6个月"为评估时限，需明确告知被评估者"仅统计近6个月的自我认知状态"。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // SCCS问题列表（分为两个维度）
+        const sccsQuestions = [
+            // 维度1：负性自我评价（6项）
+            {
+                text: "我经常反复思考自己的缺点和错误",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 1
+            },
+            {
+                text: "我总是把过错归咎于自己，即使是别人的责任",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 3
+            },
+            {
+                text: "我认为自己不值得被尊重或被爱",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 4,
+                highRisk: true,
+                highRiskIndex: 3 // 项目4
+            },
+            {
+                text: "我对自己说一些贬低、批评的话（如'你真没用'）",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 8,
+                highRisk: true,
+                highRiskIndex: 7 // 项目8
+            },
+            {
+                text: "我经常感到自己是个失败者",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 10,
+                highRisk: true,
+                highRiskIndex: 9 // 项目10
+            },
+            {
+                text: "我觉得自己不配拥有成功和幸福",
+                dimension: "negative",
+                dimensionName: "负性自我评价",
+                number: 13,
+                highRisk: true,
+                highRiskIndex: 12 // 项目13
+            },
+            // 维度2：严苛自我标准（7项）
+            {
+                text: "我对自己的期望不切实际地高",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 2
+            },
+            {
+                text: "我经常拿自己与他人比较，并觉得自己不如别人",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 5
+            },
+            {
+                text: "我很难原谅自己的错误",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 6
+            },
+            {
+                text: "我经常有'全或无'的思维（例如：如果不完美，就是彻底失败）",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 7
+            },
+            {
+                text: "我认为自己的成就永远不够好",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 9
+            },
+            {
+                text: "我认为如果我表现不好，别人就会看不起我",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 11
+            },
+            {
+                text: "我经常担心自己会让别人失望",
+                dimension: "strict",
+                dimensionName: "严苛自我标准",
+                number: 12
+            }
+        ];
+        
+        // 评分选项
+        const ratingOptions = [
+            { value: 1, label: "完全不同意", description: "1分" },
+            { value: 2, label: "不同意", description: "2分" },
+            { value: 3, label: "不确定", description: "3分" },
+            { value: 4, label: "同意", description: "4分" },
+            { value: 5, label: "完全同意", description: "5分" }
+        ];
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "低水平自我批判": {
+                title: "低水平自我批判",
+                description: "根据评估结果，您的自我认知健康，对自身评价客观，无精神自戕风险，无需干预。",
+                severityClass: "severity-0"
+            },
+            "中等水平自我批判": {
+                title: "中等水平自我批判",
+                description: "根据评估结果，您存在轻微的负性自我认知，但对生活影响极小，属于中低风险。建议关注自我认知调节，可通过简单的自我关怀训练改善。",
+                severityClass: "severity-1"
+            },
+            "高水平自我批判": {
+                title: "高水平自我批判",
+                description: "根据评估结果，您的负性自我认知明显，频繁出现自我贬低、自责等思维，易引发精神自戕行为（如持续自我折磨）或非典型NSSI行为，属于高风险。建议寻求专业心理干预（如认知行为治疗）。",
+                severityClass: "severity-3"
+            },
+            "极高水平自我批判": {
+                title: "极高水平自我批判",
+                description: "根据评估结果，您的自我认知严重扭曲，完全陷入自我否定状态，精神自戕风险极高，且可能伴随抑郁、焦虑等心理障碍，属于极高危。建议立即寻求精神科评估与综合干预。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const container1 = document.getElementById('questionsContainer');
+            const container2 = document.getElementById('questionsContainer2');
+            
+            // 分别处理两个维度的问题
+            sccsQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${question.number-1}`;
+                
+                // 如果是高风险项目，添加数据属性
+                if (question.highRisk) {
+                    questionItem.dataset.highRisk = "true";
+                    questionItem.dataset.highRiskIndex = question.highRiskIndex;
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                
+                // 添加问题编号和文本
+                questionText.textContent = `${question.number}. ${question.text}`;
+                
+                // 如果是高风险项目，添加标记
+                if (question.highRisk) {
+                    const highRiskSpan = document.createElement('span');
+                    highRiskSpan.className = 'high-risk-tag';
+                    highRiskSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 高风险项目';
+                    questionText.appendChild(highRiskSpan);
+                }
+                
+                // 如果有维度信息，添加维度标签
+                const dimensionSpan = document.createElement('div');
+                dimensionSpan.className = 'item-note';
+                dimensionSpan.textContent = `维度：${question.dimensionName}`;
+                questionText.appendChild(dimensionSpan);
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建单选按钮
+                ratingOptions.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    // 如果是高风险项目，为4分和5分选项添加特殊类
+                    if (question.highRisk && (option.value === 4 || option.value === 5)) {
+                        optionDiv.classList.add('high-risk-option');
+                    }
+                    
+                    const inputId = `q${question.number-1}-score${option.value}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${question.number-1}`;
+                    input.id = inputId;
+                    input.value = option.value;
+                    
+                    // 默认选择3分（不确定）
+                    if (option.value === 3) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', function() {
+                        updateTotalScore();
+                        checkHighRiskItems();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = option.label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = option.description;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                });
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                
+                // 根据维度添加到不同的容器
+                if (question.dimension === "negative") {
+                    container1.appendChild(questionItem);
+                } else {
+                    container2.appendChild(questionItem);
+                }
+            });
+        }
+        
+        // 计算总分和维度分
+        function calculateScores() {
+            let total = 0;
+            let negativeScore = 0;
+            let strictScore = 0;
+            
+            for (let i = 0; i < 13; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    total += score;
+                    
+                    // 根据维度分配分数
+                    // 负性自我评价维度：项目1、3、4、8、10、13
+                    if ([0, 2, 3, 7, 9, 12].includes(i)) {
+                        negativeScore += score;
+                    } 
+                    // 严苛自我标准维度：项目2、5、6、7、9、11、12
+                    else if ([1, 4, 5, 6, 8, 10, 11].includes(i)) {
+                        strictScore += score;
+                    }
+                }
+            }
+            
+            return { total, negativeScore, strictScore };
+        }
+        
+        // 检查高风险项目分数
+        function checkHighRiskItems() {
+            const highRiskItems = [3, 7, 9, 12]; // 项目4、8、10、13的索引（从0开始）
+            let highRiskWarnings = [];
+            let highRiskCount = 0;
+            
+            // 重置所有高风险项目样式
+            document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                item.classList.remove('high-risk-active');
+            });
+            
+            for (const itemIndex of highRiskItems) {
+                const questionItem = document.getElementById(`question-${itemIndex}`);
+                const selectedOption = document.querySelector(`input[name="question${itemIndex}"]:checked`);
+                
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    if (score >= 4) {
+                        highRiskCount++;
+                        const questionNumber = itemIndex + 1;
+                        highRiskWarnings.push(`项目${questionNumber}评分≥4分`);
+                        
+                        // 为高风险项目添加视觉样式
+                        if (questionItem) {
+                            questionItem.classList.add('high-risk-active');
+                        }
+                    }
+                }
+            }
+            
+            return { highRiskWarnings, highRiskCount };
+        }
+        
+        // 根据总分获取评估结果
+        function getAssessmentResult(score) {
+            if (score >= 13 && score <= 25) {
+                return "低水平自我批判";
+            } else if (score >= 26 && score <= 39) {
+                return "中等水平自我批判";
+            } else if (score >= 40 && score <= 52) {
+                return "高水平自我批判";
+            } else if (score >= 53 && score <= 65) {
+                return "极高水平自我批判";
+            } else {
+                return "分数异常";
+            }
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(highRiskItems, total, negativeScore, strictScore) {
+            const highRiskItemsStatus = document.getElementById('highRiskItemsStatus');
+            const totalScoreRiskStatus = document.getElementById('totalScoreRiskStatus');
+            const negativeRiskStatus = document.getElementById('negativeRiskStatus');
+            const strictRiskStatus = document.getElementById('strictRiskStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 高风险项目状态
+            if (highRiskItems.highRiskCount >= 3) {
+                highRiskItemsStatus.textContent = `${highRiskItems.highRiskCount}项高风险`;
+                highRiskItemsStatus.className = 'risk-status danger';
+            } else if (highRiskItems.highRiskCount > 0) {
+                highRiskItemsStatus.textContent = `${highRiskItems.highRiskCount}项高风险`;
+                highRiskItemsStatus.className = 'risk-status warning';
+            } else {
+                highRiskItemsStatus.textContent = '安全';
+                highRiskItemsStatus.className = 'risk-status safe';
+            }
+            
+            // 总体风险状态
+            const result = getAssessmentResult(total);
+            if (result === "极高水平自我批判") {
+                totalScoreRiskStatus.textContent = '极高危';
+                totalScoreRiskStatus.className = 'risk-status danger';
+            } else if (result === "高水平自我批判") {
+                totalScoreRiskStatus.textContent = '高风险';
+                totalScoreRiskStatus.className = 'risk-status danger';
+            } else if (result === "中等水平自我批判") {
+                totalScoreRiskStatus.textContent = '中风险';
+                totalScoreRiskStatus.className = 'risk-status warning';
+            } else {
+                totalScoreRiskStatus.textContent = '低风险';
+                totalScoreRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 负性自我评价维度风险状态
+            if (negativeScore >= 20) {
+                negativeRiskStatus.textContent = '高风险';
+                negativeRiskStatus.className = 'risk-status danger';
+            } else if (negativeScore >= 15) {
+                negativeRiskStatus.textContent = '中风险';
+                negativeRiskStatus.className = 'risk-status warning';
+            } else {
+                negativeRiskStatus.textContent = '安全';
+                negativeRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 严苛自我标准维度风险状态
+            if (strictScore >= 25) {
+                strictRiskStatus.textContent = '高风险';
+                strictRiskStatus.className = 'risk-status danger';
+            } else if (strictScore >= 18) {
+                strictRiskStatus.textContent = '中风险';
+                strictRiskStatus.className = 'risk-status warning';
+            } else {
+                strictRiskStatus.textContent = '安全';
+                strictRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 更新风险评估摘要样式
+            if (result === "极高水平自我批判" || result === "高水平自我批判" || highRiskItems.highRiskCount >= 3) {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < 13; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 更新总分显示
+        function updateTotalScore() {
+            const scores = calculateScores();
+            const { total, negativeScore, strictScore } = scores;
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskItems, total, negativeScore, strictScore);
+            
+            // 更新总分
+            document.getElementById('totalScore').textContent = total;
+            
+            // 更新维度分
+            document.getElementById('negativeScore').textContent = negativeScore;
+            document.getElementById('strictScore').textContent = strictScore;
+            
+            // 实时更新评估结果
+            if (isAssessmentComplete()) {
+                const result = getAssessmentResult(total);
+                
+                if (result !== "分数异常") {
+                    const resultInfo = resultDescriptions[result];
+                    document.getElementById('severityText').textContent = resultInfo.title;
+                }
+            }
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有13个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const scores = calculateScores();
+            const { total, negativeScore, strictScore } = scores;
+            const result = getAssessmentResult(total);
+            const resultInfo = resultDescriptions[result];
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(highRiskItems, total, negativeScore, strictScore);
+            
+            // 更新总分显示
+            document.getElementById('totalScore').textContent = total;
+            document.getElementById('severityText').textContent = resultInfo.title;
+            
+            // 更新维度分显示
+            document.getElementById('negativeScore').textContent = negativeScore;
+            document.getElementById('strictScore').textContent = strictScore;
+            
+            // 构建结果描述
+            let description = resultInfo.description;
+            
+            // 维度分解读
+            let dimensionInterpretation = "";
+            
+            if (negativeScore >= 20) {
+                dimensionInterpretation += "<br><br><strong>负性自我评价维度：</strong>对自身价值的否定倾向强烈，核心信念为'自己无用、不配被爱'，是精神自戕的核心驱动因素，干预重点为重塑自我价值感。";
+            }
+            
+            if (strictScore >= 25) {
+                dimensionInterpretation += "<br><br><strong>严苛自我标准维度：</strong>对自己设定不切实际的完美标准，过度关注自身不足，容错率极低，易因微小失误引发强烈自责，干预重点为调整认知预期、学习接纳不完美。";
+            }
+            
+            description += dimensionInterpretation;
+            
+            // 如果有高风险警告，添加到描述中
+            if (highRiskItems.highRiskCount > 0) {
+                description += `<br><br><strong><i class="fas fa-exclamation-triangle"></i> 高风险项目监测：</strong> ${highRiskItems.highRiskWarnings.join("，")}`;
+                
+                if (highRiskItems.highRiskCount >= 3) {
+                    description += `<br><br><strong style="color:#dc2626;">紧急干预提示：</strong> 同时有≥3个高危项目评分≥4分，提示存在明显的自我伤害性认知，需立即：①联系被评估者监护人（青少年群体），告知精神自戕高风险；②开展危机干预（如情绪稳定训练、安全计划制定）；③转介至精神卫生医疗机构。`;
+                    
+                    // 显示紧急求助资源
+                    document.getElementById('emergencyContacts').style.display = 'block';
+                } else {
+                    // 隐藏紧急求助资源
+                    document.getElementById('emergencyContacts').style.display = 'none';
+                }
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const totalScoreElement = document.getElementById('totalScore');
+            const negativeScoreContainer = document.getElementById('negativeScoreContainer');
+            const negativeScoreElement = document.getElementById('negativeScore');
+            const strictScoreContainer = document.getElementById('strictScoreContainer');
+            const strictScoreElement = document.getElementById('strictScore');
+            
+            // 重置所有样式
+            resultBox.classList.remove('high-risk', 'extreme-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk', 'extreme-risk');
+            totalScoreElement.classList.remove('high-risk');
+            negativeScoreContainer.classList.remove('high-risk');
+            negativeScoreElement.classList.remove('high-risk');
+            strictScoreContainer.classList.remove('high-risk');
+            strictScoreElement.classList.remove('high-risk');
+            
+            // 根据风险级别设置样式
+            if (result === "极高水平自我批判") {
+                resultBox.classList.add('extreme-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('extreme-risk');
+                totalScoreElement.classList.add('high-risk');
+                resultTitle.textContent = "极高水平自我批判（极高危）";
+                
+                if (negativeScore >= 20) {
+                    negativeScoreContainer.classList.add('high-risk');
+                    negativeScoreElement.classList.add('high-risk');
+                }
+                
+                if (strictScore >= 25) {
+                    strictScoreContainer.classList.add('high-risk');
+                    strictScoreElement.classList.add('high-risk');
+                }
+            } 
+            else if (result === "高水平自我批判" || highRiskItems.highRiskCount >= 3) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                totalScoreElement.classList.add('high-risk');
+                resultTitle.textContent = resultInfo.title + "（高风险）";
+                
+                if (negativeScore >= 20) {
+                    negativeScoreContainer.classList.add('high-risk');
+                    negativeScoreElement.classList.add('high-risk');
+                }
+                
+                if (strictScore >= 25) {
+                    strictScoreContainer.classList.add('high-risk');
+                    strictScoreElement.classList.add('high-risk');
+                }
+            } else {
+                resultTitle.textContent = resultInfo.title;
+                resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+                totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#2e7d32';
+            }
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为3分（不确定）
+                for (let i = 0; i < 13; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="3"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置高风险项目样式
+                document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                    item.classList.remove('high-risk-active');
+                });
+                
+                // 重置结果显示
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('negativeScore').textContent = '0';
+                document.getElementById('strictScore').textContent = '0';
+                document.getElementById('severityText').textContent = '请完成评估';
+                document.getElementById('resultDescription').innerHTML = '请完成所有13个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('highRiskItemsStatus').textContent = '安全';
+                document.getElementById('highRiskItemsStatus').className = 'risk-status safe';
+                document.getElementById('totalScoreRiskStatus').textContent = '低风险';
+                document.getElementById('totalScoreRiskStatus').className = 'risk-status safe';
+                document.getElementById('negativeRiskStatus').textContent = '安全';
+                document.getElementById('negativeRiskStatus').className = 'risk-status safe';
+                document.getElementById('strictRiskStatus').textContent = '安全';
+                document.getElementById('strictRiskStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                const negativeScoreContainer = document.getElementById('negativeScoreContainer');
+                const negativeScoreElement = document.getElementById('negativeScore');
+                const strictScoreContainer = document.getElementById('strictScoreContainer');
+                const strictScoreElement = document.getElementById('strictScore');
+                
+                resultBox.classList.remove('high-risk', 'extreme-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk', 'extreme-risk');
+                totalScoreElement.classList.remove('high-risk');
+                negativeScoreContainer.classList.remove('high-risk');
+                negativeScoreElement.classList.remove('high-risk');
+                strictScoreContainer.classList.remove('high-risk');
+                strictScoreElement.classList.remove('high-risk');
+                
+                totalScoreElement.style.color = '#2e7d32';
+                resultBox.style.borderLeftColor = '#2e7d32';
+                resultBox.style.backgroundColor = '#f8fafc';
+                resultTitle.textContent = '评估结果说明';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新总分
+            updateTotalScore();
+        });
+    </script>
+</body>
+</html>

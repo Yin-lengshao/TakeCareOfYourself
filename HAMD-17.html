@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉密尔顿抑郁量表（HAMD-17）</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2a9d8f 0%, #1d7065 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 350px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #2a9d8f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #2a9d8f;
+        }
+        
+        h3 {
+            color: #1d7065;
+            margin: 20px 0 15px;
+            font-size: 18px;
+        }
+        
+        .question-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .high-risk-active {
+            background-color: rgba(254, 202, 202, 0.1);
+            border: 1px solid #fecaca;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 70px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #2a9d8f;
+            color: white;
+            border-color: #2a9d8f;
+            font-weight: 600;
+        }
+        
+        .rating-option.high-risk-option input[value="2"]:checked + label,
+        .rating-option.high-risk-option input[value="3"]:checked + label,
+        .rating-option.high-risk-option input[value="4"]:checked + label {
+            background-color: #ef4444;
+            border-color: #dc2626;
+        }
+        
+        .rating-option label:hover {
+            background-color: #e8f4f2;
+            border-color: #2a9d8f;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f4f2 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .score-display.high-risk {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #2a9d8f;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .score-value.high-risk {
+            color: #dc2626;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #2a9d8f;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box.high-risk {
+            background-color: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2a9d8f;
+        }
+        
+        .result-title.high-risk {
+            color: #dc2626;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #2a9d8f;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #1d7065;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .special-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #991b1b;
+        }
+        
+        .ethics-note {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .high-risk-tag {
+            display: inline-block;
+            background-color: #fef2f2;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .high-risk-flash {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 5px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .risk-summary {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .risk-summary.high-risk {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .risk-summary-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+        
+        .risk-name {
+            color: #4a5568;
+        }
+        
+        .risk-status {
+            font-weight: 600;
+        }
+        
+        .risk-status.safe {
+            color: #065f46;
+        }
+        
+        .risk-status.warning {
+            color: #92400e;
+        }
+        
+        .risk-status.danger {
+            color: #dc2626;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .score-value {
+                font-size: 56px;
+            }
+        }
+        
+        .item-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .emergency-contacts {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .emergency-title {
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #bae6fd;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="instructions">
+                <p><strong>指导语：</strong>请根据患者近1周内的症状表现，对以下17个项目分别进行评分，核心评分标准为0-4分（部分项目含特殊评分说明），具体评分定义见后续"评分标准说明"。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> HAMD-17评估项目（共17项）</h2>
+                    
+                    <div id="questionsContainer">
+                        <!-- 问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong><i class="fas fa-exclamation-triangle"></i> 重要提醒：</strong> 本量表第3项（自杀）评估自杀风险，若评分≥2分（即存在自杀计划或行为），应立即启动危机干预并寻求专业帮助。
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 评分标准说明</h2>
+                    
+                    <h3>一、核心评分标准（适用于多数0-4分项目）：</h3>
+                    <p><strong>0分：</strong>无该症状，患者无任何相关不适体验，面谈中未观察到异常</p>
+                    <p><strong>1分：</strong>轻度症状，仅在被询问时提及轻微不适，或观察到轻微异常，不影响日常生活</p>
+                    <p><strong>2分：</strong>中度症状，可自发提及症状，或明显观察到异常，对日常生活有一定影响但可忍受</p>
+                    <p><strong>3分：</strong>重度症状，症状持续且明显，患者感到显著痛苦，日常生活、工作或社交功能受明显影响</p>
+                    <p><strong>4分：</strong>极重度症状，症状严重且难以控制，患者无法正常生活、工作，需紧急干预</p>
+                    
+                    <h3 style="margin-top: 20px;">二、特殊项目评分说明（2分制项目）：</h3>
+                    <p><strong>入睡困难（第4项）：</strong>0分=无入睡困难；1分=轻度（入睡需30分钟-1小时）；2分=重度（入睡超过1小时或整夜难眠）</p>
+                    <p><strong>睡眠不深（第5项）：</strong>0分=睡眠正常；1分=偶尔易醒、多梦；2分=频繁易醒，醒后难再睡</p>
+                    <p><strong>早醒（第6项）：</strong>0分=无早醒；1分=提前1小时内醒来；2分=提前超过2小时醒来，且无法再入睡</p>
+                    <p><strong>体重减轻（第16项）：</strong>0分=无体重减轻；1分=1周内体重减轻1kg及以内；2分=1周内体重减轻超过2kg</p>
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display" id="scoreDisplay">
+                        <div class="score-label">HAMD-17总分</div>
+                        <div id="totalScore" class="score-value">0</div>
+                        <div id="severityText" class="score-label">请完成评估</div>
+                    </div>
+                    
+                    <div id="riskSummary" class="risk-summary">
+                        <div class="risk-summary-title"><i class="fas fa-shield-alt"></i> 风险评估摘要</div>
+                        <div class="risk-item">
+                            <span class="risk-name">自杀风险评估</span>
+                            <span id="suicideRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">总分风险</span>
+                            <span id="totalScoreRiskStatus" class="risk-status safe">安全</span>
+                        </div>
+                        <div class="risk-item">
+                            <span class="risk-name">抑郁严重程度</span>
+                            <span id="depressionSeverityStatus" class="risk-status safe">无抑郁</span>
+                        </div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div id="resultTitle" class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有17个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>抑郁等级</th>
+                                    <th>建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>＜7分</td>
+                                    <td><span class="severity-indicator severity-0">无抑郁症状</span></td>
+                                    <td>患者状态正常</td>
+                                </tr>
+                                <tr>
+                                    <td>7-17分</td>
+                                    <td><span class="severity-indicator severity-1">可能存在轻度抑郁</span></td>
+                                    <td>需结合临床症状进一步观察</td>
+                                </tr>
+                                <tr>
+                                    <td>18-24分</td>
+                                    <td><span class="severity-indicator severity-3">存在中度抑郁</span></td>
+                                    <td>建议进行针对性心理干预</td>
+                                </tr>
+                                <tr>
+                                    <td>＞24分</td>
+                                    <td><span class="severity-indicator severity-4">存在重度抑郁</span></td>
+                                    <td>需综合干预（如心理治疗+药物治疗），密切监测自杀风险</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emergencyContacts" class="emergency-contacts" style="display: none;">
+                        <div class="emergency-title"><i class="fas fa-phone-alt"></i> 紧急求助资源</div>
+                        <div class="contact-item">
+                            <strong>心理援助热线：</strong> 12320（全国心理援助热线）/18835185216（和小姨聊聊）
+                        </div>
+                        <div class="contact-item">
+                            <strong>危机干预热线：</strong> 北京心理危机研究与干预中心 010-82951332/18835185216（和小表格讲讲）
+                        </div>
+                        <div class="contact-item">
+                            <strong>紧急医疗救助：</strong> 120（急救电话）
+                        </div>
+                    </div>
+                    
+                    <div class="special-note">
+                        <p><strong><i class="fas fa-exclamation-circle"></i> 注意：</strong> 本量表为专业评估工具，结果仅供参考，不能替代临床诊断。尤其当第3项（自杀）评分≥2分时，应立即寻求专业危机干预。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // HAMD-17问题列表
+        const hamdQuestions = [
+            {
+                text: "抑郁情绪：情绪低落、兴趣减退，对日常活动缺乏愉悦感",
+                maxScore: 4
+            },
+            {
+                text: "有罪感：对自身行为或状态产生自责、内疚，甚至出现罪恶感",
+                maxScore: 4
+            },
+            {
+                text: "自杀：存在自杀念头、自杀计划，或有自杀未遂行为",
+                maxScore: 4,
+                note: "若评分≥2分（存在自杀计划或行为），应立即启动危机干预",
+                highRisk: true,
+                highRiskThreshold: 2,
+                highRiskIndex: 2 // 项目3
+            },
+            {
+                text: "入睡困难：入睡时间超过30分钟，或长期难以入睡",
+                maxScore: 2,
+                note: "0分=无入睡困难；1分=轻度（入睡需30分钟-1小时）；2分=重度（入睡超过1小时或整夜难眠）"
+            },
+            {
+                text: "睡眠不深：睡眠浅、多梦，夜间易醒，醒后难以再次入睡",
+                maxScore: 2,
+                note: "0分=睡眠正常；1分=偶尔易醒、多梦；2分=频繁易醒，醒后难再睡"
+            },
+            {
+                text: "早醒：比平时提前醒来，且醒来后无法再入睡（提前1小时内为轻度，超过2小时为重度）",
+                maxScore: 2,
+                note: "0分=无早醒；1分=提前1小时内醒来；2分=提前超过2小时醒来，且无法再入睡"
+            },
+            {
+                text: "工作和兴趣：对工作、学习或以往感兴趣的事物失去动力，参与度下降",
+                maxScore: 4
+            },
+            {
+                text: "阻滞（思维迟缓）：思维速度减慢、反应迟钝，言语量减少、语速缓慢",
+                maxScore: 4
+            },
+            {
+                text: "激越：情绪激动、坐立不安，难以静坐，存在冲动行为倾向",
+                maxScore: 4
+            },
+            {
+                text: "精神性焦虑：存在莫名的焦虑、担忧，或出现惊恐发作",
+                maxScore: 4
+            },
+            {
+                text: "躯体性焦虑（生理症状）：出现口干、尿频、心悸、呼吸困难、胃肠不适等焦虑相关躯体症状",
+                maxScore: 4
+            },
+            {
+                text: "胃肠道症状：食欲减退、厌食、恶心、呕吐、腹泻或便秘等胃肠功能异常",
+                maxScore: 4
+            },
+            {
+                text: "全身症状：全身乏力、虚弱，或出现不明原因的全身疼痛",
+                maxScore: 4
+            },
+            {
+                text: "性症状：性欲减退、性冷淡，或对性刺激无反应",
+                maxScore: 4
+            },
+            {
+                text: "疑病：过度关注自身健康，存在疑病观念，甚至出现疑病妄想",
+                maxScore: 4
+            },
+            {
+                text: "体重减轻：1周内体重减轻1kg及以上（需排除刻意减重）",
+                maxScore: 2,
+                note: "0分=无体重减轻；1分=1周内体重减轻1kg及以内；2分=1周内体重减轻超过2kg"
+            },
+            {
+                text: "自知力：对自身抑郁症状的认知程度，是否承认自己存在抑郁问题",
+                maxScore: 4,
+                note: "0分=自知力完整，4分=完全缺乏自知力"
+            }
+        ];
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "无抑郁": {
+                title: "无抑郁症状",
+                description: "根据评估结果，患者目前无明显的抑郁症状，心理健康状态良好。",
+                severityClass: "severity-0"
+            },
+            "可能存在轻度抑郁": {
+                title: "可能存在轻度抑郁",
+                description: "根据评估结果，患者可能存在轻度抑郁症状，建议结合临床症状进一步观察，定期复查。",
+                severityClass: "severity-1"
+            },
+            "存在中度抑郁": {
+                title: "存在中度抑郁",
+                description: "根据评估结果，患者存在中度抑郁症状，建议进行针对性心理干预，如心理咨询、认知行为疗法等。",
+                severityClass: "severity-3"
+            },
+            "存在重度抑郁": {
+                title: "存在重度抑郁",
+                description: "根据评估结果，患者存在重度抑郁症状，需综合干预（心理治疗+药物治疗），密切监测自杀风险。如第3项（自杀）评分≥2分，应立即启动危机干预。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const container = document.getElementById('questionsContainer');
+            
+            hamdQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${index}`;
+                
+                // 如果是高风险项目，添加数据属性
+                if (question.highRisk) {
+                    questionItem.dataset.highRisk = "true";
+                    questionItem.dataset.highRiskIndex = question.highRiskIndex;
+                    questionItem.dataset.highRiskThreshold = question.highRiskThreshold;
+                }
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${question.text}`;
+                
+                // 如果是高风险项目，添加标记
+                if (question.highRisk) {
+                    const highRiskSpan = document.createElement('span');
+                    highRiskSpan.className = 'high-risk-tag';
+                    highRiskSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 高风险项目';
+                    questionText.appendChild(highRiskSpan);
+                }
+                
+                // 如果有特殊说明，添加备注
+                if (question.note) {
+                    const noteDiv = document.createElement('div');
+                    noteDiv.className = 'item-note';
+                    noteDiv.textContent = question.note;
+                    questionText.appendChild(noteDiv);
+                }
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 根据最大分数创建单选按钮
+                const maxScore = question.maxScore;
+                const optionsCount = maxScore + 1; // 0到maxScore
+                
+                for (let i = 0; i < optionsCount; i++) {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    // 如果是高风险项目，为高风险阈值及以上选项添加特殊类
+                    if (question.highRisk && i >= question.highRiskThreshold) {
+                        optionDiv.classList.add('high-risk-option');
+                    }
+                    
+                    const inputId = `q${index}-score${i}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.id = inputId;
+                    input.value = i;
+                    
+                    // 默认选择0分
+                    if (i === 0) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', function() {
+                        updateTotalScore();
+                        checkHighRiskItems();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    
+                    // 根据分数设置标签文本
+                    if (i === 0) {
+                        label.textContent = "无";
+                    } else if (i === 1) {
+                        label.textContent = "轻度";
+                    } else if (i === 2) {
+                        label.textContent = maxScore === 2 ? "重度" : "中度";
+                    } else if (i === 3) {
+                        label.textContent = "重度";
+                    } else if (i === 4) {
+                        label.textContent = "极重度";
+                    }
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = `${i}分`;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                }
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                container.appendChild(questionItem);
+            });
+        }
+        
+        // 计算总分
+        function calculateTotalScore() {
+            let total = 0;
+            
+            for (let i = 0; i < hamdQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    total += parseInt(selectedOption.value);
+                }
+            }
+            
+            return total;
+        }
+        
+        // 检查自杀项目分数
+        function getSuicideScore() {
+            const selectedOption = document.querySelector(`input[name="question2"]:checked`);
+            return selectedOption ? parseInt(selectedOption.value) : 0;
+        }
+        
+        // 检查高风险项目分数
+        function checkHighRiskItems() {
+            const highRiskItems = [2]; // 项目3的索引（从0开始）
+            let highRiskWarnings = [];
+            let highRiskCount = 0;
+            
+            // 重置所有高风险项目样式
+            document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                item.classList.remove('high-risk-active', 'high-risk-flash');
+            });
+            
+            for (const itemIndex of highRiskItems) {
+                const questionItem = document.getElementById(`question-${itemIndex}`);
+                const selectedOption = document.querySelector(`input[name="question${itemIndex}"]:checked`);
+                
+                if (selectedOption) {
+                    const score = parseInt(selectedOption.value);
+                    const threshold = questionItem ? parseInt(questionItem.dataset.highRiskThreshold) : 2;
+                    
+                    if (score >= threshold) {
+                        highRiskCount++;
+                        const questionNumber = itemIndex + 1;
+                        highRiskWarnings.push(`项目${questionNumber}评分≥${threshold}分`);
+                        
+                        // 为高风险项目添加视觉样式
+                        if (questionItem) {
+                            questionItem.classList.add('high-risk-active');
+                            if (score >= 3) {
+                                questionItem.classList.add('high-risk-flash');
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return { highRiskWarnings, highRiskCount };
+        }
+        
+        // 更新风险评估摘要
+        function updateRiskSummary(suicideScore, totalScore) {
+            const suicideRiskStatus = document.getElementById('suicideRiskStatus');
+            const totalScoreRiskStatus = document.getElementById('totalScoreRiskStatus');
+            const depressionSeverityStatus = document.getElementById('depressionSeverityStatus');
+            const riskSummary = document.getElementById('riskSummary');
+            
+            // 自杀风险评估状态
+            if (suicideScore >= 2) {
+                suicideRiskStatus.textContent = '高风险';
+                suicideRiskStatus.className = 'risk-status danger';
+            } else {
+                suicideRiskStatus.textContent = '安全';
+                suicideRiskStatus.className = 'risk-status safe';
+            }
+            
+            // 总分风险状态
+            if (totalScore > 24) {
+                totalScoreRiskStatus.textContent = '高风险';
+                totalScoreRiskStatus.className = 'risk-status danger';
+                depressionSeverityStatus.textContent = '重度抑郁';
+                depressionSeverityStatus.className = 'risk-status danger';
+            } else if (totalScore >= 18) {
+                totalScoreRiskStatus.textContent = '中风险';
+                totalScoreRiskStatus.className = 'risk-status warning';
+                depressionSeverityStatus.textContent = '中度抑郁';
+                depressionSeverityStatus.className = 'risk-status warning';
+            } else if (totalScore >= 7) {
+                totalScoreRiskStatus.textContent = '低风险';
+                totalScoreRiskStatus.className = 'risk-status safe';
+                depressionSeverityStatus.textContent = '轻度抑郁';
+                depressionSeverityStatus.className = 'risk-status safe';
+            } else {
+                totalScoreRiskStatus.textContent = '安全';
+                totalScoreRiskStatus.className = 'risk-status safe';
+                depressionSeverityStatus.textContent = '无抑郁';
+                depressionSeverityStatus.className = 'risk-status safe';
+            }
+            
+            // 更新风险评估摘要样式
+            if (suicideScore >= 2 || totalScore > 24) {
+                riskSummary.classList.add('high-risk');
+            } else {
+                riskSummary.classList.remove('high-risk');
+            }
+        }
+        
+        // 根据总分获取评估结果
+        function getAssessmentResult(score) {
+            if (score < 7) {
+                return "无抑郁";
+            } else if (score >= 7 && score <= 17) {
+                return "可能存在轻度抑郁";
+            } else if (score >= 18 && score <= 24) {
+                return "存在中度抑郁";
+            } else {
+                return "存在重度抑郁";
+            }
+        }
+        
+        // 更新总分显示
+        function updateTotalScore() {
+            const totalScore = calculateTotalScore();
+            const suicideScore = getSuicideScore();
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(suicideScore, totalScore);
+            
+            // 更新总分显示
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // 实时更新评估结果
+            if (isAssessmentComplete()) {
+                const result = getAssessmentResult(totalScore);
+                const resultInfo = resultDescriptions[result];
+                
+                document.getElementById('severityText').textContent = resultInfo.title;
+                
+                // 检查自杀项目分数，如果≥2，添加特别警告
+                let description = resultInfo.description;
+                
+                if (suicideScore >= 2) {
+                    description += " <strong>警告：第3项（自杀）评分≥2分，存在明确自杀风险，应立即启动危机干预！</strong>";
+                }
+                
+                document.getElementById('resultDescription').innerHTML = description;
+                
+                // 更新结果框样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                
+                // 重置所有高风险样式
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                totalScoreElement.classList.remove('high-risk');
+                
+                // 更新颜色
+                resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+                totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+                
+                // 检查是否需要应用高风险样式
+                if (suicideScore >= 2 || totalScore > 24) {
+                    resultBox.classList.add('high-risk');
+                    resultTitle.classList.add('high-risk');
+                    scoreDisplay.classList.add('high-risk');
+                    totalScoreElement.classList.add('high-risk');
+                }
+            }
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#2a9d8f';
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < hamdQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有17个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const totalScore = calculateTotalScore();
+            const suicideScore = getSuicideScore();
+            const result = getAssessmentResult(totalScore);
+            const resultInfo = resultDescriptions[result];
+            
+            // 检查高风险项目
+            const highRiskItems = checkHighRiskItems();
+            
+            // 更新风险评估摘要
+            updateRiskSummary(suicideScore, totalScore);
+            
+            // 更新总分显示
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('severityText').textContent = resultInfo.title;
+            
+            // 构建结果描述
+            let description = resultInfo.description;
+            
+            // 如果有高风险警告，添加到描述中
+            if (suicideScore >= 2) {
+                description += ` <strong><br><br>警告：第3项（自杀）评分≥2分，存在明确自杀风险，应立即启动危机干预！</strong>`;
+                
+                // 显示紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'block';
+            } else {
+                // 隐藏紧急求助资源
+                document.getElementById('emergencyContacts').style.display = 'none';
+            }
+            
+            document.getElementById('resultDescription').innerHTML = description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            const resultTitle = document.getElementById('resultTitle');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const totalScoreElement = document.getElementById('totalScore');
+            
+            // 重置所有高风险样式
+            resultBox.classList.remove('high-risk');
+            resultTitle.classList.remove('high-risk');
+            scoreDisplay.classList.remove('high-risk');
+            totalScoreElement.classList.remove('high-risk');
+            
+            // 更新颜色
+            resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+            totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+            
+            // 检查是否需要应用高风险样式
+            if (suicideScore >= 2 || totalScore > 24) {
+                resultBox.classList.add('high-risk');
+                resultTitle.classList.add('high-risk');
+                scoreDisplay.classList.add('high-risk');
+                totalScoreElement.classList.add('high-risk');
+            }
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为0分
+                for (let i = 0; i < hamdQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="0"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置高风险项目样式
+                document.querySelectorAll('.question-item[data-high-risk="true"]').forEach(item => {
+                    item.classList.remove('high-risk-active', 'high-risk-flash');
+                });
+                
+                // 重置结果显示
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('severityText').textContent = '请完成评估';
+                document.getElementById('resultDescription').innerHTML = '请完成所有17个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置风险评估摘要
+                document.getElementById('suicideRiskStatus').textContent = '安全';
+                document.getElementById('suicideRiskStatus').className = 'risk-status safe';
+                document.getElementById('totalScoreRiskStatus').textContent = '安全';
+                document.getElementById('totalScoreRiskStatus').className = 'risk-status safe';
+                document.getElementById('depressionSeverityStatus').textContent = '无抑郁';
+                document.getElementById('depressionSeverityStatus').className = 'risk-status safe';
+                
+                document.getElementById('riskSummary').classList.remove('high-risk');
+                document.getElementById('emergencyContacts').style.display = 'none';
+                
+                // 重置颜色和样式
+                const resultBox = document.getElementById('resultBox');
+                const resultTitle = document.getElementById('resultTitle');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                const totalScoreElement = document.getElementById('totalScore');
+                
+                resultBox.classList.remove('high-risk');
+                resultTitle.classList.remove('high-risk');
+                scoreDisplay.classList.remove('high-risk');
+                totalScoreElement.classList.remove('high-risk');
+                
+                totalScoreElement.style.color = '#2a9d8f';
+                resultBox.style.borderLeftColor = '#2a9d8f';
+                resultBox.style.backgroundColor = '#f8fafc';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新总分
+            updateTotalScore();
+        });
+    </script>
+</body>
+</html>

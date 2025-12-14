@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉密尔顿焦虑量表（HAMA）在线评估</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a6dcc 0%, #0d4a9c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h1 i {
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #ffd166;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .questionnaire-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 0 0 350px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: #1a6dcc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #1a6dcc;
+        }
+        
+        .question-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 70px;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            text-align: center;
+            padding: 10px 5px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .rating-option input:checked + label {
+            background-color: #1a6dcc;
+            color: white;
+            border-color: #1a6dcc;
+            font-weight: 600;
+        }
+        
+        .rating-option label:hover {
+            background-color: #e8f0fe;
+            border-color: #1a6dcc;
+        }
+        
+        .rating-value {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .score-value {
+            font-size: 68px;
+            font-weight: 700;
+            color: #1a6dcc;
+            line-height: 1;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .score-label {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            border-left: 5px solid #1a6dcc;
+        }
+        
+        .result-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1a6dcc;
+        }
+        
+        .result-description {
+            color: #4a5568;
+            font-size: 15px;
+        }
+        
+        .interpretation-section {
+            margin-top: 20px;
+        }
+        
+        .interpretation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .interpretation-table th,
+        .interpretation-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .interpretation-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .interpretation-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .severity-0 {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .severity-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .severity-2 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .severity-3 {
+            background-color: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .severity-4 {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #calculateBtn {
+            background-color: #1a6dcc;
+            color: white;
+        }
+        
+        #calculateBtn:hover {
+            background-color: #0d4a9c;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        #resetBtn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .disclaimer {
+            background-color: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-section {
+                flex: 1;
+            }
+            
+            .rating-options {
+                justify-content: space-between;
+            }
+            
+            .rating-option {
+                flex: 0 0 18%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> 汉密尔顿焦虑量表（HAMA）在线评估</h1>
+            <p class="subtitle">本量表用于评估焦虑症状的严重程度，由专业评估人员通过面谈结合患者自述完成评分。</p>
+            <div class="instructions">
+                <p><strong>指导语：</strong>请根据患者近1周内的症状表现，对以下14个项目分别进行评分，评分标准为0-4分：0分=无该症状，1分=轻度症状，2分=中度症状，3分=重度症状，4分=极重度症状。</p>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <section class="questionnaire-section">
+                <div class="card">
+                    <h2><i class="fas fa-clipboard-list"></i> HAMA评估项目（共14项）</h2>
+                    
+                    <div id="questionsContainer">
+                        <!-- 问题将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="calculateBtn">
+                            <i class="fas fa-calculator"></i> 计算总分并评估
+                        </button>
+                        <button id="resetBtn">
+                            <i class="fas fa-redo"></i> 重置评估
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 评分标准说明</h2>
+                    <p><strong>0分：</strong>无该症状，患者无任何相关不适体验，面谈中也未观察到异常</p>
+                    <p><strong>1分：</strong>轻度症状，患者仅在被询问时提及有轻微不适，或面谈中观察到轻微异常，症状完全不影响日常生活和社会功能</p>
+                    <p><strong>2分：</strong>中度症状，患者可自发提及症状，或面谈中能明确观察到异常，症状已对日常生活产生一定影响，但仍可忍受，无需特殊干预</p>
+                    <p><strong>3分：</strong>重度症状，症状表现明显且持续，患者因症状感到显著痛苦，日常生活、工作或社交功能受到明显影响，需要干预缓解</p>
+                    <p><strong>4分：</strong>极重度症状，症状极其严重且难以控制，患者完全无法正常进行日常生活、工作或社交，处于极度痛苦状态，急需紧急干预</p>
+                </div>
+            </section>
+            
+            <section class="results-section">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 评估结果</h2>
+                    
+                    <div class="score-display">
+                        <div class="score-label">HAMA总分</div>
+                        <div id="totalScore" class="score-value">0</div>
+                        <div id="severityText" class="score-label">请完成评估</div>
+                    </div>
+                    
+                    <div id="resultBox" class="result-box">
+                        <div class="result-title">评估结果说明</div>
+                        <div id="resultDescription" class="result-description">请完成所有14个项目的评分，然后点击"计算总分并评估"按钮查看结果。</div>
+                    </div>
+                    
+                    <div class="interpretation-section">
+                        <h3><i class="fas fa-clipboard-check"></i> 结果解读标准</h3>
+                        <table class="interpretation-table">
+                            <thead>
+                                <tr>
+                                    <th>总分范围</th>
+                                    <th>焦虑等级</th>
+                                    <th>建议</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>＜7分</td>
+                                    <td><span class="severity-indicator severity-0">无焦虑症状</span></td>
+                                    <td>患者状态正常</td>
+                                </tr>
+                                <tr>
+                                    <td>7-13分</td>
+                                    <td><span class="severity-indicator severity-1">可能存在轻度焦虑</span></td>
+                                    <td>需结合临床症状进一步观察</td>
+                                </tr>
+                                <tr>
+                                    <td>14-20分</td>
+                                    <td><span class="severity-indicator severity-2">明确存在轻度焦虑</span></td>
+                                    <td>建议进行心理疏导或定期随访</td>
+                                </tr>
+                                <tr>
+                                    <td>21-28分</td>
+                                    <td><span class="severity-indicator severity-3">明显焦虑（中度）</span></td>
+                                    <td>需要针对性干预（如心理治疗）</td>
+                                </tr>
+                                <tr>
+                                    <td>＞29分</td>
+                                    <td><span class="severity-indicator severity-4">重度焦虑</span></td>
+                                    <td>建议综合干预（如心理治疗+药物治疗），密切监测病情</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+
+    <script>
+        // HAMA问题列表
+        const hamaQuestions = [
+            "焦虑心境：过度担心、预感不祥、易激惹，无法自主放松，对未来存在莫名的担忧感",
+            "紧张：明显的紧张感、精神易疲劳、容易哭泣，伴随肢体颤抖、内心不安定等状态",
+            "害怕：对特定场景或事物产生恐惧（如黑暗、陌生人、独处环境、动物、交通出行、人群密集场所等）",
+            "失眠：入睡困难（入睡时间超过30分钟）、睡眠浅易醒、多梦（尤其噩梦）、夜惊等",
+            "认知功能：注意力不集中、思维涣散、记忆力下降，难以正常完成思考或决策过程",
+            "抑郁心境：伴随焦虑出现的情绪低落、兴趣减退，可能存在早醒、昼夜情绪波动（如晨重夜轻）等",
+            "躯体性焦虑（肌肉系统）：肌肉酸痛、僵硬、不自主抽动，严重时出现牙齿打颤、说话声音颤抖等",
+            "躯体性焦虑（感觉系统）：视物模糊、身体忽冷忽热、全身虚弱感、皮肤针刺感或麻木感等",
+            "心血管系统症状：心动过速、心悸（自觉心脏跳动异常）、胸痛、血管跳动感、头晕甚至昏倒感",
+            "呼吸系统症状：胸闷、胸部压迫感、窒息感、频繁叹息、自觉呼吸困难等",
+            "胃肠道症状：吞咽困难、腹胀、腹痛、胃部烧灼感、腹泻或便秘，部分患者出现体重减轻",
+            "自主神经系统症状：口干、面部潮红或苍白、多汗（尤其手心脚心）、头晕、头痛等",
+            "泌尿系统症状：尿频、尿急，女性可能出现停经、性冷淡，男性可能出现早泄等",
+            "会谈时行为表现：面谈过程中观察到的姿势僵硬、双手颤抖、频繁叹息、坐立不安、来回走动等异常行为"
+        ];
+        
+        // 评分选项
+        const ratingOptions = [
+            { value: 0, label: "无", description: "无该症状" },
+            { value: 1, label: "轻度", description: "轻度症状" },
+            { value: 2, label: "中度", description: "中度症状" },
+            { value: 3, label: "重度", description: "重度症状" },
+            { value: 4, label: "极重度", description: "极重度症状" }
+        ];
+        
+        // 评估结果说明
+        const resultDescriptions = {
+            "无焦虑": {
+                title: "无焦虑症状",
+                description: "根据评估结果，患者目前无明显的焦虑症状，心理健康状态良好。",
+                severityClass: "severity-0"
+            },
+            "可能存在轻度焦虑": {
+                title: "可能存在轻度焦虑",
+                description: "根据评估结果，患者可能存在轻度焦虑症状，建议结合临床症状进一步观察，定期复查。",
+                severityClass: "severity-1"
+            },
+            "明确存在轻度焦虑": {
+                title: "明确存在轻度焦虑",
+                description: "根据评估结果，患者明确存在轻度焦虑症状，建议进行心理疏导或定期随访，学习压力管理技巧。",
+                severityClass: "severity-2"
+            },
+            "明显焦虑（中度）": {
+                title: "明显焦虑（中度）",
+                description: "根据评估结果，患者存在中度焦虑症状，需要针对性干预，如心理治疗、认知行为疗法等。",
+                severityClass: "severity-3"
+            },
+            "重度焦虑": {
+                title: "重度焦虑",
+                description: "根据评估结果，患者存在重度焦虑症状，建议综合干预（心理治疗+药物治疗），并密切监测病情变化。",
+                severityClass: "severity-4"
+            }
+        };
+        
+        // 初始化问卷
+        function initQuestionnaire() {
+            const container = document.getElementById('questionsContainer');
+            
+            hamaQuestions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.id = `question-${index}`;
+                
+                // 问题文本
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${question}`;
+                
+                // 评分选项
+                const ratingContainer = document.createElement('div');
+                ratingContainer.className = 'rating-options';
+                
+                // 创建单选按钮
+                ratingOptions.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'rating-option';
+                    
+                    const inputId = `q${index}-score${option.value}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.id = inputId;
+                    input.value = option.value;
+                    
+                    // 默认选择0分
+                    if (option.value === 0) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', updateTotalScore);
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = inputId;
+                    label.textContent = option.label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'rating-value';
+                    valueSpan.textContent = `${option.value}分`;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(valueSpan);
+                    ratingContainer.appendChild(optionDiv);
+                });
+                
+                questionItem.appendChild(questionText);
+                questionItem.appendChild(ratingContainer);
+                container.appendChild(questionItem);
+            });
+        }
+        
+        // 计算总分
+        function calculateTotalScore() {
+            let total = 0;
+            
+            for (let i = 0; i < hamaQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (selectedOption) {
+                    total += parseInt(selectedOption.value);
+                }
+            }
+            
+            return total;
+        }
+        
+        // 根据总分获取评估结果
+        function getAssessmentResult(score) {
+            if (score < 7) {
+                return "无焦虑";
+            } else if (score >= 7 && score <= 13) {
+                return "可能存在轻度焦虑";
+            } else if (score >= 14 && score <= 20) {
+                return "明确存在轻度焦虑";
+            } else if (score >= 21 && score <= 28) {
+                return "明显焦虑（中度）";
+            } else {
+                return "重度焦虑";
+            }
+        }
+        
+        // 更新总分显示
+        function updateTotalScore() {
+            const totalScore = calculateTotalScore();
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // 实时更新评估结果
+            if (isAssessmentComplete()) {
+                const result = getAssessmentResult(totalScore);
+                const resultInfo = resultDescriptions[result];
+                
+                document.getElementById('severityText').textContent = resultInfo.title;
+                document.getElementById('resultDescription').textContent = resultInfo.description;
+                
+                // 更新结果框样式
+                const resultBox = document.getElementById('resultBox');
+                resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+                
+                // 更新总分颜色
+                const totalScoreElement = document.getElementById('totalScore');
+                totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+            }
+        }
+        
+        // 获取严重程度对应的颜色
+        function getSeverityColor(severityClass) {
+            switch(severityClass) {
+                case 'severity-0': return '#065f46';
+                case 'severity-1': return '#1e40af';
+                case 'severity-2': return '#92400e';
+                case 'severity-3': return '#9a3412';
+                case 'severity-4': return '#991b1b';
+                default: return '#1a6dcc';
+            }
+        }
+        
+        // 检查是否所有问题都已评分
+        function isAssessmentComplete() {
+            for (let i = 0; i < hamaQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                if (!selectedOption) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示完整评估结果
+        function showAssessmentResult() {
+            if (!isAssessmentComplete()) {
+                alert("请完成所有14个项目的评分后再计算总分。");
+                return;
+            }
+            
+            const totalScore = calculateTotalScore();
+            const result = getAssessmentResult(totalScore);
+            const resultInfo = resultDescriptions[result];
+            
+            // 更新总分显示
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('severityText').textContent = resultInfo.title;
+            
+            // 更新结果描述
+            const resultDescription = document.getElementById('resultDescription');
+            resultDescription.textContent = resultInfo.description;
+            
+            // 更新结果框样式
+            const resultBox = document.getElementById('resultBox');
+            resultBox.style.borderLeftColor = getSeverityColor(resultInfo.severityClass);
+            
+            // 更新总分颜色
+            const totalScoreElement = document.getElementById('totalScore');
+            totalScoreElement.style.color = getSeverityColor(resultInfo.severityClass);
+            
+            // 滚动到结果区域
+            document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 重置评估
+        function resetAssessment() {
+            if (confirm("确定要重置所有评分吗？")) {
+                // 将所有单选按钮重置为0分
+                for (let i = 0; i < hamaQuestions.length; i++) {
+                    const defaultOption = document.querySelector(`input[name="question${i}"][value="0"]`);
+                    if (defaultOption) {
+                        defaultOption.checked = true;
+                    }
+                }
+                
+                // 重置结果显示
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('severityText').textContent = '请完成评估';
+                document.getElementById('resultDescription').textContent = '请完成所有14个项目的评分，然后点击"计算总分并评估"按钮查看结果。';
+                
+                // 重置颜色
+                document.getElementById('totalScore').style.color = '#1a6dcc';
+                document.getElementById('resultBox').style.borderLeftColor = '#1a6dcc';
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuestionnaire();
+            
+            // 绑定按钮事件
+            document.getElementById('calculateBtn').addEventListener('click', showAssessmentResult);
+            document.getElementById('resetBtn').addEventListener('click', resetAssessment);
+            
+            // 初始更新总分
+            updateTotalScore();
+        });
+    </script>
+</body>
+</html>
